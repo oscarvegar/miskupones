@@ -16,3 +16,12 @@ app.config(function($routeProvider){
     redirectTo: "/"
   });
 })
+
+app.run(function($rootScope,$location){
+  $rootScope.go = function(location){
+    $rootScope.showSpinner = false;
+    $location.url("/graphicsview")
+  }
+})
+
+

@@ -1,155 +1,5 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>New Sails App</title>
-
-    <!-- Viewport mobile tag for sensible mobile support -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-    
-    <!--  
-        Stylesheets and Preprocessors
-        ==============================
-
-        You can always bring in CSS files manually with `<link>` tags, or asynchronously
-        using a solution like AMD (RequireJS).  Or, if you like, you can take advantage 
-        of Sails' conventional asset pipeline (boilerplate Gruntfile).
-
-        By default, stylesheets from your `assets/styles` folder are included
-        here automatically (between STYLES and STYLES END). Both CSS (.css) and LESS (.less)
-        are supported. In production, your styles will be minified and concatenated into
-        a single file.
-        
-        To customize any part of the built-in behavior, just edit `tasks/pipeline.js`.
-        For example, here are a few things you could do:
-            
-            + Change the order of your CSS files
-            + Import stylesheets from other directories
-            + Use a different or additional preprocessor, like SASS, SCSS or Stylus
-    -->
-
-    <!--STYLES-->
-    <link rel="stylesheet" href="/styles/importer.css">
-    <!--STYLES END-->
-  </head>
-
-  <body>
-    
-
-
-    <!--
-        Client-side Templates
-        ========================
-
-        HTML templates are important prerequisites of modern, rich client applications.
-        To work their magic, frameworks like Backbone, Angular, Ember, and Knockout require
-        that you load these templates client-side.
-
-        By default, your Gruntfile is configured to automatically load and precompile
-        client-side JST templates in your `assets/templates` folder, then
-        include them here automatically (between TEMPLATES and TEMPLATES END).
-        
-        To customize this behavior to fit your needs, just edit `tasks/pipeline.js`.
-        For example, here are a few things you could do:
-
-            + Import templates from other directories
-            + Use a different template engine (handlebars, jade, dust, etc.)
-            + Internationalize your client-side templates using a server-side
-              stringfile before they're served.
-    -->
-
-    <!--TEMPLATES-->
-    
-    <!--TEMPLATES END-->
-
-
-    <!--
-
-      Client-side Javascript
-      ========================
-
-      You can always bring in JS files manually with `script` tags, or asynchronously
-      on the client using a solution like AMD (RequireJS).  Or, if you like, you can 
-      take advantage of Sails' conventional asset pipeline (boilerplate Gruntfile).
-
-      By default, files in your `assets/js` folder are included here
-      automatically (between SCRIPTS and SCRIPTS END).  Both JavaScript (.js) and
-      CoffeeScript (.coffee) are supported. In production, your scripts will be minified
-      and concatenated into a single file.
-      
-      To customize any part of the built-in behavior, just edit `tasks/pipeline.js`.
-      For example, here are a few things you could do:
-          
-          + Change the order of your scripts
-          + Import scripts from other directories
-          + Use a different preprocessor, like TypeScript
-
-    -->
-
-    <!--SCRIPTS-->
-    <script src="/js/dependencies/sails.io.js"></script>
-    <script src="/js/additional-methods.min.js"></script>
-    <script src="/js/bootstrap-switch.js"></script>
-    <script src="/js/bootstrap-wysiwyg-custom.js"></script>
-    <script src="/js/bootstrap-wysiwyg.js"></script>
-    <script src="/js/bootstrap.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/calendar-custom.js"></script>
-    <script src="/js/chartjs-custom.js"></script>
-    <script src="/js/charts-flot.js"></script>
-    <script src="/js/charts-other.js"></script>
-    <script src="/js/charts-xcharts.js"></script>
-    <script src="/js/charts.js"></script>
-    <script src="/js/dynamic-table.js"></script>
-    <script src="/js/easy-pie-chart.js"></script>
-    <script src="/js/excanvas.min.js"></script>
-    <script src="/js/form-component.js"></script>
-    <script src="/js/form-validation-script.js"></script>
-    <script src="/js/fullcalendar.js"></script>
-    <script src="/js/fullcalendar.min.js"></script>
-    <script src="/js/ga.js"></script>
-    <script src="/js/gdp-data.js"></script>
-    <script src="/js/gritter.js"></script>
-    <script src="/js/html5shiv.js"></script>
-    <script src="/js/index.js"></script>
-    <script src="/js/jquery-1.8.3.min.js"></script>
-    <script src="/js/jquery-jvectormap-1.2.2.min.js"></script>
-    <script src="/js/jquery-jvectormap-world-mill-en.js"></script>
-    <script src="/js/jquery-ui-1.10.4.min.js"></script>
-    <script src="/js/jquery-ui-1.9.2.custom.min.js"></script>
-    <script src="/js/jquery.autosize.min.js"></script>
-    <script src="/js/jquery.customSelect.min.js"></script>
-    <script src="/js/jquery.flot.pie.js"></script>
-    <script src="/js/jquery.hotkeys.js"></script>
-    <script src="/js/jquery.js"></script>
-    <script src="/js/jquery.localscroll.js"></script>
-    <script src="/js/jquery.nicescroll.js"></script>
-    <script src="/js/jquery.placeholder.min.js"></script>
-    <script src="/js/jquery.rateit.min.js"></script>
-    <script src="/js/jquery.scrollTo.min.js"></script>
-    <script src="/js/jquery.slimscroll.min.js"></script>
-    <script src="/js/jquery.smartWizard.js"></script>
-    <script src="/js/jquery.sparkline-11.js"></script>
-    <script src="/js/jquery.sparkline.js"></script>
-    <script src="/js/jquery.stepy.js"></script>
-    <script src="/js/jquery.tagsinput.js"></script>
-    <script src="/js/jquery.validate.min.js"></script>
-    <script src="/js/lte-ie7.js"></script>
-    <script src="/js/morris-script.js"></script>
-    <script src="/js/morris.min.js"></script>
-    <script src="/js/owl.carousel.js"></script>
-    <script src="/js/scripts.js"></script>
-    <script src="/js/sliders.js"></script>
-    <script src="/js/sparkline-chart.js"></script>
-    <script src="/js/sparklines.js"></script>
-    <script src="/js/xcharts.min.js"></script>
-    <!--SCRIPTS END-->
-  </body>
-</html>
-
-
-<!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="miskupones">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -192,7 +42,14 @@
   </head>
 
   <body>
-  <%- body %>
+  <!-- container section start -->
+  <section id="container" class="">
+      
+      <%- body %>
+  
+
+  </section>
+    <!-- container section end -->
 
 
     <!-- javascripts -->
@@ -215,75 +72,22 @@
   <script src="assets/fullcalendar/fullcalendar/fullcalendar.js"></script>
     <!--script for this page only-->
     <script src="js/calendar-custom.js"></script>
-  <script src="js/jquery.rateit.min.js"></script>
+    <script src="js/jquery.rateit.min.js"></script>
     <!-- custom select -->
     <script src="js/jquery.customSelect.min.js" ></script>
   <script src="assets/chart-master/Chart.js"></script>
    
     <!--custome script for all page-->
     <script src="js/scripts.js"></script>
-    <!-- custom script for this page-->
-    <script src="js/sparkline-chart.js"></script>
-    <script src="js/easy-pie-chart.js"></script>
-  <script src="js/jquery-jvectormap-1.2.2.min.js"></script>
-  <script src="js/jquery-jvectormap-world-mill-en.js"></script>
-  <script src="js/xcharts.min.js"></script>
-  <script src="js/jquery.autosize.min.js"></script>
-  <script src="js/jquery.placeholder.min.js"></script>
-  <script src="js/gdp-data.js"></script>  
-  <script src="js/morris.min.js"></script>
-  <script src="js/sparklines.js"></script>  
-  <script src="js/charts.js"></script>
-  <script src="js/jquery.slimscroll.min.js"></script>
-  <script>
-
-      //knob
-      $(function() {
-        $(".knob").knob({
-          'draw' : function () { 
-            $(this.i).val(this.cv + '%')
-          }
-        })
-      });
-
-      //carousel
-      $(document).ready(function() {
-          $("#owl-slider").owlCarousel({
-              navigation : true,
-              slideSpeed : 300,
-              paginationSpeed : 400,
-              singleItem : true
-
-          });
-      });
-
-      //custom select box
-
-      $(function(){
-          $('select.styled').customSelect();
-      });
     
-    /* ---------- Map ---------- */
-  $(function(){
-    $('#map').vectorMap({
-      map: 'world_mill_en',
-      series: {
-        regions: [{
-          values: gdpData,
-          scale: ['#000', '#000'],
-          normalizeFunction: 'polynomial'
-        }]
-      },
-    backgroundColor: '#eef3f7',
-      onLabelShow: function(e, el, code){
-        el.html(el.html()+' (GDP - '+gdpData[code]+')');
-      }
-    });
-  });
+
+  <!-- SCRIPTS ANGULAR -->
+  <script src="/js/angular.min.js"></script>
+  <script src="/js/angular-route.min.js"></script>
 
 
-
-  </script>
+  <script src="/ng/miskupones.js"></script>
+  <script src="/ng/controllers.js"></script>
 
   </body>
 </html>

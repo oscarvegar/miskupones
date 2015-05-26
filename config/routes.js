@@ -33,8 +33,16 @@ module.exports.routes = {
   ***************************************************************************/
 
   '/': {
-    view: 'homepage'
-  }
+    view:'default'
+  },
+  '/home': {
+    controller: 'MainController',
+    action:'home'
+  },
+  '/charts': {
+      controller: 'ChartController',
+      action: 'show'
+   },
 
   /***************************************************************************
   *                                                                          *

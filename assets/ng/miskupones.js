@@ -9,8 +9,7 @@ app.config(function($routeProvider){
     }
   ).when("/graphicsview",
     {
-      templateUrl: "/charts",
-      controller: "CuponesCtrl"
+      templateUrl: "/charts"
   	}
   ).otherwise({
     redirectTo: "/"

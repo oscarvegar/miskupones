@@ -359,7 +359,7 @@
 
                   <div class="chat-content">
                     <!-- In the chat meta, first include "time" then "name" -->
-                    <div class="chat-meta">3 hours ago <span class="pull-right">Jenifer Smith</span></div>
+                    <div class="chat-meta">3 hours ago <span class="pull-right"></span></div>
                     Vivamus diam elit diam, consectetur fconsectetur dapibus adipiscing elit.
                     <div class="clearfix"></div>
                   </div>
@@ -611,7 +611,7 @@
                       <input type="text" class="form-control" id="tags">
                     </div>
                   </div>
-                  
+
                   <!-- Buttons -->
                   <div class="form-group">
                    <!-- Buttons -->
@@ -672,30 +672,7 @@ $(function(){
 });
 
 /* ---------- Map ---------- */
-$(function(){
-  $('#map').vectorMap({
-    map: 'world_mill_en',
-    series: {
-      regions: [{
-        values: {
-          "US" :'#3e9d01',
-          "IQ" :74,
-          "IR" :73,
-          "IF" :72,
-          "JP" :71,
-          "DE" :70,
-          "GB" :69,
-          "IT" :68 },attribute: 'fill',
 
-          normalizeFunction: 'polynomial'
-        }]
-      },
-      backgroundColor: '#eef3f7',
-      onRegionLabelShow: function(e, el, code){
-        el.html(el.html()+' (GDP - '+gdpData[code]+')');
-      }
-    });
-});
 
 
 

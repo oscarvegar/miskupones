@@ -35,6 +35,9 @@ module.exports.routes = {
   '/': {
     view:'default'
   },
+  '/index.html': {
+    view:'default'
+  },
   '/home': {
     controller: 'MainController',
     action:'home'

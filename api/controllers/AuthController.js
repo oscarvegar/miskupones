@@ -74,7 +74,7 @@ var AuthController = {
     
     // mark the user as logged out for auth purposes
     req.session.authenticated = false;
-    
+    req.session.user = false;
     res.redirect('/');
   },
 
@@ -186,7 +186,93 @@ var AuthController = {
    */
   disconnect: function (req, res) {
     passport.disconnect(req, res);
+  },
+
+  forgot:function(req,res){
+    res.view('auth/forgot',{layout:'liteLayout'})
+  },
+
+  resetPassword:function(req,res){
+    var mail = req.param('email');
+    var code = new Date().getTime();
+    code = code *  Math.random();
+    code = code.toString(16);
+    
+    var options = {};
+    options.to = mail;
+    options.subject = "Reestablecer contraseña";
+    options.html =  "<h3>Has solicitado reestablecer la contraseña</h3>\
+      <br><br>\
+      Si has sido tu, da clic en el siguiente link para reestablecer tu contraseña.\
+      <br><br>\
+      http://miskupones.com/resetview/"
+      +code+
+      "<br><br>\
+      En caso de no haber sido tu, has caso omiso a este correo.\
+      <br><br>\
+      Excelente día te desea el equipo Mis Kupones";
+      console.log("EMAIL A UPDATE",mail)
+    User.update({email:mail},{resetcode:code}).then(function(user){
+      if(user.length > 0){
+        MailService.send(options);
+      }
+      res.view('auth/forgot',{msg:"Hemos enviado un correo a tu cuenta, sigue los pasos para poder reestablecer tu contraseña"})
+    })  
+
+    
+  },
+
+  reestablecerview:function(req,res){
+    var id = req.param('id');
+    req.errors = [];
+    console.log("ID",id)
+    User.findOne({resetcode:{$exists:true},resetcode:id}).then(function(user){
+      console.log("USER",user)
+      if(!user) return res.view(404);
+      req.session.resetuser = user;
+      res.view('auth/reset',{layout:'liteLayout'});
+    })
+  },
+
+  reestablecerPwd:function(req,res){
+    var pass = req.param('password');
+    var user = req.session.resetuser;
+    if(!user)user = req.session.user;
+    if(!user)return res.view(404);
+    Passport.update({user:user.id},{password:pass}).then(function(updatedUser){
+      console.info("Cambio la contraseña usuario",updatedUser);
+      User.update({id:user.id},{resetcode:null})
+      return res.redirect("/login");
+    })
+  },
+
+  changepassview:function(req,res){
+    res.view('reset','emptyLayout');
+  },
+
+  changepass:function(req,res){
+    var anterior = req.param('actual');
+    var nuevo = req.param('nueva');
+    var user = req.session.user;
+
+    Passport.findOne({user:user.id}).then(function(passport){
+      passport.validatePassword(anterior,function(err,comp){
+        if(comp == true){
+          passport.password = nuevo;
+          passport.save(function(respass){
+            return res.json({code:0})
+          })
+        }else{
+          return res.json(403,{});
+        }
+
+      });
+
+
+    })
+      
   }
+
 };
 
 module.exports = AuthController;

@@ -1,4 +1,9 @@
-var app = angular.module('miskupones',['ngRoute',"miskupones.controllers","miskupones.usuarios"])
+var app = angular.module('miskupones',
+  ['ngRoute',"miskupones.controllers","miskupones.usuarios","miskupones.password"])
+
+app.run(function($rootScope){
+  $rootScope.modal = {};
+})
 
 app.config(function($routeProvider){
   $routeProvider
@@ -34,6 +39,11 @@ app.config(function($routeProvider){
       action:"U",
       templateUrl: "/ng/modules/usuariosEdit.html",
       controller:'UsuariosCtrl'
+    }
+  ).when("/changePassword",
+    {
+      templateUrl: "/ng/modules/password.html",
+      controller:'PasswordCtrl'
     }
   ).otherwise({
     redirectTo: "/"

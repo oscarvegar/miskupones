@@ -6,6 +6,13 @@ var User = {
     username  : { type: 'string', unique: true },
     email     : { type: 'email',  unique: true },
     passports : { collection: 'Passport', via: 'user' },
+    nombre: 'string',
+    apellidoPaterno: 'string',
+    apellidoMaterno: 'string',
+    estado: 'string',
+    ciudad: 'string',
+    fechaNacimiento: 'date',
+    sexo: 'string',
     resetcode : 'string',
     activationcode : 'string',
     status : {type:'integer',defaultsTo:-1}

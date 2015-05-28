@@ -302,7 +302,34 @@ var AuthController = {
       res.redirect("/login?m=1")
     })
 
-  }
+  },
+
+  getperfil:function(req,res){    
+    var user= req.session.user.username;
+    User.findOne({username:user}).then(function(user,err){
+      if(!user) return res.json(400,err);
+      req.session.resetuser = user;
+      res.json(user);
+    })
+  },
+
+
+  updateperfil:function(req,res){
+
+console.log("parametros aactualizar");
+ var data = req.allParams();
+      User.update({username:req.allParams().username},data).then(function(user){
+          res.json(user);
+      }).fail(function(err){
+          console.log(err);
+          res.send(500)
+      })
+
+  },
+
+
+
+
 
 };
 

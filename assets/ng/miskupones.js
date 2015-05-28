@@ -1,5 +1,5 @@
 var app = angular.module('miskupones',
-  ['ngRoute',"miskupones.controllers","miskupones.usuarios","miskupones.password"])
+  ['ngRoute',"miskupones.controllers","miskupones.usuarios","miskupones.password","miskupones.perfil"])
 
 app.run(function($rootScope){
   $rootScope.modal = {};
@@ -39,6 +39,11 @@ app.config(function($routeProvider){
       action:"U",
       templateUrl: "/ng/modules/usuariosEdit.html",
       controller:'UsuariosCtrl'
+    }
+  ).when("/miPerfil",
+    {
+      templateUrl: "/ng/modules/miperfil.html",
+      controller:'PerfilCtrl'
     }
   ).when("/changePassword",
     {

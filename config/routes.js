@@ -49,6 +49,10 @@ module.exports.routes = {
   'get /auth/:provider/callback': 'AuthController.callback',
   'get /auth/:provider/:action': 'AuthController.callback',
 
+  'get /getperfil': 'AuthController.getperfil',
+  'post /updateperfil': 'AuthController.updateperfil',
+
+
 
   '/': {
     controller: 'MainController',

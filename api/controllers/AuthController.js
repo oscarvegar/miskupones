@@ -293,12 +293,10 @@ var AuthController = {
 
   activate:function(req,res){
     var id=req.param('id');
-    console.log("ID ACTIV",id)
     User.findOne({status:-1,activationcode:id})
     .then(function(user){
       if(!user) return res.view(404);
       user.status=1;
-      user.save(console.info)
       res.redirect("/login?m=1")
     })
 

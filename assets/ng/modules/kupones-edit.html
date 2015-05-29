@@ -1,0 +1,117 @@
+<!--main content start-->
+<section id="main-content">
+    <section class="wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="page-header"><i class="fa fa-file-text-o"></i> Editar Kupones</h3>
+                <ol class="breadcrumb">
+                    <li><i class="fa fa-home"></i><a href="/#/">Inicio</a></li>
+                    <li><i class="icon_document_alt"></i>Kupones</li>
+                    <li><i class="fa fa-file-text-o"></i>Editar Kupones</li>
+                </ol>
+            </div>
+        </div>
+        
+        <!-- Basic Forms & Horizontal Forms-->
+        
+        <div class="row">
+            <div class="col-lg-12">
+                <section class="panel">
+                    <header class="panel-heading">
+                        Kupones
+                    </header>
+                    <div class="panel-body">
+                        <form class="form-validate form-horizontal " id="register_form" method="get" action="" role="form">
+                            <div class="form-group">
+                                <label for="tituloPromocion" class="control-label col-lg-2">Titulo de la promoción <span class="required">*</span></label>
+                                <div class="col-lg-10">
+                                    <input class="form-control" id="tituloPromocion" name="tituloPromocion" placeholder="Introduzca el titulo del la promocón" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="descripcionCorta" class="control-label col-lg-2">Descripción corta <span class="required">*</span></label>
+                                <div class="col-lg-10">
+                                    <input class="form-control" id="descripcionCorta" name="descripcionCorta" placeholder="Introduzca el titulo del la promocón" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <label for="descripcionLarga" class="control-label col-lg-2">Descripción larga <span class="required">*</span></label>
+                                <div class="col-lg-10">
+                                    <textarea class="form-control " id="descripcionLarga" name="descripcionLarga" required></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="imagenKupon">Imagén a desplegar <span class="required">*</span></label>
+                                <input type="file" id="imagenKupon" name="imagenKupon">
+                                <p class="help-block">Example block-level help text here.</p>
+                            </div>
+                            <div class="form-group ">
+                                <label for="restricciones" class="control-label col-lg-2">Restricciones <span class="required">*</span></label>
+                                <div class="col-lg-10">
+                                    <textarea class="form-control " id="restricciones" name="restricciones" required></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Vigencia <span class="required">*</span></label>
+                                <div class="col-sm-6">
+                                    <div class="input-append date" id="dpYears" data-date="18-06-2013"
+                                        data-date-format="dd-mm-yyyy" data-date-viewmode="years">
+                                        <input class="form-control" size="16" type="text" value="28-06-2013" readonly>
+                                        <span class="add-on"><i class="icon-calendar"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="precioRegular" class="control-label col-lg-2">Precio regular sin kupon <span class="required">*</span></label>
+                                <div class="col-lg-10">
+                                    <input class="form-control" id="precioRegular" name="precioRegular" placeholder="Introduzca el precio regular sin kupon" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="precioDescuento" class="control-label col-lg-2">Precio con descuento del kupon <span class="required">*</span></label>
+                                <div class="col-lg-10">
+                                    <input class="form-control" id="precioDescuento" name="precioDescuento" placeholder="Introduzca el precio con descuento del kupon" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="precioKupon" class="control-label col-lg-2">Precio del kupon <span class="required">*</span></label>
+                                <div class="col-lg-10">
+                                    <input class="form-control" id="precioKupon" name="precioKupon" placeholder="Introduzca el precio del kupon" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <label for="kuponActivo" class="control-label col-lg-2 col-sm-3">Kupon activo</label>
+                                <div class="col-lg-10 col-sm-9">
+                                    <input type="checkbox" style="width: 20px" class="checkbox form-control" id="kuponActivo" name="kuponActivo" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Password</label>
+                                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputFile">File input</label>
+                                <input type="file" id="exampleInputFile">
+                                <p class="help-block">Example block-level help text here.</p>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox"> Check me out
+                                </label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <!-- page end-->
+    </section>
+</section>
+<!--main content end-->
+<!-- ck editor -->
+<script type="text/javascript" src="assets/ckeditor/ckeditor.js"></script>
+<!-- custom form component script for this page-->
+<script src="js/form-component.js"></script>
+<!-- custome script for all page -->
+<script src="js/scripts.js"></script>

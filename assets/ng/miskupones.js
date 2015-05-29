@@ -1,5 +1,5 @@
 var app = angular.module('miskupones',
-  ['ngRoute',"miskupones.controllers","miskupones.usuarios","miskupones.password","miskupones.perfil"])
+  ['ngRoute',"miskupones.controllers","miskupones.usuarios","miskupones.password","miskupones.perfil", "miskupones.kupones"])
 
 app.run(function($rootScope){
   $rootScope.modal = {};
@@ -49,6 +49,30 @@ app.config(function($routeProvider){
     {
       templateUrl: "/ng/modules/password.html",
       controller:'PasswordCtrl'
+    }
+  ).when("/kupones/create",
+    {
+      action:"C",
+      templateUrl: "/ng/modules/kupones-edit.html",
+      controller:'KuponesCtrl'
+    }
+  ).when("/kupones",
+    {
+      action:"R",
+      templateUrl: "/ng/modules/kupones-list.html",
+      controller:'KuponesCtrl'
+    }
+  ).when("/kupones/update",
+    {
+      action:"U",
+      templateUrl: "/ng/modules/kupones-edit.html",
+      controller:'KuponesCtrl'
+    }
+  ).when("/kupones/delete",
+    {
+      action:"D",
+      templateUrl: "/ng/modules/kupones-list.html",
+      controller:'KuponesCtrl'
     }
   ).otherwise({
     redirectTo: "/"

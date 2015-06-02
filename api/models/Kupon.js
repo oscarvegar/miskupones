@@ -31,6 +31,9 @@ module.exports = {
 			type: 'text',
 			columnName: 'descripcion_larga'
 		},
+		imagenes: {
+			type: 'array'
+		},
 		vigencia: {
 			type: 'datetime'
 		},

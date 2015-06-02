@@ -22,6 +22,10 @@ module.exports = {
 		rfc: {
 			type: 'string'
 		},
+		userId: {
+			model: 'User',
+			columnName: 'user_id'
+		},
 		promociones: {
 			collection: 'Promocion',
 			via: 'promocionId'

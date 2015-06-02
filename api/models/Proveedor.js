@@ -6,9 +6,19 @@
 */
 
 module.exports = {
-
-  attributes: {
-
-  }
+	adapter: 'kuponesMysqlServer',
+	autoCreatedAt: true,
+	autoPK:false,
+	autoUpdatedAt: true,
+	tableName: 'proveedor',
+	attributes: {
+		proveedorId: {
+			type: 'integer',
+			unique: true,
+			primaryKey: true,
+			autoIncrement: true,
+			columnName: 'proveedor_id'
+		}
+	}
 };
 

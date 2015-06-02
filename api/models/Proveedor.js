@@ -18,6 +18,13 @@ module.exports = {
 			primaryKey: true,
 			autoIncrement: true,
 			columnName: 'proveedor_id'
+		},
+		rfc: {
+			type: 'string'
+		},
+		promociones: {
+			collection: 'Promocion',
+			via: 'promocionId'
 		}
 	}
 };

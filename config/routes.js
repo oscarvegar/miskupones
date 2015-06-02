@@ -74,6 +74,19 @@ module.exports.routes = {
 
   /***************************************************************************
   *                                                                          *
+  * José Daniel Routes                                                       *
+  *                                                                          *
+  ***************************************************************************/
+  'post /kupon/create': 'KuponController.createKupon',
+  'get /kupon/readAll': 'KuponController.readAllKupons',
+  'get /kupon/view/:kuponId': 'KuponController.viewKupon',
+  'put /kupon/update/:kuponId': 'KuponController.updateKupon',
+  'delete /kupon/delete/:kuponId': 'KuponController.deleteKupon',
+  'get /kupon/image/:imgId': 'KuponController.imageKupon'
+
+
+  /***************************************************************************
+  *                                                                          *
   * Custom routes here...                                                    *
   *                                                                          *
   *  If a request to a URL doesn't match any of the custom routes above, it  *

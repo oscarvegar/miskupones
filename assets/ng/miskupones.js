@@ -5,7 +5,7 @@ app.run(function($rootScope){
   $rootScope.modal = {};
 })
 
-app.config(function($routeProvider){
+app.config(function($routeProvider){  //, $locationProvider){
   $routeProvider
   .when("/",
     {
@@ -60,23 +60,64 @@ app.config(function($routeProvider){
     {
       action:"R",
       templateUrl: "/ng/modules/kupones-list.html",
-      controller:'KuponesCtrl'
+      controller:'KuponesCtrl',
+      resolve: {
+        // I will cause a 1 second delay
+        delay: function($q, $timeout) {
+          var delay = $q.defer();
+          $timeout(delay.resolve, 1000);
+          return delay.promise;
+        }
+      }
     }
-  ).when("/kupones/update",
+  ).when("/kupones/view/:kuponId",
+    {
+      action:"V",
+      templateUrl: "/ng/modules/kupones-view.html",
+      controller:'KuponesCtrl',
+      resolve: {
+        // I will cause a 1 second delay
+        delay: function($q, $timeout) {
+          var delay = $q.defer();
+          $timeout(delay.resolve, 1000);
+          return delay.promise;
+        }
+      }
+    }
+  ).when("/kupones/update/:kuponId",
     {
       action:"U",
       templateUrl: "/ng/modules/kupones-edit.html",
-      controller:'KuponesCtrl'
+      controller:'KuponesCtrl',
+      resolve: {
+        // I will cause a 1 second delay
+        delay: function($q, $timeout) {
+          var delay = $q.defer();
+          $timeout(delay.resolve, 1000);
+          return delay.promise;
+        }
+      }
     }
-  ).when("/kupones/delete",
+  ).when("/kupones/delete/:kuponId",
     {
       action:"D",
       templateUrl: "/ng/modules/kupones-list.html",
-      controller:'KuponesCtrl'
+      controller:'KuponesCtrl',
+      resolve: {
+        // I will cause a 1 second delay
+        delay: function($q, $timeout) {
+          var delay = $q.defer();
+          $timeout(delay.resolve, 1000);
+          return delay.promise;
+        }
+      }
     }
   ).otherwise({
     redirectTo: "/"
   });
+
+  // configure html5 to get links working on jsfiddle
+  // $locationProvider.html5Mode(true);
 })
 
 app.run(function($rootScope,$location){

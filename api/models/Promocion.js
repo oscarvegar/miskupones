@@ -31,8 +31,17 @@ module.exports = {
 			type: 'text',
 			columnName: 'descripcion_larga'
 		},
-		imagenes: {
-			type: 'array'
+		imagenesNames: {
+			type: 'array',
+			columnName: 'imagenes_names'
+		},
+		imagenesUrls: {
+			type: 'array',
+			columnName: 'imagenes_urls'
+		},
+		imagenesFds: {
+			type: 'array',
+			columnName: 'imagenes_fds'
 		},
 		vigencia: {
 			type: 'datetime'

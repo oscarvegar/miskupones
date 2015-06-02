@@ -1,13 +1,17 @@
 <!--main content start-->
-<section id="main-content">
+<section ng-controller="KuponesCtrl" id="main-content" ng-if="((action == 'C' || action == 'U') && showContent)">
     <section class="wrapper">
+        <div class="spinner" ng-show="loading">
+            <img ng-show="loading" src="/img/loading-orange-t2.gif" style="width: 50px; position: absolute; left: 50%; top: 50%; display: block;" />
+        </div>
+        <!-- <spinner id="mySpinner" show-spinner="false" ></spinner> -->
         <div class="row">
             <div class="col-lg-12">
-                <h3 class="page-header"><i class="fa fa-file-text-o"></i> Editar Kupones</h3>
+                <h3 class="page-header"><i class="fa fa-file-text-o"></i> Capturar / Editar Kupones</h3>
                 <ol class="breadcrumb">
                     <li><i class="fa fa-home"></i><a href="/#/">Inicio</a></li>
-                    <li><i class="icon_document_alt"></i>Kupones</li>
-                    <li><i class="fa fa-file-text-o"></i>Editar Kupones</li>
+                    <li><i class="fa fa-laptop"></i><a href="/#/kupones">Kupones</a></li>
+                    <li><i class="fa fa-file-text-o"></i>Capturar / Editar Kupones</li>
                 </ol>
             </div>
         </div>
@@ -21,85 +25,117 @@
                         Kupones
                     </header>
                     <div class="panel-body">
-                        <form class="form-validate form-horizontal " id="register_form" method="get" action="" role="form">
+                        <form class="form-validate form-horizontal " id="kupones_form" name="kuponesFormNg" method="get" ng-submit="uploadUsingUpload(picFile)" role="form">
                             <div class="form-group">
                                 <label for="tituloPromocion" class="control-label col-lg-2">Titulo de la promoción <span class="required">*</span></label>
                                 <div class="col-lg-10">
-                                    <input class="form-control" id="tituloPromocion" name="tituloPromocion" placeholder="Introduzca el titulo del la promocón" type="text">
+                                    <input class="form-control" id="tituloPromocion" name="tituloPromocion" placeholder="Introduzca el titulo del la promoción" type="text" required ng-model="currentKupon.titulo">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="descripcionCorta" class="control-label col-lg-2">Descripción corta <span class="required">*</span></label>
                                 <div class="col-lg-10">
-                                    <input class="form-control" id="descripcionCorta" name="descripcionCorta" placeholder="Introduzca el titulo del la promocón" type="text">
+                                    <input class="form-control" id="descripcionCorta" name="descripcionCorta" placeholder="Introduzca el titulo del la promoción" type="text" required ng-model="currentKupon.descripcionCorta">
                                 </div>
                             </div>
                             <div class="form-group ">
                                 <label for="descripcionLarga" class="control-label col-lg-2">Descripción larga <span class="required">*</span></label>
                                 <div class="col-lg-10">
-                                    <textarea class="form-control " id="descripcionLarga" name="descripcionLarga" required></textarea>
+                                    <textarea class="form-control " id="descripcionLarga" name="descripcionLarga" placeholder="Descripción larga del kupon" required ng-model="currentKupon.descripcionLarga"></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="imagenKupon">Imagén a desplegar <span class="required">*</span></label>
-                                <input type="file" id="imagenKupon" name="imagenKupon">
-                                <p class="help-block">Example block-level help text here.</p>
+                                <label for="imagenKupon" class="control-label col-lg-2">Imagén a desplegar <span class="required">*</span></label>
+                                <div class="col-sm-6">
+                                    <!-- <input type="file" id="imagenKupon" name="imagenKupon" required ng-model="currentKupon.imagen"/> -->
+                                    <input type="file" class="form-control" ngf-select ng-model="picFile" name="picFile" ngf-multiple="true" accept="image/*" ngf-accept="'image/jpeg,image/jpg,image/png'" ngf-min-size='10' ngf-max-size='3145728' required/>
+                                    <img ng-show="picFile[0] != null" ngf-src="picFile[0]" class="thumb">
+                                    <img ng-show="picFile[1] != null" ngf-src="picFile[1]" class="thumb">
+                                    <img ng-show="picFile[2] != null" ngf-src="picFile[2]" class="thumb">
+                                    <span class="progress" ng-show="picFile[0].progress >= 0">      
+                                        <div style="width:{{picFile[0].progress}}%" ng-bind="picFile[0].progress + '%'" class="ng-binding"></div>
+                                    </span> 
+                                    <span ng-show="picFile[0].result">¡¡Archivo adjuntado exitosamente!!</span>
+                                    <p class="help-block">Archivos aceptados: jpeg, jpg, png.</p>
+                                </div>
                             </div>
                             <div class="form-group ">
                                 <label for="restricciones" class="control-label col-lg-2">Restricciones <span class="required">*</span></label>
                                 <div class="col-lg-10">
-                                    <textarea class="form-control " id="restricciones" name="restricciones" required></textarea>
+                                    <textarea class="form-control " id="restricciones" name="restricciones" placeholder="Restricciones del kupon" required ng-model="currentKupon.restricciones"></textarea>
                                 </div>
                             </div>
+                            
                             <div class="form-group">
-                                <label class="control-label col-sm-4">Vigencia <span class="required">*</span></label>
+                                <label for="vigencia" class="control-label col-lg-2">Vigencia <span class="required">*</span></label>
                                 <div class="col-sm-6">
-                                    <div class="input-append date" id="dpYears" data-date="18-06-2013"
-                                        data-date-format="dd-mm-yyyy" data-date-viewmode="years">
-                                        <input class="form-control" size="16" type="text" value="28-06-2013" readonly>
-                                        <span class="add-on"><i class="icon-calendar"></i></span>
-                                    </div>
+                                    <input type="datetime-local" class="form-control" id="vigencia" name="vigencia" ng-model="vigencia" placeholder="yyyy-MM-ddTHH:mm:ss" required />
+                                </div>
+                            </div>
+                            <!-- 
+                            <div class="form-group">
+                                <label for="vigencia2" class="control-label col-lg-2">Vigencia <span class="required">*</span></label>
+                                <div class="col-sm-6 input-group date" id="datetimepicker5">
+                                    <input type="text" class="form-control" id="vigencia2" name="vigencia2" ng-model="vigencia2"/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>  
+                            <script type="text/javascript">
+                                $(function () {
+                                    $('#datetimepicker5').datetimepicker({locale: 'es'});
+                                });
+                            </script>
+                            
+                            <div class="form-group">
+                                <label for="vigencia2" class="control-label col-lg-2">Vigencia <span class="required">*</span></label>
+                                <div class='col-sm-6'>
+                                    <input type='text' class="form-control" id='datetimepicker4' />
+                                </div>
+                                <script type="text/javascript">
+                                    $(function () {
+                                        $('#datetimepicker4').datetimepicker();
+                                    });
+                                </script>
+                            </div>
+                             -->
+                            <div class="form-group">
+                                <label for="cantidadKupones" class="control-label col-lg-2">Número de Kupones <span class="required">*</span></label>
+                                <div class="col-lg-10">
+                                    <input class="form-control" id="cantidadKupones" name="cantidadKupones" placeholder="Introduzca la cantidad de kupones" type="text" required ng-model="currentKupon.cantidadKupones">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="precioRegular" class="control-label col-lg-2">Precio regular sin kupon <span class="required">*</span></label>
                                 <div class="col-lg-10">
-                                    <input class="form-control" id="precioRegular" name="precioRegular" placeholder="Introduzca el precio regular sin kupon" type="text">
+                                    <input class="form-control" id="precioRegular" name="precioRegular" placeholder="Introduzca el precio regular sin kupon" type="text" required ng-model="currentKupon.precioRegular">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="precioDescuento" class="control-label col-lg-2">Precio con descuento del kupon <span class="required">*</span></label>
                                 <div class="col-lg-10">
-                                    <input class="form-control" id="precioDescuento" name="precioDescuento" placeholder="Introduzca el precio con descuento del kupon" type="text">
+                                    <input class="form-control" id="precioDescuento" name="precioDescuento" placeholder="Introduzca el precio con descuento del kupon" type="text" required ng-model="currentKupon.precioDescuento">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="precioKupon" class="control-label col-lg-2">Precio del kupon <span class="required">*</span></label>
                                 <div class="col-lg-10">
-                                    <input class="form-control" id="precioKupon" name="precioKupon" placeholder="Introduzca el precio del kupon" type="text">
+                                    <input class="form-control" id="precioKupon" name="precioKupon" placeholder="Introduzca el precio del kupon" type="text" required ng-model="currentKupon.precioKupon">
                                 </div>
                             </div>
                             <div class="form-group ">
                                 <label for="kuponActivo" class="control-label col-lg-2 col-sm-3">Kupon activo</label>
                                 <div class="col-lg-10 col-sm-9">
-                                    <input type="checkbox" style="width: 20px" class="checkbox form-control" id="kuponActivo" name="kuponActivo" />
+                                    <input type="checkbox" style="width: 20px" class="checkbox form-control" id="kuponActivo" name="kuponActivo"  ng-model="currentKupon.activo"/>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">Password</label>
-                                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <button class="btn btn-primary" type="submit">Guardar</button>
+                                    <button class="btn btn-default" type="button" ng-click="cancelEditViewKupon()">Cancelar</button>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="exampleInputFile">File input</label>
-                                <input type="file" id="exampleInputFile">
-                                <p class="help-block">Example block-level help text here.</p>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox"> Check me out
-                                </label>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
                     </div>
                 </section>
@@ -109,9 +145,3 @@
     </section>
 </section>
 <!--main content end-->
-<!-- ck editor -->
-<script type="text/javascript" src="assets/ckeditor/ckeditor.js"></script>
-<!-- custom form component script for this page-->
-<script src="js/form-component.js"></script>
-<!-- custome script for all page -->
-<script src="js/scripts.js"></script>

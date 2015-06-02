@@ -25,9 +25,20 @@ module.exports = {
 		descripcion: {
 			type: 'string'
 		},
+		hashTag: {
+			type: 'string'
+		},
+		categoriaIdPadre: {
+			model: 'Categoria',
+			columnName: 'categoria_id_padre'
+		},
 		subcategorias: {
 			collection: 'Subcategoria',
 			via: 'categoriaId'
+		},
+		categoriasHijas: {
+			collection: 'Categoria',
+			via: 'categoriaIdPadre'
 		}
 	}
 };

@@ -19,45 +19,13 @@ module.exports = {
 			autoIncrement: true,
 			columnName: 'kupon_id'
 		},
-		titulo: {
-			type: 'string',
-			columnName: 'titulo'
-		},
-		descripcionCorta: {
-			type: 'string',
-			columnName: 'descripcion_corta'
-		},
-		descripcionLarga: {
-			type: 'text',
-			columnName: 'descripcion_larga'
-		},
-		imagenes: {
-			type: 'array'
-		},
-		vigencia: {
-			type: 'datetime'
-		},
-		restricciones: {
-			type: 'text'
-		},
-		precioRegular: {
-			type: 'float',
-			columnName: 'precio_regular'
-		},
-		precioDescuento: {
-			type: 'float',
-			columnName: 'precio_descuento'
-		},
-		precioKupon: {
-			type: 'float',
-			columnName: 'precio_kupon'
-		},
-		activo: {
-			type: 'boolean'
-		},
 		promocionId: {
 			model: 'Promocion',
 			columnName: 'promocion_id'
+		},
+		subCategoriaId: {
+			model: 'Subcategoria',
+			columnName: 'sub_categoria_id'
 		}
 	}
 };

@@ -20,7 +20,49 @@ module.exports = {
 			columnName: 'promocion_id'
 		},
 		titulo: {
-			type: 'string'
+			type: 'string',
+			columnName: 'titulo'
+		},
+		descripcionCorta: {
+			type: 'string',
+			columnName: 'descripcion_corta'
+		},
+		descripcionLarga: {
+			type: 'text',
+			columnName: 'descripcion_larga'
+		},
+		imagenes: {
+			type: 'array'
+		},
+		vigencia: {
+			type: 'datetime'
+		},
+		restricciones: {
+			type: 'text'
+		},
+		cantidadKupones: {
+			type: 'integer',
+			columnName: 'cantidad_kupones'
+		},
+		cantidadCreados: {
+			type: 'integer',
+			columnName: 'cantidad_creados',
+			defaultsTo: 0
+		},
+		precioRegular: {
+			type: 'float',
+			columnName: 'precio_regular'
+		},
+		precioDescuento: {
+			type: 'float',
+			columnName: 'precio_descuento'
+		},
+		precioKupon: {
+			type: 'float',
+			columnName: 'precio_kupon'
+		},
+		activo: {
+			type: 'boolean'
 		},
 		subCategoriaId: {
 			model: 'Subcategoria',

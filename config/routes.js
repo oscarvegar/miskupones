@@ -47,6 +47,7 @@ module.exports.routes = {
   'post /newUser' : {controller:'AuthController',
                     action:'newUser',
                     cors:{ origin:'*' }},
+  'post /loginapp' : 'AuthController.loginApp',
 
   'get /auth/:provider': 'AuthController.provider',
   'get /auth/:provider/callback': 'AuthController.callback',

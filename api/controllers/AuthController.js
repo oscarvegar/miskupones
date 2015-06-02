@@ -310,6 +310,33 @@ var AuthController = {
       
   },
 
+  loginApp : function(req,res){
+    passport.callback(req, res, function (err, user, challenges, statuses) {
+      if (err || !user) {
+        //return tryAgain(challenges);
+        console.log("ERROR LOGIN")
+        return res.json(403);
+      }
+      if(!user.status || user.status<0){
+        return res.json(403);
+      }
+      console.log("USER",user);
+
+      req.login(user, function (err) {
+        if (err) {
+          return res.json(403)
+        }
+        
+        // Mark the session as authenticated to work with default Sails sessionAuth.js policy
+        req.session.authenticated = true
+        req.session.user = user;
+        // Upon successful login, send the user to the homepage were req.user
+        // will be available.
+        res.json("OK")
+      });
+    });
+  },
+
   activate:function(req,res){
     var id=req.param('id');
     User.findOne({status:-1,activationcode:id})

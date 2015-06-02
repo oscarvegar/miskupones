@@ -102,6 +102,25 @@ var AuthController = {
     });
   },
 
+  newUser: function( request, response ){
+    var data = request.allParams();
+    console.log("user new data >> ", data);
+    User.create(data).then(function(newUser){
+      var cliente = { user: newUser.id };
+      Cliente.create(cliente).then(function(newCliente){
+        return response.json(newUser);
+      }).catch(function(err){
+        console.error("Error al registrar nuevo cliente, haciendo rollback en creacion de usuario ", newUser);
+        //rollback en user
+        User.destroy(newUser).then(function(userDelete){});
+        return response.json(500, {error: err});
+      });
+    }).catch(function(err){
+      console.error("Error al registrar nuevo usuario");
+      return response.json(500, {error: err});
+    });
+  },
+
   /**
    * Create a third-party authentication endpoint
    *

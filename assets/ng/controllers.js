@@ -2,6 +2,16 @@ angular.module("miskupones.controllers",["chart.js"])
 .controller('CuponesCtrl',function($http,$scope,$rootScope){
 	$rootScope.showSpinner = true;
 
+		//******temporal, solo prueba
+		/*
+		$http.post("/newUser/", {email:'oscar@gmail.com', password:'123123', username:'Pepe'})
+			.then(function(result){
+				alert("inserto :: " + JSON.stringify(result.data) );
+			});
+		*/
+		//** Si ves esto, borralo
+
+
 	$scope.$evalAsync(function() { 
 		$http.get("/dashboard/mapa")
 		.success(function(data){

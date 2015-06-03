@@ -10,9 +10,10 @@ module.exports = {
 		console.log('KuponController.createKupon :: ');
 		if(req.session.user) {
 			console.log(req.session.user);
+			var reqUser = req.session.user;
 			var allReqParams = req.allParams();
-			var dataProm = JSON.parse(req.param('data'));
 			var reqFile = req.file('kuponFile');
+			var dataProm = JSON.parse(req.param('data'));
 			// console.log(allReqParams);
 			// console.log(req);
 			console.log(dataProm);
@@ -35,11 +36,21 @@ module.exports = {
 				delete dataProm.vigenciaTime;
 				console.log(dataProm);
 
-				// Promocion.create(dataProm, function(err, promocion) {
+				User.findOne({activationcode: reqUser.activationcode}).populate('proveedor')
+					.then(function(userDb) {
+						console.log('afterUserFindOne');
+						console.log(userDb);
+						dataProm.proveedorId = userDb.proveedor[0];
+						return Promocion.create(dataProm);
+					}).then(function(promoCreated) {
+						console.log('afterPromotionCreated');
+						console.log(promoCreated);
+						return res.json({status:200, promocion: promoCreated});
+					}).catch(function(error) {
+						console.log(error);
+						return res.json(400, error);
+					});
 
-				// });
-
-				return res.json({status:200,file:files});
 				// res.redirect('#/kupones');
 			});
 
@@ -51,10 +62,76 @@ module.exports = {
 	},
 	readAllKupons: function(req, res) {
 		if(req.session.user) {
+			var sessionUser = req.session.user;
 			var allReqParams = req.allParams();
-			console.log('KuponController.createKupon :: ');
+			console.log('KuponController.readAllKupons :: ');
 			console.log(allReqParams);
-			res.redirect('/');
+
+			User.findOne({activationcode: sessionUser.activationcode})
+				.then(function(userDb){
+					console.log('afterUserFindOne');
+					console.log(userDb);
+					if(!userDb) return res.view(404);
+					var provByUsr = Proveedor.find().populate('userId');
+					return [userDb, provByUsr];
+				}).spread(function(userSpr, proveedor) {
+					console.log('afterSpreadUserProveedor');
+					console.log(userSpr);
+					console.log(proveedor);
+					if(proveedor == null || !proveedor.userId) {
+						var upProv = Proveedor.findOne({rfc: 'MORD810515MU0'})
+										.then(function(proveedorDb) {
+											// return Proveedor.update({proveedorId: proveedorDb.proveedorId}, {userId: userSpr});
+											proveedorDb.userId = userSpr
+											return proveedorDb.save();
+										});
+						return upProv;
+					} else {
+						return proveedor;
+					}
+				}).then(function(proveedorDb) {
+					console.log('afterThen');
+					// return Promocion.find({proveedorId: proveedorDb});
+					return Proveedor.findOne({proveedorId: proveedorDb.proveedorId}).populate('promociones');
+				}).then(function(provPromo) {
+					console.log('afterPromocionFind');
+					return res.json({status:200, kupones: provPromo.promociones});
+				}).catch(function(error) {
+					console.log('onCatch');
+					console.log(error);
+					return res.json(400,error);
+				});
+
+/*
+			Proveedor.findOne({userId: req.session.user}, function(error, proveedor) {
+				if(error) {
+					console.log(error);
+					return res.json(400,error);
+				} else if(proveedor == null) {
+					Proveedor.findOne({rfc: 'MORD810515MU0'}, function(error_, findedProveedor) {
+						if(error_) {
+							console.log(error_);
+							return res.json(400,error_);
+						} else {
+							findedProveedor.userId = req.session.user;
+							// findedProveedor.save();
+							Proveedor.update({rfc: 'MORD810515MU0'}, {userId: req.session.user})
+							.then(function(proveedorUp) {
+								return Promocion.find({proveedorId: proveedorUp});
+							}).then(function(promociones) {
+								return res.json({status:200, kupones: promociones});
+							}).catch(function(_error){
+								console.log(_error);
+								return res.json(400, _error);
+							});
+						}
+					});
+				} else {
+
+				}
+			});
+*/
+			// res.redirect('/');
 			// return res.view('default');
 		} else {
 			res.redirect('/login');

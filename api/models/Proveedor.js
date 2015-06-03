@@ -28,7 +28,7 @@ module.exports = {
 		},
 		promociones: {
 			collection: 'Promocion',
-			via: 'promocionId'
+			via: 'proveedorId'
 		}
 	}
 };

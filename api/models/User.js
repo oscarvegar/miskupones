@@ -15,7 +15,11 @@ var User = {
     sexo: 'string',
     resetcode : 'string',
     activationcode : 'string',
-    status : {type:'integer',defaultsTo:-1}
+    status : {type:'integer',defaultsTo:-1},
+    proveedor: {
+      collection: 'Proveedor',
+      via: 'userId'
+    }
   },
   	beforeCreate: function(user, next){
 		var code = new Date().getTime();

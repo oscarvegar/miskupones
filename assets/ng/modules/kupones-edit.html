@@ -27,6 +27,22 @@
                     <div class="panel-body">
                         <form class="form-validate form-horizontal " id="kupones_form" name="kuponesFormNg" method="get" ng-submit="uploadUsingUpload(picFile)" role="form">
                             <div class="form-group">
+                                <label for="tituloPromocion" class="control-label col-lg-2">Categoría <span class="required">*</span></label>
+                                <div class="col-sm-6">
+                                    <select class="form-control m-bot15" required ng-model="catPromo" ng-change="readAllSubCategoriasBy(catPromo)" ng-options="categoria.descripcion for categoria in categorias track by categoria.categoriaId">
+                                        <option value="">-- Selecciona categoria --</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="tituloPromocion" class="control-label col-lg-2">Subcategoría <span class="required">*</span></label>
+                                <div class="col-sm-6">
+                                    <select class="form-control m-bot15" required ng-model="currentKupon.subCategoriaId" ng-options="subcategoria.descripcion for subcategoria in subcategorias track by subcategoria">
+                                        <option value="">-- Selecciona subcategoria --</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label for="tituloPromocion" class="control-label col-lg-2">Titulo de la promoción <span class="required">*</span></label>
                                 <div class="col-lg-10">
                                     <input class="form-control" id="tituloPromocion" name="tituloPromocion" placeholder="Introduzca el titulo del la promoción" type="text" required ng-model="currentKupon.titulo">

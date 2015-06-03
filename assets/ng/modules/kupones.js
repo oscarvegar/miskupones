@@ -317,11 +317,84 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 	$scope.viewKupon = function(kuponId) {
 		alert('createKupon');
 		$http.get('./')
-		.success(function(response) {
+			.success(function(data, status, headers, config) {
+			// this callback will be called asynchronously
+			// when the response is available
 
-		});
+			})
+			.error(function(err, status, headers, config) {
+			// called asynchronously if an error occurs
+			// or server returns response with an error status.
+				console.error(err);
+			});
 	};
 
+
+	$scope.readAllCategorias = function() {
+		console.log('readAllCategorias');
+		$http.get('/categoria/readAll')
+			.success(function(data, status, headers, config) {
+			// this callback will be called asynchronously
+			// when the response is available
+				// console.error(data);
+				$scope.categorias = data.categorias;
+			})
+			.error(function(err, status, headers, config) {
+			// called asynchronously if an error occurs
+			// or server returns response with an error status.
+				console.error(err);
+			});
+	};
+
+	$scope.readAllSubCategoriasBy = function(catPromo) {
+		console.log('readAllSubCategoriasBy');
+		console.log($scope.catPromo);
+		console.log(catPromo);
+		$http.get('/subcategoria/readAllBy/' + $scope.catPromo.categoriaId)
+			.success(function(data, status, headers, config) {
+			// this callback will be called asynchronously
+			// when the response is available
+				// console.error(data);
+				$scope.subcategorias = data.subCategorias;
+			})
+			.error(function(err, status, headers, config) {
+			// called asynchronously if an error occurs
+			// or server returns response with an error status.
+				console.error(err);
+			});
+	}
+
+	$scope.readAllKupons = function() {
+		$http.get('/kupon/readAll')
+			.success(function(data, status, headers, config) {
+			// this callback will be called asynchronously
+			// when the response is available
+				$log.info('success');
+				$log.info('data');
+				$log.info(data);
+				$log.info('status');
+				$log.info(status);
+				$log.info('headers');
+				$log.info(headers);
+				$log.info('config');
+				$log.info(config);
+				$scope.kupones = data.kupones;
+			})
+			.error(function(err, status, headers, config) {
+			// called asynchronously if an error occurs
+			// or server returns response with an error status.
+				$log.info('error');
+				$log.info('err');
+				$log.info(err);
+				$log.info('status');
+				$log.info(status);
+				$log.info('headers');
+				$log.info(headers);
+				$log.info('config');
+				$log.info(config);
+				console.error(err);
+			});
+	};
 
 	$scope.uploadUsingUpload = function(files) {
 		var self = $scope;
@@ -330,6 +403,7 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 			$scope.currentKupon.vigencia = $scope.vigencia;
 			$scope.currentKupon.vigenciaTime = $scope.currentKupon.vigencia.getTime();
 		}
+		// $scope.currentKupon.subCategoriaId = $scope.
 
 		if($scope.action == 'C' && (files == null || files.length == 0)) {
 			SweetAlert.swal('Debe de agregar un archivo de imagen.');
@@ -528,12 +602,14 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 		$log.info('KuponesCtrl..init..action..' + $scope.action);
 		switch ($scope.action) {
 			case 'C':
+				$scope.readAllCategorias();
 				$scope.showContent = true;
 				break;
 			case 'R':
 				// $scope.kupones.push({id: 1, titulo: 'Título 1', descripcionCorta: 'descripcion Corta 1', vigencia: '12/12/15'});
 				// $scope.kupones.push({id: 2, titulo: 'Título 2', descripcionCorta: 'Descripcion Corta 2', vigencia: '11/11/15'});
 				// $scope.kupones.push({id: 3, titulo: 'Título 3', descripcionCorta: 'Descripcion corta 3', vigencia: '10/10/15'});
+				$scope.readAllKupons();
 				$scope.showContent = true;
 				break;
 			case 'V':
@@ -542,6 +618,7 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 				$scope.showContent = true;
 				break;
 			case 'U':
+				$scope.readAllCategorias();
 				$scope.showContent = true;
 				break;
 			case 'D':

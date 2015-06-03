@@ -82,8 +82,10 @@ module.exports.routes = {
   'get /kupon/view/:kuponId': 'KuponController.viewKupon',
   'put /kupon/update/:kuponId': 'KuponController.updateKupon',
   'delete /kupon/delete/:kuponId': 'KuponController.deleteKupon',
-  'get /kupon/image/:imgId': 'KuponController.imageKupon'
+  'get /kupon/image/:imgId': 'KuponController.imageKupon',
 
+  'get /categoria/readAll': 'CategoriaController.readAllCategorias',
+  'get /subcategoria/readAllBy/:categoriaId': 'SubcategoriaController.readAllSubCategoriasBy'
 
   /***************************************************************************
   *                                                                          *

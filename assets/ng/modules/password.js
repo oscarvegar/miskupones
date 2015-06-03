@@ -4,7 +4,7 @@ angular.module("miskupones.password",[])
 	$scope.auth = {};
 	$scope.auth.password = null;
 	$scope.auth.confirmacion = null;
-	
+
 	$scope.change = function(){
 		$http.post("/changepass",$scope.auth)
 		.success(function(data){

@@ -44,6 +44,10 @@ module.exports.routes = {
   'post /forgot': 'AuthController.resetPassword',
   'post /reset' : 'AuthController.reestablecerPwd',
   'post /changepass' : 'AuthController.changepass',
+  'post /newUser' : {controller:'AuthController',
+                    action:'newUser',
+                    cors:{ origin:'*' }},
+  'post /loginapp' : 'AuthController.loginApp',
 
   'get /auth/:provider': 'AuthController.provider',
   'get /auth/:provider/callback': 'AuthController.callback',
@@ -70,6 +74,19 @@ module.exports.routes = {
       action: 'show'
    },
 
+
+
+  /***************************************************************************
+  *                                                                          *
+  * José Daniel Routes                                                       *
+  *                                                                          *
+  ***************************************************************************/
+  'post /kupon/create': 'KuponController.createKupon',
+  'get /kupon/readAll': 'KuponController.readAllKupons',
+  'get /kupon/view/:kuponId': 'KuponController.viewKupon',
+  'put /kupon/update/:kuponId': 'KuponController.updateKupon',
+  'delete /kupon/delete/:kuponId': 'KuponController.deleteKupon',
+  'get /kupon/image/:imgId': 'KuponController.imageKupon'
 
 
   /***************************************************************************

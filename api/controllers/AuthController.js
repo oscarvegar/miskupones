@@ -102,6 +102,25 @@ var AuthController = {
     });
   },
 
+  newUser: function( request, response ){
+    var data = request.allParams();
+    console.log("user new data >> ", data);
+    User.create(data).then(function(newUser){
+      var cliente = { user: newUser.id };
+      Cliente.create(cliente).then(function(newCliente){
+        return response.json(newUser);
+      }).catch(function(err){
+        console.error("Error al registrar nuevo cliente, haciendo rollback en creacion de usuario ", newUser);
+        //rollback en user
+        User.destroy(newUser).then(function(userDelete){});
+        return response.json(500, {error: err});
+      });
+    }).catch(function(err){
+      console.error("Error al registrar nuevo usuario");
+      return response.json(500, {error: err});
+    });
+  },
+
   /**
    * Create a third-party authentication endpoint
    *
@@ -289,6 +308,33 @@ var AuthController = {
 
     })
       
+  },
+
+  loginApp : function(req,res){
+    passport.callback(req, res, function (err, user, challenges, statuses) {
+      if (err || !user) {
+        //return tryAgain(challenges);
+        console.log("ERROR LOGIN")
+        return res.json(403);
+      }
+      if(!user.status || user.status<0){
+        return res.json(403);
+      }
+      console.log("USER",user);
+
+      req.login(user, function (err) {
+        if (err) {
+          return res.json(403)
+        }
+        
+        // Mark the session as authenticated to work with default Sails sessionAuth.js policy
+        req.session.authenticated = true
+        req.session.user = user;
+        // Upon successful login, send the user to the homepage were req.user
+        // will be available.
+        res.json("OK")
+      });
+    });
   },
 
   activate:function(req,res){

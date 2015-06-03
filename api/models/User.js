@@ -22,23 +22,33 @@ var User = {
     }
   },
   	beforeCreate: function(user, next){
-		var code = new Date().getTime();
-    	code = code *  Math.random();
-    	code = code.toString(16);
-        user.activationcode = code;
-        var options = {};
-	    options.to = user.email;
-	    options.subject = "Bienvenido a MisKupones";
-	    options.html =  "<h3>Felicidades! ahora eres parte de MisKupones</h3>\
-	      <br><br>\
-	      Para activar tu cuenta da clic en el siguiente link:\
-	      <br><br>\
-	      http://miskupones.com/activate/"
-	      +code+
-	      "<br><br>\
-	      Feliz día te desea el Equipo Tus Kupones";
-	      MailService.send(options)
-    	next();
+      var code = new Date().getTime();
+      code = code *  Math.random();
+      code = code.toString(16);
+      user.activationcode = code;
+      var options = {};
+      options.to = user.email;
+      options.subject = "Bienvenido a MisKupones";
+      if( user.status === 1 ){
+          options.html =  "<h3>Felicidades! ahora eres parte de MisKupones</h3>\
+        <br><br>\
+        Tu usuario registrado es: <b>"+ user.username + "</b> \
+        <br><br>\
+        Tenemos muchas promociones para ti, esperalas!!!" +
+          "<br><br>\
+          Feliz día te desea el Equipo Tus Kupones";
+      }else {
+          options.html = "<h3>Felicidades! ahora eres parte de MisKupones</h3>\
+        <br><br>\
+        Para activar tu cuenta da clic en el siguiente link:\
+        <br><br>\
+        http://miskupones.com/activate/"
+          + code +
+          "<br><br>\
+          Feliz día te desea el Equipo Tus Kupones";
+      }
+        MailService.send(options)
+        next();
 	}   
 
 };

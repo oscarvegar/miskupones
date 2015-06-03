@@ -31,7 +31,8 @@ module.exports.policies = {
 
   'auth': {
     '*': ['passport'],
-    'changepass' : ['passport', 'sessionAuth']
+    'changepass' : ['passport', 'sessionAuth'],
+    'newUser': true
   },
   'main': {
     '*': ['passport']

@@ -1,0 +1,100 @@
+<!--main content start-->
+<section ng-controller="CategoriasCtrl" id="main-content">
+    <section class="wrapper">
+        <!-- <spinner id="mySpinner"></spinner> -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="page-header"><i class="fa fa-file-text-o"></i> Consultar / Ver Categorias</h3>
+                <ol class="breadcrumb">
+                    <li><i class="fa fa-home"></i><a href="/#/">Inicio</a></li>
+                    <li><i class="fa fa-laptop"></i><a href="/#/categorias">Categorias</a></li>
+                    <li><i class="fa fa-file-text-o"></i>Consultar / Ver Categorias</li>
+                </ol>
+            </div>
+        </div>
+        
+        <!-- Basic Forms & Horizontal Forms-->
+        
+        <div class="row">
+            <div class="col-lg-12">
+                <section class="panel">
+                    <header class="panel-heading">
+                        Categorias
+                    </header>
+                    <div class="panel-body">
+                        <form class="form-horizontal" id="register_form" role="form">
+                            <div class="form-group">
+                                <label for="tituloPromocion" class="control-label col-lg-2">Código</label>
+                                <div class="col-sm-6">
+                                    <p class="form-control-static">{{curCategoria.codigo}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="tituloPromocion" class="control-label col-lg-2">Descripción</label>
+                                <div class="col-sm-6">
+                                    <p class="form-control-static">{{curCategoria.descripcion}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2"># HashTag</label>
+                                <div class="col-lg-10">
+                                    <p class="form-control-static">{{curCategoria.hashTag}}</p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <section class="panel">
+                    <header class="panel-heading">
+                        <div class="col-lg-8">
+                            SubCategorias
+                        </div>
+                    </header>
+                    
+                    <table class="table table-striped table-advance table-hover">
+                        <thead>
+                            <tr>
+                                <th><i ></i> Código</th>
+                                <th><i ></i> Descripción</th>
+                                <th><i ></i> # HashTag</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="subcategoria in subcategorias">
+                                <td>{{subcategoria.codigo}}</td>
+                                <td>{{subcategoria.descripcion}}</td>
+                                <td>{{subcategoria.hashTag}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <section class="panel">
+                    <header class="panel-heading">
+                        <div class="col-lg-8">
+                            &nbsp;
+                        </div>
+                    </header>
+                    <div class="panel-body">
+                        <form class="form-horizontal" id="register_form" role="form">
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <button class="btn btn-primary" type="button" ng-click="cancelEditViewCategoria()">Cancelar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <!-- page end-->
+    </section>
+</section>
+<!--main content end-->

@@ -89,6 +89,8 @@ module.exports.routes = {
   'get /kupon/image/:imgId': 'KuponController.imageKupon',
 
   'get /categoria/readAll': 'CategoriaController.readAllCategorias',
+  'get /categoria/view/:categoriaId': 'CategoriaController.viewCategoria',
+  'get /categoria/filterById/:categoriaId': 'CategoriaController.filterCategoriaById',
   'get /subcategoria/readAllBy/:categoriaId': 'SubcategoriaController.readAllSubCategoriasBy'
 
   /***************************************************************************

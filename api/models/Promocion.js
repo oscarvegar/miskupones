@@ -43,8 +43,13 @@ module.exports = {
 			type: 'array',
 			columnName: 'imagenes_fds'
 		},
-		vigencia: {
-			type: 'datetime'
+		iniVigencia: {
+			type: 'datetime',
+			columnName: 'ini_vigencia'
+		},
+		finVigencia: {
+			type: 'datetime',
+			columnName: 'fin_vigencia'
 		},
 		restricciones: {
 			type: 'text'

@@ -1,5 +1,5 @@
 var app = angular.module('miskupones',
-  ['ngRoute',"miskupones.controllers","miskupones.usuarios","miskupones.password","miskupones.perfil", "miskupones.kupones"])
+  ['ngRoute',"miskupones.controllers","miskupones.usuarios","miskupones.password","miskupones.perfil", "miskupones.kupones", 'miskupones.categorias'])
 
 app.run(function($rootScope){
   $rootScope.modal = {};
@@ -53,7 +53,7 @@ app.config(function($routeProvider){  //, $locationProvider){
   ).when("/kupones/create",
     {
       action:"C",
-      templateUrl: "/ng/modules/kupones-edit.html",
+      templateUrl: "/ng/modules/kupones-create.html",
       controller:'KuponesCtrl'
     }
   ).when("/kupones",
@@ -103,6 +103,34 @@ app.config(function($routeProvider){  //, $locationProvider){
       action:"D",
       templateUrl: "/ng/modules/kupones-list.html",
       controller:'KuponesCtrl',
+      resolve: {
+        // I will cause a 1 second delay
+        delay: function($q, $timeout) {
+          var delay = $q.defer();
+          $timeout(delay.resolve, 1000);
+          return delay.promise;
+        }
+      }
+    }
+  ).when("/categorias",
+    {
+      action:"R",
+      templateUrl: "/ng/modules/categorias-list.html",
+      controller:'CategoriasCtrl',
+      resolve: {
+        // I will cause a 1 second delay
+        delay: function($q, $timeout) {
+          var delay = $q.defer();
+          $timeout(delay.resolve, 1000);
+          return delay.promise;
+        }
+      }
+    }
+  ).when("/categorias/view/:categoriaId",
+    {
+      action:"V",
+      templateUrl: "/ng/modules/categorias-view.html",
+      controller:'CategoriasCtrl',
       resolve: {
         // I will cause a 1 second delay
         delay: function($q, $timeout) {

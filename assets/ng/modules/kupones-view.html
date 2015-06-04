@@ -1,0 +1,147 @@
+<!--main content start-->
+<section ng-controller="KuponesCtrl" id="main-content" ng-if="(action == 'V' && showContent)">
+    <section class="wrapper">
+        <!-- <spinner id="mySpinner"></spinner> -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="page-header"><i class="fa fa-file-text-o"></i> Consultar / Ver Kupones</h3>
+                <ol class="breadcrumb">
+                    <li><i class="fa fa-home"></i><a href="/#/">Inicio</a></li>
+                    <li><i class="fa fa-laptop"></i><a href="/#/kupones">Kupones</a></li>
+                    <li><i class="fa fa-file-text-o"></i>Consultar / Ver Kupones</li>
+                </ol>
+            </div>
+        </div>
+        
+        <!-- Basic Forms & Horizontal Forms-->
+        
+        <div class="row">
+            <div class="col-lg-12">
+                <section class="panel">
+                    <header class="panel-heading">
+                        Kupones
+                    </header>
+                    <div class="panel-body">
+                        <form class="form-horizontal" id="register_form" role="form">
+                            <div class="form-group">
+                                <label for="tituloPromocion" class="control-label col-lg-2">Categoría</label>
+                                <div class="col-sm-6">
+                                    <p class="form-control-static">{{currentKupon.subCategoriaId.categoriaId.descripcion}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="tituloPromocion" class="control-label col-lg-2">Subcategoría</label>
+                                <div class="col-sm-6">
+                                    <p class="form-control-static">{{currentKupon.subCategoriaId.descripcion}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2">Titulo de la promoción</label>
+                                <div class="col-lg-10">
+                                    <p class="form-control-static">{{currentKupon.titulo}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2">Descripción corta</label>
+                                <div class="col-lg-10">
+                                    <p class="form-control-static">{{currentKupon.descripcionCorta}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <label class="control-label col-lg-2">Descripción larga</label>
+                                <div class="col-lg-10">
+                                    <p class="form-control-static">{{currentKupon.descripcionLarga}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2">Imagén a desplegar</label>
+                                <div class="col-lg-10">
+                                    <!-- slider container -->
+                                    <div class="container slider">
+
+                                        <!-- enumerate all photos -->
+                                        <img ng-repeat="photo in arryImgns" class="slide" ng-swipe-right="showPrev()" ng-swipe-left="showNext()" ng-show="isActive($index)" ng-src="{{photo.imgUrl}}"/>
+
+                                        <!-- prev / next controls -->
+                                        <a class="arrow prev" ng-href="{{currPath}}" ng-click="showPrev()"></a>
+                                        <a class="arrow next" ng-href="{{currPath}}" ng-click="showNext()"></a>
+
+                                        <!-- extra navigation controls -->
+                                        <ul class="nav">
+                                            <li ng-repeat="photo in arryImgns" ng-class="{'active':isActive($index)}">
+                                                <img ng-src="{{photo.imgUrl}}" alt="{{photo.imgName}}" title="{{photo.imgName}}" ng-click="showPhoto($index);" />
+                                            </li>
+                                        </ul>
+
+                                    </div>
+                                    <!-- 
+                                    <div class="col-sm-6" ng-repeat="imgnObj in arryImgns">
+                                        {{imgnObj.imgName}}<br>
+                                        <img ng-src="{{imgnObj.imgUrl}}" style="width: 30%; height: 30%" alt="{{imgnObj.imgName}}">
+                                    </div>
+                                     -->
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <label class="control-label col-lg-2">Restricciones</label>
+                                <div class="col-lg-10">
+                                    <p class="form-control-static">{{currentKupon.restricciones}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2">Vigencia</label>
+                                <div class="col-lg-10">
+                                    <p class="form-control-static">{{currentKupon.iniVigencia | date:'medium'}} a {{currentKupon.finVigencia | date:'medium'}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2">Número de Kupones</label>
+                                <div class="col-lg-10">
+                                    <p class="form-control-static">{{currentKupon.cantidadKupones}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2">Kupones comprados</label>
+                                <div class="col-lg-10">
+                                    <p class="form-control-static">{{currentKupon.cantidadCreados}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2">Precio regular sin kupon</label>
+                                <div class="col-lg-10">
+                                    <p class="form-control-static">{{currentKupon.precioRegular | currency:"MXN$"}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2">Precio con descuento del kupon</label>
+                                <div class="col-lg-10">
+                                    <p class="form-control-static">{{currentKupon.precioDescuento | currency:"MXN$"}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-2">Precio del kupon</label>
+                                <div class="col-lg-10">
+                                    <p class="form-control-static">{{currentKupon.precioKupon | currency:"MXN$"}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <label class="control-label col-lg-2 col-sm-3">Kupon activo</label>
+                                <div class="col-lg-10 col-sm-9">
+                                    <p class="form-control-static">{{currentKupon.activo ? 'Activo' : 'Inactivo' }}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <button class="btn btn-primary" type="button" ng-click="irEditViewKupon()">Editar</button>
+                                    <button class="btn btn-default" type="button" ng-click="cancelEditViewKupon()">Cancelar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <!-- page end-->
+    </section>
+</section>
+<!--main content end-->

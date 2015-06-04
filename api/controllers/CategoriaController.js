@@ -11,12 +11,38 @@ module.exports = {
 		if(req.session.user) {
 			Categoria.find()
 				.then(function(categoriasDb) {
-					return res.json({status:200, categorias: categoriasDb});
+					return res.ok({categorias: categoriasDb});
 				}).catch(function(error) {
-					return res.json(error);
+					return res.serverError(error);
 				});
 		} else {
-			res.redirect('/login');
+			return res.redirect('/login');
+		}
+	},
+	viewCategoria: function(req, res) {
+		console.log('viewCategoria ::: ' + req.param('categoriaId'));
+		if(req.session.user) {
+			Categoria.findOne({categoriaId: req.param('categoriaId')}).populate('subcategorias')
+				.then(function(categoriaDb) {
+					return res.ok({categoria: categoriaDb});
+				}).catch(function(error) {
+					return res.serverError(error);
+				});
+		} else {
+			return res.badRequest({error: '¡¡Usuario no autenticado!!'});
+		}
+	},
+	filterCategoriaById: function(req, res) {
+		console.log('filterCategoriaById ::: ' + req.param('categoriaId'));
+		if(req.session.user) {
+			Categoria.findOne({categoriaId: req.param('categoriaId')})
+				.then(function(categoriaDb) {
+					return res.ok({categoria: categoriaDb});
+				}).catch(function(error) {
+					return res.serverError(error);
+				});
+		} else {
+			return res.badRequest({error: '¡¡Usuario no autenticado!!'});
 		}
 	}
 };

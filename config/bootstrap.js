@@ -43,7 +43,8 @@ module.exports.bootstrap = function(cb) {
 	  precioDescuento: '200',
 	  precioKupon: '30',
 	  activo: true,
-	  vigencia: dateDummy,
+	  iniVigencia: dateDummy,
+	  finVigencia: dateDummy,
 	  imagenesNames: [ 'MisKupones.jpg' ],
 	  imagenesUrls: [ 'http://localhost:1337/uploadImages/97b51232-0673-433b-a5f3-a965cf19a574.jpg' ],
 	  imagenesFds: [ '/home/phoenix/Repositories/git/miskupones/assets/uploadImages/97b51232-0673-433b-a5f3-a965cf19a574.jpg' ]

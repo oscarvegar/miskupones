@@ -67,6 +67,23 @@ module.exports = {
 			console.log('KuponController.readAllKupons :: ');
 			console.log(allReqParams);
 
+			User.findOne({activationcode: sessionUser.activationcode}).populate('proveedor')
+				.then(function(userDb){
+					console.log('afterUserFindOne');
+					console.log(userDb);
+					if(!userDb) return res.view(404);
+					var provInUsr = userDb.proveedor[0];
+					return Proveedor.findOne({proveedorId: provInUsr.proveedorId}).populate('promociones', {activo: true});
+				}).then(function(provPromo) {
+					console.log('afterPromocionFind');
+					return res.json({status:200, kupones: provPromo.promociones});
+				}).catch(function(error) {
+					console.log('onCatch');
+					console.log(error);
+					return res.json(400,error);
+				});
+
+/*
 			User.findOne({activationcode: sessionUser.activationcode})
 				.then(function(userDb){
 					console.log('afterUserFindOne');
@@ -92,7 +109,7 @@ module.exports = {
 				}).then(function(proveedorDb) {
 					console.log('afterThen');
 					// return Promocion.find({proveedorId: proveedorDb});
-					return Proveedor.findOne({proveedorId: proveedorDb.proveedorId}).populate('promociones');
+					return Proveedor.findOne({proveedorId: proveedorDb.proveedorId}).populate('promociones', {activo: true});
 				}).then(function(provPromo) {
 					console.log('afterPromocionFind');
 					return res.json({status:200, kupones: provPromo.promociones});
@@ -102,7 +119,6 @@ module.exports = {
 					return res.json(400,error);
 				});
 
-/*
 			Proveedor.findOne({userId: req.session.user}, function(error, proveedor) {
 				if(error) {
 					console.log(error);
@@ -141,7 +157,23 @@ module.exports = {
 		if(req.session.user) {
 			var kuponId = req.param('kuponId');
 			console.log('KuponController.viewKupon.kuponId :: ' + kuponId);
-			res.redirect('/');
+
+			Promocion.findOne({promocionId: kuponId}).populate('subCategoriaId')
+				.then(function(promocionDb) {
+					console.log('afterPromocionFindOne');
+					console.log(promocionDb);
+					var promoCat = Categoria.findOne({categoriaId: promocionDb.subCategoriaId.categoriaId});
+					return [promocionDb, promoCat];
+				}).spread(function(promocionDb, promoCat) {
+					console.log('afterSpreadPromocionFindOne');
+					promocionDb.subCategoriaId.categoriaId = promoCat;
+					return res.json({status:200, kupon: promocionDb});
+				}).catch(function(error) {
+					console.log(error);
+					return res.json(400,error);
+				});
+
+			// res.redirect('/');
 			// return res.view('default');
 		} else {
 			res.redirect('/login');
@@ -151,7 +183,7 @@ module.exports = {
 		if(req.session.user) {
 			var kuponId = req.param('kuponId');
 			console.log('KuponController.updateKupon.kuponId :: ' + kuponId);
-			res.redirect('/');
+			// res.redirect('/');
 			// return res.view('default');
 		} else {
 			res.redirect('/login');
@@ -161,7 +193,20 @@ module.exports = {
 		if(req.session.user) {
 			var kuponId = req.param('kuponId');
 			console.log('KuponController.deleteKupon.kuponId :: ' + kuponId);
-			res.redirect('/');
+
+			Promocion.findOne({promocionId: kuponId})
+				.then(function(promocionDb) {
+					console.log('afterPromocionFindOne');
+					console.log(promocionDb);
+					promocionDb.activo = false;
+					promocionDb.save();
+					return res.ok({kupon: promocionDb});
+				}).catch(function(error) {
+					console.log(error);
+					return res.serverError(error);
+				});
+
+			// res.redirect('/');
 			// return res.view('default');
 		} else {
 			res.redirect('/login');

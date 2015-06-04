@@ -3,7 +3,7 @@
  */
 'use strict';
 
-var module = angular.module('miskupones.kupones', [ 'ngFileUpload', 'oitozero.ngSweetAlert' ]);	// , 'ngSails' ]);
+var module = angular.module('miskupones.kupones', [ 'ngFileUpload', 'oitozero.ngSweetAlert', 'daterangepicker' ]);	// , 'ngSails' ]);
 
 /**
  * Configure the Routes
@@ -263,7 +263,33 @@ module.factory('spinnerService', function() {
 
 	};
 })
+
+module.filter('categoryById', function($http, $log, $timeout) {
+	return function(categoryId) {
+		$log.info('filterCategoryById :: ' + categoryId);
+		if(categoryId) {
+			$http.get('/categoria/filterById/' + categoryId)
+				.success(function(data, status, headers, config) {
+				// this callback will be called asynchronously
+				// when the response is available
+					$timeout(function() {
+						console.log(data.categoria.descripcion);
+						var rtrnStr = data.categoria.descripcion;
+						return rtrnStr;
+					});
+				})
+				.error(function(err, status, headers, config) {
+				// called asynchronously if an error occurs
+				// or server returns response with an error status.
+					console.error(err);
+				});
+			} else {
+				return '';
+			}
+	};
+});
 */
+
 module.run(['$location', '$rootScope', function($location, $rootScope) {
 	$rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
 		$rootScope.pageTitle = current.$$route.pageTitle;
@@ -281,12 +307,44 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 	
 	$scope.kupones = new Array();
 	$scope.currentKupon = {};
-	var dMin = new Date(new Date().setHours(0, 0, 0, 0));
-	// d.setHours(0,0,0,0);
+
+	var dMin = moment().subtract(1, 'days').hours(0).minutes(0).seconds(0);
 	$scope.minDate = dMin;
-	var dMax = new Date(new Date().setHours(24, 0, 0, 0));
-	var dMax = dMax.setFullYear(dMax.getFullYear() + 5);
+	var dMax = moment().add(5, 'years').hours(0).minutes(0).seconds(0);
 	$scope.maxDate = dMax;
+	$scope.vigencia = {
+		startDate: moment(),
+		endDate: moment().add(5, 'years')
+		//startDate: null,
+		//endDate: null
+	};
+	$scope.dtRngOptns = {
+		ranges: {
+			'Hoy': [moment(), moment()]
+			, 'Mañana': [moment().add(1, 'days'), moment().add(1, 'days')]
+			//, 'Últimos 7 Días': [moment().subtract(6, 'days'), moment()]
+			//, 'Últimos 30 Días': [moment().subtract(29, 'days'), moment()]
+			, 'Este Mes': [moment().startOf('month'), Date.today().moveToLastDayOfMonth()]
+			//, 'Último Mes': [moment().startOf('month').subtract(1, 'months'), moment().startOf('month').subtract(1, 'days')]
+		},
+		opens: 'left',
+		format: 'DD/MM/YYYY',
+		separator: ' a ',
+		minDate: $scope.minDate,
+		maxDate: $scope.maxDate,
+		locale: {
+			applyLabel: 'Aceptar',
+			cancelLabel: 'Cancelar',
+			fromLabel: 'Desde',
+			toLabel: 'A',
+			customRangeLabel: 'Periodo Personalizado',
+			daysOfWeek: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+			monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Augosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+			firstDay: 1
+		},
+		showWeekNumbers: true,
+		buttonClasses: ['btn-danger']
+	};
 
 	$log.info('KuponesCtrl..action..' + $scope.action);
 	$log.info('KuponesCtrl..showContent..' + $scope.showContent);
@@ -314,96 +372,99 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 		 */
 	};
 
-	$scope.viewKupon = function(kuponId) {
-		alert('createKupon');
-		$http.get('./')
+
+	$scope.viewKuponById = function(kuponId, cb) {
+		$log.info('viewKuponById');
+		$http.get('/kupon/view/' + kuponId)
 			.success(function(data, status, headers, config) {
 			// this callback will be called asynchronously
 			// when the response is available
-
-			})
-			.error(function(err, status, headers, config) {
+				cb(null, data);
+			}).error(function(err, status, headers, config) {
 			// called asynchronously if an error occurs
 			// or server returns response with an error status.
-				console.error(err);
+				cb(error);
 			});
 	};
 
+	$scope.viewKuponView = function(kuponId) {
+		$log.info('viewKuponView');
+		$scope.viewKuponById(kuponId, function(error, data) {
+			if(error) {
+				$log.error(error);
+			} else {
+				$scope.currentKupon = data.kupon;
+				$scope.fillArrayImages(data.kupon);
+			}
+		});
+	};
 
 	$scope.readAllCategorias = function() {
-		console.log('readAllCategorias');
+		$log.info('readAllCategorias');
 		$http.get('/categoria/readAll')
 			.success(function(data, status, headers, config) {
 			// this callback will be called asynchronously
 			// when the response is available
 				// console.error(data);
 				$scope.categorias = data.categorias;
-			})
-			.error(function(err, status, headers, config) {
+			}).error(function(err, status, headers, config) {
 			// called asynchronously if an error occurs
 			// or server returns response with an error status.
-				console.error(err);
+				$log.error(err);
 			});
 	};
 
-	$scope.readAllSubCategoriasBy = function(catPromo) {
-		console.log('readAllSubCategoriasBy');
-		console.log($scope.catPromo);
-		console.log(catPromo);
-		$http.get('/subcategoria/readAllBy/' + $scope.catPromo.categoriaId)
+	$scope.readAllSubCategoriasBy = function(categoria, cb) {
+		$log.info('readAllSubCategoriasBy');
+		$http.get('/subcategoria/readAllBy/' + categoria.categoriaId)
 			.success(function(data, status, headers, config) {
 			// this callback will be called asynchronously
 			// when the response is available
 				// console.error(data);
-				$scope.subcategorias = data.subCategorias;
-			})
-			.error(function(err, status, headers, config) {
+				cb(null, data);
+			}).error(function(err, status, headers, config) {
 			// called asynchronously if an error occurs
 			// or server returns response with an error status.
-				console.error(err);
+				cb(err);
 			});
-	}
+	};
+
+	$scope.readAllSubCategorias = function(catPromo) {
+		$log.info('readAllSubCategorias');
+		$log.info($scope.catPromo);
+		$log.info(catPromo);
+		$scope.readAllSubCategoriasBy($scope.catPromo, function(error, data) {
+			if(error) {
+				$log.error(error);
+			} else {
+				$scope.subcategorias = data.subCategorias;
+			}
+		});
+	};
 
 	$scope.readAllKupons = function() {
 		$http.get('/kupon/readAll')
 			.success(function(data, status, headers, config) {
 			// this callback will be called asynchronously
 			// when the response is available
-				$log.info('success');
-				$log.info('data');
-				$log.info(data);
-				$log.info('status');
-				$log.info(status);
-				$log.info('headers');
-				$log.info(headers);
-				$log.info('config');
-				$log.info(config);
 				$scope.kupones = data.kupones;
-			})
-			.error(function(err, status, headers, config) {
+			}).error(function(err, status, headers, config) {
 			// called asynchronously if an error occurs
 			// or server returns response with an error status.
-				$log.info('error');
-				$log.info('err');
-				$log.info(err);
-				$log.info('status');
-				$log.info(status);
-				$log.info('headers');
-				$log.info(headers);
-				$log.info('config');
-				$log.info(config);
-				console.error(err);
+				$log.error(err);
 			});
 	};
 
 	$scope.uploadUsingUpload = function(files) {
 		var self = $scope;
-		if(!$scope.currentKupon.vigencia) {
+		if(!$scope.currentKupon.iniVigencia || !$scope.currentKupon.finVigencia) {
 			//$scope.currentKupon.vigencia = new Date($scope.kuponesFormNg.vigencia.$viewValue);
-			$scope.currentKupon.vigencia = $scope.vigencia;
-			$scope.currentKupon.vigenciaTime = $scope.currentKupon.vigencia.getTime();
+			$scope.currentKupon.iniVigencia = $scope.vigencia.startDate;
+			$scope.currentKupon._iniVigenciaTime = $scope.vigencia.startDate.valueOf();
+			$scope.currentKupon.finVigencia = $scope.vigencia.endDate;
+			$scope.currentKupon._finVigenciaTime = $scope.vigencia.endDate.valueOf();
 		}
-		// $scope.currentKupon.subCategoriaId = $scope.
+		// $scope.currentKupon.subCategoriaId = $scope.subCatPromo;
 
 		if($scope.action == 'C' && (files == null || files.length == 0)) {
 			SweetAlert.swal('Debe de agregar un archivo de imagen.');
@@ -478,7 +539,7 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 				file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
 			}).success(function(data, status, headers, config) {
 				// file is uploaded successfully
-				console.log('file ' + config.file[0].name + ' is uploaded successfully. Response: ' + data);
+				$log.info('file ' + config.file[0].name + ' is uploaded successfully. Response: ' + data);
 				$timeout(function() {
 					$log.info('success');
 					// $log.info(response);
@@ -490,7 +551,10 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 					$('#myModal').modal('show');
 
 					$scope.currentKupon = {};
-					$scope.vigencia = '';
+					$scope.vigencia = {
+						startDate: moment(),
+						endDate: moment().add(5, 'years')
+					};
 					$scope.picFile = null;
 					$scope.kuponesFormNg.$setPristine();
 					document.forms["kuponesFormNg"].reset();
@@ -575,8 +639,7 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 			.success(function(data, status, headers, config) {
 			// this callback will be called asynchronously
 			// when the response is available
-			})
-			.error(function(data, status, headers, config) {
+			}).error(function(data, status, headers, config) {
 			// called asynchronously if an error occurs
 			// or server returns response with an error status.
 			});
@@ -592,9 +655,159 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 
 	};
 
+	$scope.fillArrayImages = function(kupon) {
+
+		$scope.currPath = '#' + $location.path() + '#';
+		$scope.arryImgns = new Array();
+		for(var i = 0; i < kupon.imagenesNames.length; i++){
+			var objImg = {
+				imgName: kupon.imagenesNames[i],
+				imgUrl: kupon.imagenesUrls[i]
+			};
+			$scope.arryImgns.push(objImg);
+		}
+
+	};
+
+	$scope.updateEditKuponView = function(kuponId) {
+		$scope.viewKuponById(kuponId, function(error, data) {
+			if(error) {
+				$log.error(error);
+			} else {
+				$scope.readAllSubCategoriasBy(data.kupon.subCategoriaId.categoriaId, function(errorSC, dataSC) {
+					if(errorSC) {
+						$log.error(errorSC);
+					} else {
+						$scope.subcategorias = dataSC.subCategorias;
+
+						var tmpKupon = angular.copy(data.kupon);
+						// tmpKupon.subCategoriaId = tmpKupon.subCategoriaId.subCategoriaId;
+						$scope.catPromo = angular.copy(data.kupon.subCategoriaId.categoriaId);
+						$scope.currentKupon = tmpKupon;
+						// $scope.currentKupon.subCategoriaId.categoriaId = $scope.currentKupon.subCategoriaId.categoriaId.categoriaId;
+						$scope.vigencia = {
+							startDate: moment(tmpKupon.iniVigencia, moment.ISO_8601),
+							endDate: moment(tmpKupon.finVigencia, moment.ISO_8601)
+						};
+						// new Date(new Date(data.kupon.vigencia).getTime())
+						$scope.fillArrayImages(tmpKupon);
+					}
+				});
+			}
+		});
+	};
+
+	$scope.updateKupon = function() {
+		// a
+	};
+
+	$scope.$watch('kuponesFormNg.$dirty', function(newValue, oldValue) {
+		$log.info(newValue);
+		$log.info(oldValue);
+		if(newValue != oldValue) {
+			$scope.currentKupon.isDirty = $scope.currentKupon.isDirty || newValue;
+		}
+	}, true);
+
+	$scope.deleKuponAction = function(kuponId, cb) {
+		$log.info('deleKuponAction');
+		$http.delete('/kupon/delete/' + kuponId)
+			.success(function(data, status, headers, config) {
+			// this callback will be called asynchronously
+			// when the response is available
+				cb(data);
+			}).error(function(data, status, headers, config) {
+			// called asynchronously if an error occurs
+			// or server returns response with an error status.
+				$log.error(err);
+			});
+	};
+
+	$scope.deleteKuponView = function(kuponId){
+		$log.info('deleteKuponView');
+		/*
+		SweetAlert.swal({
+			title: "¿¿Usted esta seguró de eliminar el registro??",
+			text: "¡¡Usted no podrá recuperar la informacion una vez realizada esta acción!!",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "¡¡SI, eliminar!!",
+			closeOnConfirm: false
+		}, function(){ 
+			SweetAlert.swal("¡¡El registro se ha eliminado exitosamente!!");
+		});
+		*/
+		SweetAlert.swal({
+			title: "¿¿Esta usted seguró de eliminar el registro??",
+			text: "¡¡No podrá recuperar la informacion una vez realizada esta acción!!",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "¡¡SI, eliminar!!",
+			cancelButtonText: "Cancelar",
+			closeOnConfirm: false,
+			closeOnCancel: false
+		}, function(isConfirm){ 
+			if (isConfirm) {
+				$scope.deleKuponAction(kuponId, function(promoDeleted) {
+					SweetAlert.swal({
+						title: "¡¡El registro se ha eliminado exitosamente!!",
+						type:  "success",
+						confirmButtonText: "Aceptar"
+					});
+					$location.path('/kupones');
+				});
+			} else {
+				SweetAlert.swal({
+					title: "Cancelado",
+					text: "No se realizo ningun cambio al registro :)",
+					type:  "error",
+					confirmButtonText: "Aceptar"
+				});
+				$location.path('/kupones');
+			}
+		});
+	};
+
+	$scope.irEditViewKupon = function() {
+		$location.url('/kupones/update/' + $scope.currentKupon.promocionId);
+	};
+
 	$scope.cancelEditViewKupon = function() {
 		$location.url('/kupones');
 	};
+
+	/**
+	 * Custom Photo Gallery - BEGIN
+	 *
+	 */
+    // initial image index
+    $scope._Index = 0;
+
+    // if a current image is the same as requested image
+    $scope.isActive = function (index) {
+        return $scope._Index === index;
+    };
+
+    // show prev image
+    $scope.showPrev = function () {
+        $scope._Index = ($scope._Index > 0) ? --$scope._Index : $scope.arryImgns.length - 1;
+    };
+
+    // show next image
+    $scope.showNext = function () {
+        $scope._Index = ($scope._Index < $scope.arryImgns.length - 1) ? ++$scope._Index : 0;
+    };
+
+    // show a certain image
+    $scope.showPhoto = function (index) {
+        $scope._Index = index;
+    };
+	/**
+	 *
+	 * Custom Photo Gallery - END
+	 */
 
 	$scope.init = function() {
 		$log.info('KuponesCtrl..init..scope.params.');
@@ -606,22 +819,20 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 				$scope.showContent = true;
 				break;
 			case 'R':
-				// $scope.kupones.push({id: 1, titulo: 'Título 1', descripcionCorta: 'descripcion Corta 1', vigencia: '12/12/15'});
-				// $scope.kupones.push({id: 2, titulo: 'Título 2', descripcionCorta: 'Descripcion Corta 2', vigencia: '11/11/15'});
-				// $scope.kupones.push({id: 3, titulo: 'Título 3', descripcionCorta: 'Descripcion corta 3', vigencia: '10/10/15'});
 				$scope.readAllKupons();
 				$scope.showContent = true;
 				break;
 			case 'V':
-				//$scope.currentKupon = $scope.kupones[$scope.params.kuponId - 1];
-				$scope.currentKupon = {id: 2, titulo: 'Título 2', descripcionCorta: 'Descripcion Corta 2', vigencia: '11/11/15'};
+				$scope.viewKuponView($scope.params.kuponId);
 				$scope.showContent = true;
 				break;
 			case 'U':
 				$scope.readAllCategorias();
+				$scope.updateEditKuponView($scope.params.kuponId);
 				$scope.showContent = true;
 				break;
 			case 'D':
+				$scope.deleteKuponView($scope.params.kuponId);
 				$scope.showContent = true;
 				break;
 		}

@@ -36,8 +36,13 @@ module.exports.policies = {
   },
   'main': {
     '*': ['passport']
+  },
+  // Temporal
+
+  'promocion':{
+    '*': true
   }
-  
+
   
   
 

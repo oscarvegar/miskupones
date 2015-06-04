@@ -337,6 +337,14 @@ var AuthController = {
     });
   },
 
+  logoutApp: function (req, res) {
+    req.logout();
+    // mark the user as logged out for auth purposes
+    req.session.authenticated = false;
+    req.session.user = false;
+    res.json("OK");
+  },
+
   activate:function(req,res){
     var id=req.param('id');
     User.findOne({status:-1,activationcode:id})

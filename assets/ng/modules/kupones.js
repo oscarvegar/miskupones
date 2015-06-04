@@ -771,11 +771,11 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 	};
 
 	$scope.irEditViewKupon = function() {
-		$location.url('/kupones/update/' + $scope.currentKupon.promocionId);
+		$location.path('/kupones/update/' + $scope.currentKupon.promocionId);
 	};
 
 	$scope.cancelEditViewKupon = function() {
-		$location.url('/kupones');
+		$location.path('/kupones');
 	};
 
 	/**

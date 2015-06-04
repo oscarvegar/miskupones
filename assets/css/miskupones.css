@@ -69,7 +69,7 @@
     opacity:1;
 }
 
-.nav {
+.nav-slider {
     bottom: -4px;
     display: block;
     height: 48px;
@@ -82,7 +82,7 @@
     width: 100%;
     z-index: 5;
 }
-.nav li {
+.nav-slider li {
     border: 5px solid #AAAAAA;
     border-radius: 5px;
     cursor: pointer;
@@ -92,10 +92,10 @@
     position: relative;
     width: 50px;
 }
-.nav li.active {
+.nav-slider li.active {
     border: 5px solid #FFFFFF;
 }
-.nav li img {
+.nav-slider li img {
     width: 100%;
 }
 

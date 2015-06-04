@@ -74,7 +74,7 @@
                                         <a class="arrow next" ng-href="{{currPath}}" ng-click="showNext()"></a>
 
                                         <!-- extra navigation controls -->
-                                        <ul class="nav">
+                                        <ul class="nav-slider">
                                             <li ng-repeat="photo in arryImgns" ng-class="{'active':isActive($index)}">
                                                 <img ng-src="{{photo.imgUrl}}" alt="{{photo.imgName}}" title="{{photo.imgName}}" ng-click="showPhoto($index);" />
                                             </li>

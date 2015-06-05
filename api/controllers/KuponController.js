@@ -40,7 +40,7 @@ module.exports = {
 					.then(function(userDb) {
 						console.log('afterUserFindOne');
 						console.log(userDb);
-						dataProm.proveedorId = userDb.proveedor[0];
+						dataProm.proveedorId = userDb.proveedor;
 						return Promocion.create(dataProm);
 					}).then(function(promoCreated) {
 						console.log('afterPromotionCreated');
@@ -72,7 +72,7 @@ module.exports = {
 					console.log('afterUserFindOne');
 					console.log(userDb);
 					if(!userDb) return res.view(404);
-					var provInUsr = userDb.proveedor[0];
+					var provInUsr = userDb.proveedor;
 					return Proveedor.findOne({proveedorId: provInUsr.proveedorId}).populate('promociones', {activo: true});
 				}).then(function(provPromo) {
 					console.log('afterPromocionFind');

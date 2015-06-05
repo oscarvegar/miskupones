@@ -50,7 +50,7 @@ module.exports.connections = {
   },
   prod_kuponesServer: {
     adapter: 'sails-mysql',
-    host: 'localhost',
+    host: 'atomicware.mx',
     user: 'mavergar_dev',
     password: 'dev2015',
     database: 'dev_kupones'

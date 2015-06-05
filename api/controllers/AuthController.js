@@ -351,7 +351,10 @@ var AuthController = {
     .then(function(user){
       if(!user) return res.view(404);
       user.status=1;
-      user.save();
+      Proveedor.create({userId:user}).then(function(prov){
+        user.proveedor = prov;
+        user.save();
+      })
       res.redirect("/login?m=1")
     })
 

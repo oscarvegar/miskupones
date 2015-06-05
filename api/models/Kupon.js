@@ -6,7 +6,6 @@
 */
 
 module.exports = {
-	adapter: 'kuponesMysqlServer',
 	autoCreatedAt: true,
 	autoPK:false,
 	autoUpdatedAt: true,

@@ -28,6 +28,6 @@ module.exports.models = {
   * See http://sailsjs.org/#/documentation/concepts/ORM/model-settings.html  *
   *                                                                          *
   ***************************************************************************/
-  migrate: 'drop' //for NoSQL this should be 'safe' and for postgres or MySQL 'alter'
+  migrate: 'alter' //for NoSQL this should be 'safe' and for postgres or MySQL 'alter'
 
 };

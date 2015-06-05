@@ -22,6 +22,15 @@ module.exports = {
      migrate: 'alter' 
    },
 
+
+
+/*
+models: {
+     connection: 'kuponesMysqlServer',
+     migrate: 'alter' 
+   },
+*/
+   
   /***************************************************************************
    * Set the port in the production environment to 80                        *
    ***************************************************************************/

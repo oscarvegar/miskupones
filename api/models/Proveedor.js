@@ -21,10 +21,19 @@ module.exports = {
 		rfc: {
 			type: 'string'
 		},
+		 nombre: 'string',
+    	 apellidoPaterno: 'string',
+    	 apellidoMaterno: 'string',
+    	 estado: 'string',
+    	 ciudad: 'string',
+    	 fechaNacimiento: 'date',
+    	 sexo: 'string',
 		userId: {
 			model: 'User',
 			columnName: 'user_id'
 		},
+		username: 'string',
+		email: 'email',
 		promociones: {
 			collection: 'Promocion',
 			via: 'proveedorId'

@@ -290,6 +290,13 @@ module.filter('categoryById', function($http, $log, $timeout) {
 });
 */
 
+module.filter('nl2br', ['$sce', function($sce){
+	return function(text) {
+		// return text ? text.replace(/\n/g, '<br>') : '';
+		return text ? $sce.trustAsHtml(text.replace(/\n/g, '<br/>')) : '';
+	};
+}]);
+
 module.run(['$location', '$rootScope', function($location, $rootScope) {
 	$rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
 		$rootScope.pageTitle = current.$$route.pageTitle;
@@ -349,6 +356,7 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 	$log.info('KuponesCtrl..action..' + $scope.action);
 	$log.info('KuponesCtrl..showContent..' + $scope.showContent);
 	// spinnerService.hide('mySpinner', "Stuff loaded.");
+
 
 	$scope.createKupon = function() {
 		$scope.action = 'C';
@@ -461,13 +469,33 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 
 	$scope.uploadUsingUpload = function(files) {
 		var self = $scope;
-		if(!$scope.currentKupon.iniVigencia || !$scope.currentKupon.finVigencia) {
-			//$scope.currentKupon.vigencia = new Date($scope.kuponesFormNg.vigencia.$viewValue);
+
+		$scope.currentKupon._remoteHost =  $location.protocol() + '://' + $location.host() + ($location.port() == 80 ? '' : ':' + $location.port());
+
+		var ppURL = null,
+			ppMETHOD = null,
+			headers = null;
+		if($scope.action == 'C') {
+			ppURL = '/kupon/create';
+			ppMETHOD = 'POST';
+		} else if($scope.action == 'U') {
+			ppURL = '/kupon/update/' + $scope.currentKupon.promocionId;
+			ppMETHOD = 'PUT';
+			// ppMETHOD = 'POST';
+			// headers = {'Content-Type': undefined };
+		}
+
+		if(!files) {
+			files = $scope.kuponesFormNg.picFile ? $scope.kuponesFormNg.picFile.$modelValue : null;
+		}
+
+		// if(!$scope.currentKupon.iniVigencia || !$scope.currentKupon.finVigencia) {
+			// $scope.currentKupon.vigencia = new Date($scope.kuponesFormNg.vigencia.$viewValue);
 			$scope.currentKupon.iniVigencia = $scope.vigencia.startDate;
 			$scope.currentKupon._iniVigenciaTime = $scope.vigencia.startDate.valueOf();
 			$scope.currentKupon.finVigencia = $scope.vigencia.endDate;
 			$scope.currentKupon._finVigenciaTime = $scope.vigencia.endDate.valueOf();
-		}
+		// }
 		// $scope.currentKupon.subCategoriaId = $scope.subCatPromo;
 
 		if($scope.action == 'C' && (files == null || files.length == 0)) {
@@ -527,11 +555,9 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 			*/
 
 			var upload = Upload.upload({
-				url: '/kupon/create',
-				method: 'POST',
-				headers: {
-					'my-header' : 'my-header-value'
-				},
+				url: ppURL,
+				method: ppMETHOD,
+				headers: headers,
 				fields: {username: $scope.username},
 				// file: file,
 				file: files,
@@ -548,26 +574,35 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 					$log.info('success');
 					// $log.info(response);
 					file.result = data;
-					// $window.alert('Se ha almacenado el registro con exito!!');
-					// SweetAlert.swal('¡¡Se ha almacenado el registro con exito!!');
-					$rootScope.modal.title = 'Éxito';
-					$rootScope.modal.msg = '¡¡Se ha almacenado el registro con exito!!';
-					$('#myModal').modal('show');
 
-					$scope.currentKupon = {};
-					$scope.vigencia = {
-						startDate: moment(),
-						endDate: moment().add(5, 'years')
-					};
-					$scope.picFile = null;
-					$scope.kuponesFormNg.$setPristine();
-					document.forms["kuponesFormNg"].reset();
-					// spinnerService.hide('mySpinner', "Stuff loaded.");
+					if($scope.action == 'C') {
+
+						// $window.alert('Se ha almacenado el registro con exito!!');
+						// SweetAlert.swal('¡¡Se ha almacenado el registro con exito!!');
+						$rootScope.modal.title = 'Éxito';
+						$rootScope.modal.msg = '¡¡Se ha almacenado el registro con exito!!';
+						$('#myModal').modal('show');
+
+						$scope.currentKupon = {};
+						$scope.vigencia = {
+							startDate: moment(),
+							endDate: moment().add(5, 'years')
+						};
+						$scope.picFile = null;
+						$scope.kuponesFormNg.$setPristine();
+						document.forms["kuponesFormNg"].reset();
+						// spinnerService.hide('mySpinner', "Stuff loaded.");
+
+					} else if($scope.action == 'U') {
+						$rootScope.modal.title = 'Éxito';
+						$rootScope.modal.msg = '¡¡Se ha actualizado el registro con exito!!';
+						$('#myModal').modal('show');
+					}
 				});
 			}).error(function(err) {
 				/* access or attach event listeners to the underlying XMLHttpRequest */
-				$log.info('error');
-				$log.info(err);
+				$log.error('error');
+				$log.error(err);
 				if (err.status > 0)
 					$scope.errorMsg = err.status + ': ' + err.data;
 					// spinnerService.hide('mySpinner', "An error occurred while trying to load stuff.");
@@ -576,6 +611,12 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 			}).finally(function() {
 				// called no matter success or failure
 				$scope.loading = false;
+
+				if($scope.action == 'U') {
+					$timeout(function() {
+						$scope.irViewViewKupon();
+					}, 2000);
+				}
 			});
 
 			/* then promise (note that returned promise doesn't have progress, xhr and cancel functions. */
@@ -629,6 +670,7 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 			// upload.abort();
 
 		} else {
+/*	NEW-FASHION
 			$http.post('https://angular-file-upload-cors-srv.appspot.com/upload', $scope.currentKupon, {})
 			.success(function(data, status, headers, config) {
 			// this callback will be called asynchronously
@@ -638,14 +680,30 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 			// called asynchronously if an error occurs
 			// or server returns response with an error status.
 			});
+*/
 
-			$http.put(url, data, config)
+			$scope.loading = true;
+			$http.post(ppURL, {data: JSON.stringify($scope.currentKupon)})
 			.success(function(data, status, headers, config) {
 			// this callback will be called asynchronously
 			// when the response is available
-			}).error(function(data, status, headers, config) {
+				$timeout(function() {
+					$log.info('success');
+					$log.info(data);
+
+					$rootScope.modal.title = 'Éxito';
+					$rootScope.modal.msg = '¡¡Se ha actualizado el registro con exito!!';
+					$('#myModal').modal('show');
+
+					$scope.loading = false;
+					
+					$scope.irViewViewKupon();
+				});
+			}).error(function(error, status, headers, config) {
 			// called asynchronously if an error occurs
 			// or server returns response with an error status.
+				$log.error('error');
+				$log.error(error);
 			});
 
 /*	OLD-FASHION
@@ -658,6 +716,10 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 		}
 
 	};
+
+	$scope.fileNameChanged = function() {
+		$log.info("select file");
+	}
 
 	$scope.fillArrayImages = function(kupon) {
 
@@ -772,6 +834,11 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 				$location.path('/kupones');
 			}
 		});
+	};
+
+	$scope.irViewViewKupon = function() {
+		$log.info('irViewViewKupon');
+		$location.url('/kupones/view/' + $scope.currentKupon.promocionId);
 	};
 
 	$scope.irEditViewKupon = function() {

@@ -50,7 +50,7 @@
                             <div class="form-group ">
                                 <label class="control-label col-lg-2">Descripción larga</label>
                                 <div class="col-lg-10">
-                                    <p class="form-control-static">{{currentKupon.descripcionLarga}}</p>
+                                    <p class="form-control-static" ng-bind-html="currentKupon.descripcionLarga | nl2br"></p>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -85,7 +85,7 @@
                             <div class="form-group ">
                                 <label class="control-label col-lg-2">Restricciones</label>
                                 <div class="col-lg-10">
-                                    <p class="form-control-static">{{currentKupon.restricciones}}</p>
+                                    <p class="form-control-static" ng-bind-html="currentKupon.restricciones | nl2br"></p>
                                 </div>
                             </div>
                             <div class="form-group">

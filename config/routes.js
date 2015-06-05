@@ -85,6 +85,7 @@ module.exports.routes = {
   'get /kupon/readAll': 'KuponController.readAllKupons',
   'get /kupon/view/:kuponId': 'KuponController.viewKupon',
   'put /kupon/update/:kuponId': 'KuponController.updateKupon',
+  // 'post /kupon/update/:kuponId': 'KuponController.updateKupon',
   'delete /kupon/delete/:kuponId': 'KuponController.deleteKupon',
   'get /kupon/image/:imgId': 'KuponController.imageKupon',
 

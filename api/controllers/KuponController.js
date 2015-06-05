@@ -57,7 +57,7 @@ module.exports = {
 			// res.redirect('#/kupones/create');
 			// return res.view('default');
 		} else {
-			res.redirect('/login');
+			return res.redirect('/login');
 		}
 	},
 	readAllKupons: function(req, res) {
@@ -86,7 +86,7 @@ module.exports = {
 			// res.redirect('/');
 			// return res.view('default');
 		} else {
-			res.redirect('/login');
+			return res.redirect('/login');
 		}
 	},
 	viewKupon: function(req, res) {
@@ -112,7 +112,7 @@ module.exports = {
 			// res.redirect('/');
 			// return res.view('default');
 		} else {
-			res.redirect('/login');
+			return res.redirect('/login');
 		}
 	},
 	updateKupon: function(req, res) {
@@ -122,7 +122,7 @@ module.exports = {
 			// res.redirect('/');
 			// return res.view('default');
 		} else {
-			res.redirect('/login');
+			return res.redirect('/login');
 		}
 	},
 	deleteKupon: function(req, res) {
@@ -145,7 +145,7 @@ module.exports = {
 			// res.redirect('/');
 			// return res.view('default');
 		} else {
-			res.redirect('/login');
+			return res.redirect('/login');
 		}
 	},
 	imageKupon: function (req, res) {

@@ -683,7 +683,7 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 */
 
 			$scope.loading = true;
-			$http.post(ppURL, {data: JSON.stringify($scope.currentKupon)})
+			$http.put(ppURL, {data: JSON.stringify($scope.currentKupon)})
 			.success(function(data, status, headers, config) {
 			// this callback will be called asynchronously
 			// when the response is available

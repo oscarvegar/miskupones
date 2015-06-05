@@ -443,14 +443,18 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 	};
 
 	$scope.readAllKupons = function() {
+		$log.info('readAllKupons');
 		$http.get('/kupon/readAll')
 			.success(function(data, status, headers, config) {
 			// this callback will be called asynchronously
 			// when the response is available
+				$log.info('success');
+				$log.info(data);
 				$scope.kupones = data.kupones;
 			}).error(function(err, status, headers, config) {
 			// called asynchronously if an error occurs
 			// or server returns response with an error status.
+				$log.error('error');
 				$log.error(err);
 			});
 	};
@@ -771,11 +775,13 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 	};
 
 	$scope.irEditViewKupon = function() {
-		$location.path('/kupones/update/' + $scope.currentKupon.promocionId);
+		$log.info('irEditViewKupon');
+		$location.url('/kupones/update/' + $scope.currentKupon.promocionId);
 	};
 
 	$scope.cancelEditViewKupon = function() {
-		$location.path('/kupones');
+		$log.info('cancelEditViewKupon');
+		$location.url('/kupones');
 	};
 
 	/**

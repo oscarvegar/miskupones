@@ -30,7 +30,7 @@ module.exports = {
 				console.log(files);
 				dataProm.imagenesNames = [files[0].filename];
 				// dataProm.imagenesUrls = [require('util').format('%s/kupon/image/%s', sails.getBaseUrl(), files[0].fd.substr(files[0].fd.lastIndexOf("/")+1)];
-				dataProm.imagenesUrls = [require('util').format('%s%s', sails.getBaseUrl(), files[0].fd.substr(files[0].fd.lastIndexOf("/uploadImages")))];
+				dataProm.imagenesUrls = [require('util').format('%s%s', req.baseUrl, files[0].fd.substr(files[0].fd.lastIndexOf("/uploadImages")))];
 				dataProm.imagenesFds = [files[0].fd];
 				dataProm.vigencia = new Date(dataProm.vigenciaTime);
 				delete dataProm.vigenciaTime;
@@ -61,10 +61,11 @@ module.exports = {
 		}
 	},
 	readAllKupons: function(req, res) {
+		console.log('KuponController.readAllKupons :: ');
+		console.log(req.session);
 		if(req.session.user) {
 			var sessionUser = req.session.user;
 			var allReqParams = req.allParams();
-			console.log('KuponController.readAllKupons :: ');
 			console.log(allReqParams);
 
 			User.findOne({activationcode: sessionUser.activationcode}).populate('proveedor')

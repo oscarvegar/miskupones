@@ -17,8 +17,8 @@ var User = {
     activationcode : 'string',
     status : {type:'integer',defaultsTo:-1},
     proveedor: {
-      collection: 'Proveedor',
-      via: 'userId'
+      model: 'Proveedor',
+      columnName: 'proveedor_id'
     }
   },
   	beforeCreate: function(user, next){

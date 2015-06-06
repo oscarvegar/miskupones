@@ -77,6 +77,10 @@ module.exports = {
 		activo: {
 			type: 'boolean'
 		},
+		eliminado: {
+			type: 'boolean',
+			defaultsTo: false
+		},
 		subCategoriaId: {
 			model: 'Subcategoria',
 			columnName: 'sub_categoria_id'

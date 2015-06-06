@@ -81,13 +81,13 @@ module.exports.routes = {
   * José Daniel Routes                                                       *
   *                                                                          *
   ***************************************************************************/
-  'post /kupon/create': 'KuponController.createKupon',
-  'get /kupon/readAll': 'KuponController.readAllKupons',
-  'get /kupon/view/:kuponId': 'KuponController.viewKupon',
-  'put /kupon/update/:kuponId': 'KuponController.updateKupon',
-  // 'post /kupon/update/:kuponId': 'KuponController.updateKupon',
-  'delete /kupon/delete/:kuponId': 'KuponController.deleteKupon',
-  'get /kupon/image/:imgId': 'KuponController.imageKupon',
+  'post /kupon/create': 'PromocionController.createKupon',
+  'get /kupon/readAll': 'PromocionController.readAllKupons',
+  'get /kupon/view/:kuponId': 'PromocionController.viewKupon',
+  'put /kupon/update/:kuponId': 'PromocionController.updateKupon',
+  // 'post /kupon/update/:kuponId': 'PromocionController.updateKupon',
+  'delete /kupon/delete/:kuponId': 'PromocionController.deleteKupon',
+  'get /kupon/image/:imgId': 'PromocionController.imageKupon',
 
   'get /categoria/readAll': 'CategoriaController.readAllCategorias',
   'get /categoria/view/:categoriaId': 'CategoriaController.viewCategoria',

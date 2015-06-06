@@ -43,6 +43,7 @@ module.exports.bootstrap = function(cb) {
 	  precioDescuento: '200',
 	  precioKupon: '30',
 	  activo: true,
+	  eliminado: false,
 	  iniVigencia: dateDummy,
 	  finVigencia: dateDummy,
 	  imagenesNames: [ 'MisKupones.jpg' ],

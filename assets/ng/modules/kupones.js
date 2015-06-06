@@ -719,7 +719,7 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 
 	$scope.fileNameChanged = function() {
 		$log.info("select file");
-	}
+	};
 
 	$scope.fillArrayImages = function(kupon) {
 
@@ -757,6 +757,14 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 						};
 						// new Date(new Date(data.kupon.vigencia).getTime())
 						$scope.fillArrayImages(tmpKupon);
+						$log.info('tmpKupon.subCategoriaId.subCategoriaId :: ' + tmpKupon.subCategoriaId.subCategoriaId);
+						for(var subCat in $scope.subcategorias) {
+							if($scope.subcategorias[subCat].subCategoriaId == tmpKupon.subCategoriaId.subCategoriaId) {
+								// $scope.currentKupon.subCategoriaId = $scope.subcategorias[subCat];
+								$scope.currentKupon._subCategoria = $scope.subcategorias[subCat];
+								break;
+							}
+						}
 					}
 				});
 			}

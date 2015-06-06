@@ -41,8 +41,11 @@ module.exports.policies = {
 
   'promocion':{
     '*': true
-  }
+  },
 
+  'venta':{
+    '*': true
+  }
   
   
 

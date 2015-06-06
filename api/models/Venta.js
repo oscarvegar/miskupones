@@ -8,7 +8,19 @@
 module.exports = {
 
   attributes: {
+    user:{
+      model: 'user',
+      required: true
+    },
 
+    promocion:{
+      model: 'promocion',
+      required: true
+    },
+
+    cantidad: 'integer',
+    total: 'float'
   }
+
 };
 

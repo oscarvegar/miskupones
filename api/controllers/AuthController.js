@@ -332,7 +332,9 @@ var AuthController = {
         req.session.user = user;
         // Upon successful login, send the user to the homepage were req.user
         // will be available.
-        res.json("OK")
+        console.log("user session :: ", user);
+        var usuario = { id: user.id, username: user.username };
+        res.json({ user: usuario, status: "OK"});
       });
     });
   },

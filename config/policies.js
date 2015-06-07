@@ -32,14 +32,14 @@ module.exports.policies = {
   'auth': {
     '*': ['passport'],
     'changepass' : ['passport', 'sessionAuth'],
-    'newUser': true
+    'calback': true
   },
   'main': {
     '*': ['passport']
   },
   // Temporal
 
-  'promocion':{
+  'promocion':{ 
     '*': true
   },
 

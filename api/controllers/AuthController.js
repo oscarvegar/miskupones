@@ -102,25 +102,6 @@ var AuthController = {
     });
   },
 
-  newUser: function( request, response ){
-    var data = request.allParams();
-    console.log("user new data >> ", data);
-    User.create(data).then(function(newUser){
-      var cliente = { user: newUser.id };
-      Cliente.create(cliente).then(function(newCliente){
-        return response.json(newUser);
-      }).catch(function(err){
-        console.error("Error al registrar nuevo cliente, haciendo rollback en creacion de usuario ", newUser);
-        //rollback en user
-        User.destroy(newUser).then(function(userDelete){});
-        return response.json(500, {error: err});
-      });
-    }).catch(function(err){
-      console.error("Error al registrar nuevo usuario");
-      return response.json(500, {error: err});
-    });
-  },
-
   /**
    * Create a third-party authentication endpoint
    *
@@ -180,7 +161,7 @@ var AuthController = {
           res.redirect('/login');
       }
     }
-
+    console.log(req.allParams())
     passport.callback(req, res, function (err, user, challenges, statuses) {
       if (err || !user) {
         return tryAgain(challenges);
@@ -311,15 +292,15 @@ var AuthController = {
   },
 
   loginApp : function(req,res){
+    console.info(req.allParams())
     passport.callback(req, res, function (err, user, challenges, statuses) {
+      console.log("USER LOGIN",user)
       if (err || !user) {
         //return tryAgain(challenges);
         console.log("ERROR LOGIN")
-        return res.json(403);
+        return res.json(403,{});
       }
-      if(!user.status || user.status<0){
-        return res.json(403);
-      }
+     
       console.log("USER",user);
 
       req.login(user, function (err) {
@@ -332,9 +313,7 @@ var AuthController = {
         req.session.user = user;
         // Upon successful login, send the user to the homepage were req.user
         // will be available.
-        console.log("user session :: ", user);
-        var usuario = { id: user.id, username: user.username };
-        res.json({ user: usuario, status: "OK"});
+        res.json(user)
       });
     });
   },
@@ -353,7 +332,7 @@ var AuthController = {
     .then(function(user){
       if(!user) return res.view(404);
       user.status=1;
-      Proveedor.create({userId:user,username:user.username,email:user.email}).then(function(prov){
+      Proveedor.create({userId:user}).then(function(prov){
         user.proveedor = prov;
         user.save();
       })
@@ -364,7 +343,7 @@ var AuthController = {
 
   getperfil:function(req,res){    
     var user= req.session.user.username;
-    Proveedor.findOne({username:user}).then(function(user,err){
+    User.findOne({username:user}).then(function(user,err){
       if(!user) return res.json(400,err);
       req.session.resetuser = user;
       res.json(user);
@@ -376,7 +355,7 @@ var AuthController = {
 
 console.log("parametros aactualizar");
  var data = req.allParams();
-      Proveedor.update({username:req.allParams().username},data).then(function(user){
+      User.update({username:req.allParams().username},data).then(function(user){
           res.json(user);
       }).fail(function(err){
           console.log(err);

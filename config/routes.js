@@ -44,9 +44,6 @@ module.exports.routes = {
   'post /forgot': 'AuthController.resetPassword',
   'post /reset' : 'AuthController.reestablecerPwd',
   'post /changepass' : 'AuthController.changepass',
-  'post /newUser' : {controller:'AuthController',
-                    action:'newUser',
-                    cors:{ origin:'*' }},
   'post /loginapp' : 'AuthController.loginApp',
 
   'get /auth/:provider': 'AuthController.provider',

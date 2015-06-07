@@ -32,6 +32,7 @@
                                 <th><i class="icon_calendar"></i> Vigencia</th>
                                 <th><i ></i> # Kupones</th>
                                 <th><i ></i> Kupones creados</th>
+                                <th><i ></i> Estado</th>
                                 <th><i class="icon_cogs"></i> Acción</th>
                             </tr>
                         </thead>
@@ -39,9 +40,10 @@
                             <tr ng-repeat="kupon in kupones">
                                 <td>{{kupon.titulo}}</td>
                                 <td>{{kupon.descripcionCorta}}</td>
-                                <td>{{kupon.vigencia}}</td>
+                                <td>{{kupon.iniVigencia | date:'medium'}} a {{kupon.finVigencia | date:'medium'}}</td>
                                 <td>{{kupon.cantidadKupones}}</td>
                                 <td>{{kupon.cantidadCreados}}</td>
+                                <td>{{kupon.activo ? 'Activo' : 'Inactivo'}}</td>
                                 <td>
                                     <div class="btn-group">
                                         <!-- 

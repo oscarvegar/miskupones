@@ -350,6 +350,8 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 			firstDay: 1
 		},
 		showWeekNumbers: true,
+		timePicker: true,
+		timePickerIncrement: 30,
 		buttonClasses: ['btn-danger']
 	};
 

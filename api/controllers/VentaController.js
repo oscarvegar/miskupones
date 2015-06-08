@@ -15,13 +15,15 @@ module.exports = {
                       promocion:ventaRequest.promocionId ,
                       cantidad:ventaRequest.cantidad,
                       total:ventaRequest.total }
-        Promocion.find({promocionId:venta.promocion})
+        Promocion.findOne({promocionId:venta.promocion})
        .then(function(promocion) {
             Venta.query("START TRANSACTION");
             return promocion;
         })
        .then(function(promocion) {
-            return Promocion.update( {promocionId:promocion.promocionId}, {cantidadCreados:venta.cantidad} );
+                console.log("Actualizando promo: ", promocion );
+                var cantidadCreados = promocion.cantidadCreados + venta.cantidad;
+            return Promocion.update( {promocionId:promocion.promocionId}, {cantidadCreados:cantidadCreados} );
         })
        .then(function(promocion){
             console.log("Promocion actualizada a " + venta.cantidad + " kupones creados ... ");

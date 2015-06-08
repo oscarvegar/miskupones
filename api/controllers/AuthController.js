@@ -152,7 +152,11 @@ var AuthController = {
 
       switch (action) {
         case 'register':
-          res.redirect('/login');
+          if(req.param('wreck')){
+            res.json(403,{code:-1});
+          }else{
+            res.redirect('/login');
+          }
           break;
         case 'disconnect':
           res.redirect('back');
@@ -166,7 +170,10 @@ var AuthController = {
       if (err || !user) {
         return tryAgain(challenges);
       }
-      if(!user.status || user.status<0){
+      if(req.param('wreck')){
+        return res.json(user);
+      }
+      if(!user.status || user.status<0) {
         return tryAgain(err,"Tu usuario se encuentra inactivo, revisa tu email para activar tu cuenta.(No olvides revisar el spam)");
       }
       console.log("USER",user);

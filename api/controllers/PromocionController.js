@@ -263,6 +263,7 @@ module.exports = {
             return res.redirect('/login');
         }
     },
+
     imageKupon: function (req, res) {
 
         req.validate({
@@ -293,12 +294,13 @@ module.exports = {
         } else {
             criteria = {where: {activo: true}};
         }
-        Promocion.find(criteria).then(function (promociones) {
+        Promocion.find(criteria).sort({"updatedAt":"desc"}).then(function (promociones) {
             return response.json(promociones);
         }).catch(function (err) {
             console.error("Error al buscar promociones por limite :: ", err);
         });
     },
+
     findById: function(request, response ){
         var data = request.allParams.id;
         console.log("data.: ", data);

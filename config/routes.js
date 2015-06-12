@@ -52,6 +52,9 @@ module.exports.routes = {
 
   'get /getperfil': 'AuthController.getperfil',
   'post /updateperfil': 'AuthController.updateperfil',
+  'get /getdashboard/:fechaInicial/:fechaFinal': 'DashboardController.getdashboard',
+  'get /getdashboardxmes/:fechaInicial/:fechaFinal': 'DashboardController.getdashboardxmes',
+  'get /getdashboardanual/:fechaInicial/:fechaFinal': 'DashboardController.getdashboardanual',
 
 
 

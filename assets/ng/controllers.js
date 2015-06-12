@@ -47,7 +47,7 @@ angular.module("miskupones.controllers",["chart.js",'highcharts-ng'])
 
 
 })
-.controller("DashboardCtrl",function($scope){
+.controller("DashboardCtrl",function($scope,$http){
 	$scope.line = {};
  	$scope.line.labels = ["1/06", "2/06", "3/06", "4/06", "5/06", "6/06", "7/06"];
   	$scope.line.series = ['Kupon #123', 'Kupon #52', 'Kupon #16'];
@@ -94,52 +94,192 @@ angular.module("miskupones.controllers",["chart.js",'highcharts-ng'])
 	  console.log(points, evt);
 	};
 
+
+
+
     
     //Venta de Kupones
 
-	$('#ventaKupones').highcharts({
-        title: {
-            text: '',
-            x: -20
-        },
-        subtitle: {
-            text: '',
-            x: -20
-        },
-         credits: {
-            enabled: false
-        },
-        xAxis: {
-            categories: ['1/06', '2/06', '3/06', '4/06', '5/06', '6/06',
-                '7/06']
-        },
-        yAxis: {
-            title: {
-                text: 'Kupones Vendidos'
-            },
-            plotLines: [{
-                value: 0,
-                width: 1,
-                color: '#808080'
-            }]
-        },
-        tooltip: {
-            valueSuffix: ' Kupones'
-        },
-        legend: {
-            align: 'center',
-        },
-        series: [{
-            name: 'Kupon#123',
-            data: [7, 6, 9, 14, 18, 21, 25]
-        }, {
-            name: 'Kupon#13',
-            data: [2, 8, 5, 11, 17, 22, 24]
-        }, {
-            name: 'Kupon#1',
-            data: [9, 6, 3, 8, 13, 17, 19]
-        }]
-    });
+
+    var d = new Date();
+    var anio = d.getFullYear();
+    var mes =  d.getMonth()-1;
+    var dia = d.getDate();
+    var aniofin = d.getFullYear();
+    var mesfin =  d.getMonth()-1;
+    var diafin =  d.getDate();
+    
+    if(mes == '0'){
+      mes = '01';
+    }else if(mes == '1'){
+      mes = '02';
+    }else if(mes == '2'){
+      mes = '03';
+    }else if(mes == '3'){
+      mes = '04'; 
+    }else if(mes == '4'){
+      mes = '05';
+    }else if(mes == '5'){
+      mes = '06';
+    }else if(mes == '6'){
+      mes = '07';
+    }else if(mes == '7'){
+      mes = '08';
+    }else if(mes == '8'){
+      mes = '09';
+    }else if(mes == '9'){
+      mes = '10';
+    }else if(mes == '10'){
+      mes = '11';
+    }else if(mes == '11'){
+      mes = '12';
+    }
+    
+    
+    if(mesfin == '0'){
+      mesfin = '01';
+    }else if(mesfin == '1'){
+      mesfin = '02';
+    }else if(mesfin == '2'){
+      mesfin = '03';
+    }else if(mesfin == '3'){
+      mesfin = '04';
+    }else if(mesfin == '4'){
+      mesfin = '05';
+    }else if(mesfin == '5'){
+      mesfin = '06';
+    }else if(mesfin == '6'){
+      mesfin = '07';
+    }else if(mesfin == '7'){
+      mesfin = '08';
+    }else if(mesfin == '8'){
+      mesfin = '09';
+    }else if(mesfin == '9'){
+      mesfin = '10';
+    }else if(mesfin == '10'){
+      mesfin = '11';
+    }else if(mesfin == '11'){
+      mesfin = '12';
+    }
+
+    $scope.dia = dia;
+    $scope.mes = mes;
+    $scope.anio = anio; 
+    $scope.diafin = diafin;
+    $scope.mesfin = mesfin;
+    $scope.aniofin = aniofin;   
+
+    var fechaInicial = new Date(anio,mes,dia+1);
+    var fechaFinalOrigen = new Date(aniofin,mesfin-1,diafin);
+    
+    console.log("Fechas de Origen");
+
+    console.log(fechaInicial);
+    console.log(fechaFinalOrigen);
+    
+
+
+    $http.get('/getdashboard/'+fechaInicial.getTime()+'/'+ fechaFinalOrigen.getTime()).success(function(data) {
+                 $scope.genero=data;
+                 console.log("Grafica Ventas ");
+                  console.log(data);
+
+                  $scope.ventasKupon=data;
+
+                var fechaMinima = fechaFinalOrigen;    
+                var fechaFinal = fechaInicial;
+
+                var ventas = [];
+                var tmpStrDate = "";
+                var dataArreglo = {};
+                var idVenta = "";
+                var idVentaKupon = "";
+    
+
+    
+                var idpromocion = 0;
+
+                for (var i = 0; i < $scope.ventasKupon.length; i++) {
+
+                    idVenta = $scope.ventasKupon[i].promocion.promocionId;
+                    idVentaKupon = $scope.ventasKupon[i].promocion.promocionId;
+                
+                   if(dataArreglo[idVenta]) {
+                        var arrFecha = [];
+
+                        tmpStrDate = Date.UTC($scope.ventasKupon[i].createdAt.substring(0,4),  $scope.ventasKupon[i].createdAt.substring(5,7),   $scope.ventasKupon[i].createdAt.substring(8,10));
+                        arrFecha.push(tmpStrDate,$scope.ventasKupon[i].cantidad);  
+
+                        ventas[idpromocion].data.push(arrFecha);     
+
+
+
+                    } else {
+                        dataArreglo[idVentaKupon] = idVenta;
+
+                         ventas.push({
+                            name: $scope.ventasKupon[i].promocion.promocionId, data:[[Date.UTC($scope.ventasKupon[i].createdAt.substring(0,4),  $scope.ventasKupon[i].createdAt.substring(5,7),   $scope.ventasKupon[i].createdAt.substring(8,10)),$scope.ventasKupon[i].cantidad]]
+                        });
+                         
+                          idpromocion = ventas.length-1;
+
+                    }    
+                    
+                }
+
+
+                    $('#ventaKupones').highcharts({
+                        title: {
+                            text: '',
+                            x: -20
+                        },
+                        subtitle: {
+                            text: '',
+                            x: -20
+                        },
+                         credits: {
+                            enabled: false
+                        },
+                        xAxis: {
+                            type: 'datetime',
+                            tickInterval: 24 * 3600 * 1000,
+                             tickPixelInterval: 2000000,
+                            dateTimeLabelFormats: {
+                                month: '%b\ %y',
+                                day: '%e. %b',
+                                year: '%Y'
+                            },
+                            title: {
+                                text: 'Fecha'
+                            }
+                        },
+                        yAxis: {
+                            title: {
+                                text: 'Kupones Vendidos'
+                            },
+                            plotLines: [{
+                                value: 0,
+                                width: 1,
+                                color: '#808080'
+                            }]
+                        },
+                        tooltip: {
+                            valueSuffix: ' Kupones'
+                        },
+                        legend: {
+                            align: 'center',
+                        },
+                        series: ventas
+                    });
+
+
+             }).error(function(data, status, headers, config) {
+                 console.log("Error Servicio");
+
+             }); //Termina Genero General 
+
+
+
 
 
 	//Cupones Compartidos
@@ -209,7 +349,54 @@ angular.module("miskupones.controllers",["chart.js",'highcharts-ng'])
     });
 
 
-	//ventas x mes
+
+    // Inicia Dashboard por mes
+    $http.get('/getdashboardxmes/'+fechaInicial.getTime()+'/'+ fechaFinalOrigen.getTime()).success(function(data) {
+                 $scope.VentasMes=data;
+                 console.log("Grafica Ventas x mes ");
+                  console.log(data);
+
+
+
+    var arrMeses = [];
+    var arrTotal =[];
+
+
+    for (var i = 0; i < $scope.VentasMes.length; i++) {
+
+        if($scope.VentasMes[i].meses == '1'){
+         $scope.VentasMes[i].meses = 'Enero';
+        }else if($scope.VentasMes[i].meses == '2'){
+          $scope.VentasMes[i].meses = 'Febrero';
+        }else if($scope.VentasMes[i].meses == '3'){
+          $scope.VentasMes[i].meses = 'Marzo';
+        }else if($scope.VentasMes[i].meses == '4'){
+          $scope.VentasMes[i].meses = 'Abril';
+        }else if($scope.VentasMes[i].meses == '5'){
+          $scope.VentasMes[i].meses = 'Mayo';
+        }else if($scope.VentasMes[i].meses == '6'){
+          $scope.VentasMes[i].meses = 'Junio';
+        }else if($scope.VentasMes[i].meses == '7'){
+          $scope.VentasMes[i].meses = 'Julio';
+        }else if($scope.VentasMes[i].meses == '8'){
+          $scope.VentasMes[i].meses = 'Agosto';
+        }else if($scope.VentasMes[i].meses == '9'){
+          $scope.VentasMes[i].meses = 'Septiembre';
+        }else if($scope.VentasMes[i].meses == '10'){
+          $scope.VentasMes[i].meses = 'Octubre';
+        }else if($scope.VentasMes[i].meses == '11'){
+          $scope.VentasMes[i].meses = 'Noviembre';
+        }else if($scope.VentasMes[i].meses == '12'){
+          $scope.VentasMes[i].meses = 'Diciembre';
+        }
+
+
+        arrMeses.push($scope.VentasMes[i].meses);
+                        
+        arrTotal.push($scope.VentasMes[i].total)
+    }
+
+
 
 	$('#ventasxmes').highcharts({
         chart: {
@@ -225,15 +412,7 @@ angular.module("miskupones.controllers",["chart.js",'highcharts-ng'])
              enabled: false
         },
         xAxis: {
-            categories: [
-                'Enero',
-                'Febrero',
-                'Marzo',
-                'Abril',
-                'Mayo',
-                'Junio',
-                'Julio'
-            ],
+            categories: arrMeses,
             crosshair: true
         },
         yAxis: {
@@ -258,10 +437,15 @@ angular.module("miskupones.controllers",["chart.js",'highcharts-ng'])
         },
         series: [{
             name: 'Ventas en Miles de Pesos',
-            data: [49, 71, 106, 129, 144, 176, 135]
+            data: arrTotal
 
         }]
     });
+
+     }).error(function(data, status, headers, config) {
+                 console.log("Error Servicio ");
+
+         }); //Termina Dashboard x Mes
 
 
     // Ventas por dispositivo
@@ -328,7 +512,61 @@ angular.module("miskupones.controllers",["chart.js",'highcharts-ng'])
     });
 
 
-//ventas x año
+      // Inicia Dashboard Anual
+    $http.get('/getdashboardanual/'+fechaInicial.getTime()+'/'+ fechaFinalOrigen.getTime()).success(function(data) {
+                 $scope.VentasAnual=data;
+                 console.log("Grafica Ventas Anual");
+                  console.log(data);
+
+
+    var arrMeses = [];
+    var arrTotal =[];
+
+
+    for (var i = 0; i < $scope.VentasAnual.length; i++) {
+
+        if($scope.VentasAnual[i].meses == '1'){
+         $scope.VentasAnual[i].meses = 'Enero';
+        }else if($scope.VentasAnual[i].meses == '2'){
+          $scope.VentasAnual[i].meses = 'Febrero';
+        }else if($scope.VentasAnual[i].meses == '3'){
+          $scope.VentasAnual[i].meses = 'Marzo';
+        }else if($scope.VentasAnual[i].meses == '4'){
+          $scope.VentasAnual[i].meses = 'Abril';
+        }else if($scope.VentasAnual[i].meses == '5'){
+          $scope.VentasAnual[i].meses = 'Mayo';
+        }else if($scope.VentasAnual[i].meses == '6'){
+          $scope.VentasAnual[i].meses = 'Junio';
+        }else if($scope.VentasAnual[i].meses == '7'){
+          $scope.VentasAnual[i].meses = 'Julio';
+        }else if($scope.VentasAnual[i].meses == '8'){
+          $scope.VentasAnual[i].meses = 'Agosto';
+        }else if($scope.VentasAnual[i].meses == '9'){
+          $scope.VentasAnual[i].meses = 'Septiembre';
+        }else if($scope.VentasAnual[i].meses == '10'){
+          $scope.VentasAnual[i].meses = 'Octubre';
+        }else if($scope.VentasAnual[i].meses == '11'){
+          $scope.VentasAnual[i].meses = 'Noviembre';
+        }else if($scope.VentasAnual[i].meses == '12'){
+          $scope.VentasAnual[i].meses = 'Diciembre';
+        }
+
+
+        arrMeses.push($scope.VentasAnual[i].meses + "-" + $scope.VentasAnual[i].anios);
+                        
+        arrTotal.push($scope.VentasAnual[i].total)
+    }
+
+
+console.log("Ventas Anuales");
+
+console.log(arrMeses);
+console.log(arrTotal);
+
+
+
+
+
   $('#ventasAnuales').highcharts({
         chart: {
             type: 'areaspline'
@@ -342,15 +580,7 @@ angular.module("miskupones.controllers",["chart.js",'highcharts-ng'])
             backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
         },
         xAxis: {
-            categories: [
-                'Septiembre 14',
-                'Octubre 14',
-                'Noviembre 14',
-                'Diciembre 14',
-                'Enero 15',
-                'Febrero 15',
-                'Marzo 15'
-            ]
+            categories: arrMeses
         },
         yAxis: {
             title: {
@@ -371,9 +601,14 @@ angular.module("miskupones.controllers",["chart.js",'highcharts-ng'])
         },
         series: [{
             name: 'Ventas en miles de pesos',
-            data: [3, 4, 3, 5, 4, 10, 12]
+            data: arrTotal
         }]
     });
+
+    }).error(function(data, status, headers, config) {
+                 console.log("Error Servicio");
+
+    }); //Termina Dashboard Anual
 
 
 })

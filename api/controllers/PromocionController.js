@@ -302,7 +302,7 @@ module.exports = {
     },
 
     findById: function(request, response ){
-        var data = request.allParams.id;
+        var data = request.allParams().id;
         console.log("data.: ", data);
         Promocion.findOne({promocionId:data, activo:true}).then(function (promocion) {
             console.log("==>", promocion)

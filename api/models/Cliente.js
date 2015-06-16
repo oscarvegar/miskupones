@@ -10,7 +10,16 @@ module.exports = {
   attributes: {
     user:{
       model:'user'
+    },
+    nombre: 'string',
+    apellidos: 'string',
+    telefono: 'string',
+    correo: 'string',
+    activo: {
+      type:'boolean',
+      defaultsTo:1
     }
+
   }
 };
 

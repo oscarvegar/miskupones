@@ -45,9 +45,11 @@ module.exports.policies = {
 
   'venta':{
     '*': true
+  },
+
+  'cliente':{
+    '*': true
   }
-  
-  
 
   
   

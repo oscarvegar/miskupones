@@ -154,19 +154,26 @@ module.exports.bootstrap = function(cb) {
   		});
   	}
   });
+
 /*
-  Promocion.find({activo: true}, function(err, promociones) {
-  	if(err){
-  		return res.json(400,err);
-  	} else if(promociones == null || promociones.length == 0){
-  		promocionDummy.
-  		Promocion.create(, function(error, promocion) {
-  			asd
-  		});
-  	}
+  Promocion.find({activo: true}).then(function(promociones) {
+	for(var i in promociones ){
+		var promocion = promociones[i];
+		var kupon = {promocionId:promocion.promocionId, subCategoriaId:promocion.subCategoriaId};
+		Kupon.create(kupon).then(function( kuponNuevo ){
+			var venta = { user:1, promocion:kuponNuevo.promocionId, cantidad:1, total: 30};
+			Venta.create(venta).then(function(ventaNueva){
+				Promocion.update({promocionId:ventaNueva.promocion},{cantidadCreados:1})
+				.then(function(promoUpd){});
+			})
+		})
+	}
   });
 */
   // It's very important to trigger this callback method when you are finished
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
+
   cb();
+
+
 };

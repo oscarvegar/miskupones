@@ -153,27 +153,36 @@ var AuthController = {
       switch (action) {
         case 'register':
           if(req.param('wreck')){
-            res.json(403,{code:-1});
+            console.log("error registro ... ");
+            res.json(403,{code:-1, error:err});
           }else{
             res.redirect('/login');
           }
           break;
         case 'disconnect':
           res.redirect('back');
-          break;
+          break;  
         default:
           res.redirect('/login');
       }
     }
     console.log(req.allParams())
     passport.callback(req, res, function (err, user, challenges, statuses) {
+      console.log("En callback ....");
       if (err || !user) {
-        return tryAgain(challenges);
+        console.log("en err y no user, ", err);
+        if( req.param('wreck') ){
+          return tryAgain(err, challenges);
+        } else {
+          return tryAgain(challenges);
+        }
       }
       if(req.param('wreck')){
+        console.log("en wreck user :: ", user)
         return res.json(user);
       }
       if(!user.status || user.status<0) {
+        console.log("en donde no hay estatus o es menor a 0")
         return tryAgain(err,"Tu usuario se encuentra inactivo, revisa tu email para activar tu cuenta.(No olvides revisar el spam)");
       }
       console.log("USER",user);
@@ -304,7 +313,7 @@ var AuthController = {
       console.log("USER LOGIN",user)
       if (err || !user) {
         //return tryAgain(challenges);
-        console.log("ERROR LOGIN")
+        console.log("ERROR LOGIN ")
         return res.json(403,{});
       }
      

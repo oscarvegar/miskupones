@@ -44,9 +44,9 @@ module.exports.connections = {
   kuponesMysqlServer: {
     adapter: 'sails-mysql',
     host: 'localhost',
-    user: 'miskupones',
-    password: 'miskupones',
-    database: 'mis_kupones'
+    user: 'root',
+    password: 'oscgp2010',
+    database: 'dev_kupones'
   },
   prod_kuponesServer: {
     adapter: 'sails-mysql',
@@ -54,7 +54,7 @@ module.exports.connections = {
     user: 'mavergar_dev',
     password: 'dev2015',
     database: 'dev_kupones'
-  },
+  }
 
 
 };

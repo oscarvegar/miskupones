@@ -15,6 +15,9 @@ module.exports = {
     apellidos: 'string',
     telefono: 'string',
     correo: 'string',
+    estado:{
+      model:'estado'
+    },
     activo: {
       type:'boolean',
       defaultsTo:1

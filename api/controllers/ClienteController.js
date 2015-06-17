@@ -28,6 +28,13 @@ module.exports = {
         }).catch(function (err) {
             console.error("Error al buscar cliente por id :: ",err);
         });
+    },
+
+    create: function( request, response ){
+        var cliente = request.allParams();
+        Cliente.create(cliente).then(function(cliente){
+            return response.json(cliente);
+        });
     }
 
 };

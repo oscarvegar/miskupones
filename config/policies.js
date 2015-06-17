@@ -49,6 +49,10 @@ module.exports.policies = {
 
   'cliente':{
     '*': true
+  },
+
+  'estado':{
+    '*': true
   }
 
   

@@ -17,9 +17,9 @@ module.exports.models = {
   * connections (see `config/connections.js`)                                *
   *                                                                          *
   ***************************************************************************/
-  // connection: 'localDiskDb',
-   connection: 'kuponesMysqlServer',
-  //connection: 'prod_kuponesServer',
+  //connection: 'localDiskDb',
+  // connection: 'kuponesMysqlServer',
+  connection: 'prod_kuponesServer',
 
   /***************************************************************************
   *                                                                          *

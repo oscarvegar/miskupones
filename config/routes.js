@@ -55,6 +55,7 @@ module.exports.routes = {
   'get /getdashboard/:fechaInicial/:fechaFinal': 'DashboardController.getdashboard',
   'get /getdashboardxmes/:fechaInicial/:fechaFinal': 'DashboardController.getdashboardxmes',
   'get /getdashboardanual/:fechaInicial/:fechaFinal': 'DashboardController.getdashboardanual',
+  'get /v/promocion/:id' : 'PromocionController.viewPromocion',
 
 
 

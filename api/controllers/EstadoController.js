@@ -6,6 +6,12 @@
  */
 
 module.exports = {
-	
+
+    getEstados : function( request, response ){
+        Estado.find({}).then(function(estados){
+            return response.json(estados);
+        })
+    }
+
 };
 

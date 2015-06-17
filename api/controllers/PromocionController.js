@@ -302,13 +302,34 @@ module.exports = {
     },
 
     findById: function(request, response ){
-        var data = request.allParams.id;
+        var data = request.allParams().id;
         console.log("data.: ", data);
         Promocion.findOne({promocionId:data, activo:true}).then(function (promocion) {
             console.log("==>", promocion)
             return response.json(promocion);
         }).catch(function (err) {
             console.error("Error al buscar promociones por id :: ",err);
+        });
+    },
+
+    viewPromocion: function(req,res){
+        var id = req.param('id');
+        console.log(id)
+        Promocion.findOne({promocionId:id}).then(function(data){
+            if(!data)return res.view("404");
+            res.view(
+                'promocion/detail',
+                {
+                    metas:{
+                        title : data.titulo,
+                        image : data.imagenesUrls,
+                        description : data.descripcionCorta
+                    }
+                }
+            )
+        }).fail(function(err){
+            console.error(err);
+            res.view('500')
         });
     }
 };

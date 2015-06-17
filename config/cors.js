@@ -48,9 +48,9 @@ module.exports.cors = {
   *                                                                          *
   ***************************************************************************/
 
-  // origin: '*',
-  origin: require('./local.js').hosts, // this is 'http://localhost',
-  securityLevel: 1
+   origin: '*',
+  //origin: require('./local.js').hosts, // this is 'http://localhost',
+  //securityLevel: 1,
 
   /***************************************************************************
   *                                                                          *
@@ -67,7 +67,7 @@ module.exports.cors = {
   *                                                                          *
   ***************************************************************************/
 
-  // methods: 'GET, POST, PUT, DELETE, OPTIONS, HEAD',
+   methods: 'GET, POST, PUT, DELETE, OPTIONS, HEAD',
 
   /***************************************************************************
   *                                                                          *
@@ -76,6 +76,6 @@ module.exports.cors = {
   *                                                                          *
   ***************************************************************************/
 
-  // headers: 'content-type'
+   headers: 'content-type, origin, X-Requested-With'
 
 };

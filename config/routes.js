@@ -32,7 +32,7 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  'get /login': 'AuthController.login',
+  '/login': 'AuthController.login',
   'get /logout': 'AuthController.logout',
   'get /register': 'AuthController.register',
   'get /forgot': 'AuthController.forgot',
@@ -58,6 +58,8 @@ module.exports.routes = {
   'get /getdashboardcompartidos/:fechaInicial/:fechaFinal': 'DashboardController.getdashboardcompartidos',
   'get /getdashboardlikes/:fechaInicial/:fechaFinal': 'DashboardController.getdashboardlikes',
   'get /getdashboardso/:fechaInicial/:fechaFinal': 'DashboardController.getdashboardso',
+  'get /v/promocion/:id' : 'PromocionController.viewPromocion',
+
 
 
 

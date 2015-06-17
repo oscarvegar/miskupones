@@ -54,7 +54,7 @@ module.exports.connections = {
     user: 'mavergar_dev',
     password: 'dev2015',
     database: 'dev_kupones'
-  },
+  }
 
 
 };

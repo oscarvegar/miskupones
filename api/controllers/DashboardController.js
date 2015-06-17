@@ -78,11 +78,59 @@ module.exports = {
 	},
 
 
+	getdashboardcompartidos:function(req,res){
+		var fecha = req.allParams();
+		var start_date=Number(fecha.fechaInicial);
+		var end_date=Number(fecha.fechaFinal);
+		console.log("Entro a dashboard");
+		console.log(start_date);
+		console.log(end_date);
+
+		Venta.query('SELECT MONTH(createdAt) as meses, YEAR(createdAt) as anios, SUM(total) as total FROM mis_kupones.venta GROUP BY YEAR(createdAt), MONTH(createdAt)', function(err, data) {
+		    if(err) res.json({ error: err.message }, 400);
+		    console.log(data);
+		    res.json(data);
+		});
+	
+				
+	},
 
 
 
 
+	getdashboardlikes:function(req,res){
+		var fecha = req.allParams();
+		var start_date=Number(fecha.fechaInicial);
+		var end_date=Number(fecha.fechaFinal);
+		console.log("Entro a dashboard");
+		console.log(start_date);
+		console.log(end_date);
 
+		Venta.query('SELECT MONTH(createdAt) as meses, YEAR(createdAt) as anios, SUM(total) as total FROM mis_kupones.venta GROUP BY YEAR(createdAt), MONTH(createdAt)', function(err, data) {
+		    if(err) res.json({ error: err.message }, 400);
+		    console.log(data);
+		    res.json(data);
+		});
+	
+				
+	},
+
+	getdashboardso:function(req,res){
+		var fecha = req.allParams();
+		var start_date=Number(fecha.fechaInicial);
+		var end_date=Number(fecha.fechaFinal);
+		console.log("Entro a dashboard");
+		console.log(start_date);
+		console.log(end_date);
+
+		Venta.query('SELECT MONTH(createdAt) as meses, YEAR(createdAt) as anios, SUM(total) as total FROM mis_kupones.venta GROUP BY YEAR(createdAt), MONTH(createdAt)', function(err, data) {
+		    if(err) res.json({ error: err.message }, 400);
+		    console.log(data);
+		    res.json(data);
+		});
+	
+				
+	}
 
 
 

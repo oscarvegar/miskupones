@@ -284,6 +284,9 @@ angular.module("miskupones.controllers",["chart.js",'highcharts-ng'])
 
 	//Cupones Compartidos
 
+  $http.get('/getdashboardcompartidos/'+fechaInicial.getTime()+'/'+ fechaFinalOrigen.getTime()).success(function(data) {
+    console.log("Kupones Compartidos");
+
 	$('#KuponesCompartidos').highcharts({
 
         chart: {
@@ -347,6 +350,11 @@ angular.module("miskupones.controllers",["chart.js",'highcharts-ng'])
         }]
 
     });
+
+    }).error(function(data, status, headers, config) {
+                 console.log("Error Servicio");
+
+    }); //Termina Kupones Compartidos
 
 
 
@@ -448,7 +456,11 @@ angular.module("miskupones.controllers",["chart.js",'highcharts-ng'])
          }); //Termina Dashboard x Mes
 
 
-    // Ventas por dispositivo
+    
+    // Ventas por SO
+ $http.get('/getdashboardso/'+fechaInicial.getTime()+'/'+ fechaFinalOrigen.getTime()).success(function(data) {
+
+  console.log("kupones SO");
 
  $('#ventasDispositivo').highcharts({
         chart: {
@@ -510,6 +522,11 @@ angular.module("miskupones.controllers",["chart.js",'highcharts-ng'])
 
         }]
     });
+
+     }).error(function(data, status, headers, config) {
+                 console.log("Error Servicio ");
+
+         }); //Termina Dashboard SO
 
 
       // Inicia Dashboard Anual
@@ -609,6 +626,80 @@ console.log(arrTotal);
                  console.log("Error Servicio");
 
     }); //Termina Dashboard Anual
+
+      // inicia Dashboard Likes
+      $http.get('/getdashboardlikes/'+fechaInicial.getTime()+'/'+ fechaFinalOrigen.getTime()).success(function(data) {
+        console.log("kupones likeados");
+
+      $('#KuponesLikes').highcharts({
+
+        chart: {
+            polar: true,
+            type: 'line'
+        },
+
+        title: {
+            text: '',
+            x: -80
+        },
+
+        pane: {
+            size: '100%'
+        },
+        credits:{
+             enabled: false
+        },
+        xAxis: {
+            categories: ['Likeados'],
+            tickmarkPlacement: 'on',
+            lineWidth: 0
+        },
+
+        yAxis: {
+            gridLineInterpolation: 'circle',
+            lineWidth: 0,
+            min: 0
+        },
+
+        tooltip: {
+            shared: false,
+            pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
+        },
+
+        legend: {
+            align: 'center',
+            layout: 'horizontal'
+        },
+
+        series: [{
+            type: 'column',
+            name: 'Kupon#1',
+            data: [300],
+            pointPlacement: 'on'
+        }, {
+            type: 'column',
+            name: 'Kupon#2',
+            data: [100],
+            pointPlacement: 'on'
+        },{
+            type: 'column',
+            name: 'Kupon#3',
+            data: [200],
+            pointPlacement: 'on'
+        },{
+            type: 'column',
+            name: 'Kupon#4',
+            data: [50],
+            pointPlacement: 'on'
+        }]
+
+    });
+
+    }).error(function(data, status, headers, config) {
+                 console.log("Error Servicio");
+
+    }); //Termina Dashboard Likes
+
 
 
 })

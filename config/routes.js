@@ -55,6 +55,9 @@ module.exports.routes = {
   'get /getdashboard/:fechaInicial/:fechaFinal': 'DashboardController.getdashboard',
   'get /getdashboardxmes/:fechaInicial/:fechaFinal': 'DashboardController.getdashboardxmes',
   'get /getdashboardanual/:fechaInicial/:fechaFinal': 'DashboardController.getdashboardanual',
+  'get /getdashboardcompartidos/:fechaInicial/:fechaFinal': 'DashboardController.getdashboardcompartidos',
+  'get /getdashboardlikes/:fechaInicial/:fechaFinal': 'DashboardController.getdashboardlikes',
+  'get /getdashboardso/:fechaInicial/:fechaFinal': 'DashboardController.getdashboardso',
 
 
 

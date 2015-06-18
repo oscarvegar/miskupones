@@ -55,6 +55,14 @@
           </button>
         </div>
       </div>
+      <div class="row" id="btnIOS" style="display:none">
+        <br>
+        <div class="col-md-12">
+          <button class="btn btn-info btn-lg" style="width:100%" 
+          onclick="window.location='https://geo.itunes.apple.com/us/app/clash-of-clans/id529479190?mt=8&uo=6'"><b>!Descarga nuestra app <br> y empieza a ahorrar!</b>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -79,6 +87,8 @@ var isMobile = {
 
 if(isMobile.Android()){
   document.getElementById('btnAnd').style.display = 'inline';
+}if(isMobile.iOS()){
+  document.getElementById('btnIOS').style.display = 'inline';
 }else{
   document.getElementById('btnHTML').style.display = 'inline';
 }

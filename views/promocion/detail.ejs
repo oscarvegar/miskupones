@@ -87,7 +87,7 @@ var isMobile = {
 
 if(isMobile.Android()){
   document.getElementById('btnAnd').style.display = 'inline';
-}if(isMobile.iOS()){
+}else if(isMobile.iOS()){
   document.getElementById('btnIOS').style.display = 'inline';
 }else{
   document.getElementById('btnHTML').style.display = 'inline';

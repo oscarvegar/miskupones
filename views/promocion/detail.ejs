@@ -1,23 +1,25 @@
-<section id="container" class="">
-<h1><a class="logo col-md-offset-5 col-md-2">Mis <span class="lite">Kupones</span></a>  </h1> 
-  <div class="container" >
+<div class="container" >
+  <div class="login-form" style="margin-top:1%;background-color:white;">     
 
-     
-    <div class="login-form" style="margin-top:5%;background-color:white;">     
+    <div >
+      <div class="row text-center">
 
-      <div >
-        <div class="row text-center">
-
-          <h2 class="lite"><%=promocion.titulo%></h2>
+        <h2 class="lite"><%=promocion.titulo%></h2>
+      </div>
+      <div class="row" style="color:black;">
+        <div class="col-md-offset-1 col-md-10">
+         <img src="<%=promocion.imagenesUrls%>" style="width:100%">
         </div>
-        <p >
-          <img src="<%=promocion.imagenesUrls%>" style="width:90%">
-        </p>
-        <p style="color:black;">
-        <b><%=promocion.descripcionLarga%></b>
-        </p>
-        <div class="row">
-          <table class="col-md-offset-1 col-md-10">
+      </div>
+      <div class="row" style="color:black;">
+        <div class="col-md-offset-1 col-md-10">
+          <b><%=promocion.descripcionLarga%></b>
+        </div>
+      </div>
+      <div class="row">
+        <br>
+        <div class="col-md-offset-1 col-md-10">
+          <table>
             <tr>
               <td>
                 <b style="color:red">Precio regular</b>
@@ -30,19 +32,20 @@
               </td>
             </tr>
             <tr>
-            <td><h3 class="textCancel">$<%=promocion.precioRegular%></h3></td>
-            <td><h3 style="color:green">$<%=promocion.precioDescuento%></h3></td>
-            <td><h3 class="lite">$<%=promocion.precioKupon%></h3></td>
-                
-
+              <td><h3 class="textCancel">$<%=promocion.precioRegular%></h3></td>
+              <td><h3 style="color:green">$<%=promocion.precioDescuento%></h3></td>
+              <td><h3 class="lite">$<%=promocion.precioKupon%></h3></td>
             </tr>
           </table>
         </div>
-        <div class="row">
-          <br>
-          <button class="btn btn-info col-md-offset-1 col-md-10" onclick="window.location='https://play.google.com/store/apps/details?id=thecouponsapp.coupon'"><b>!Descarga nuestra app y empieza a ahorrar!</b></button><br><br>
+      </div>
+      <div class="row">
+        <br>
+        <div class="col-md-12">
+          <button class="btn btn-info btn-lg" style="width:100%" onclick="window.location='market://play.google.com/store/apps/details?id=thecouponsapp.coupon'"><b>!Descarga nuestra app <br> y empieza a ahorrar!</b>
+          </button>
         </div>
       </div>
     </div>
   </div>
-</section>
+</div>

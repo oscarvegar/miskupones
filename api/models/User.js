@@ -13,6 +13,10 @@ var User = {
       model: 'Proveedor',
       columnName: 'proveedor_id'
     },
+    cliente: {
+      model:"Cliente",
+      columnName: 'cliente_id'
+    },
     perfil:'string'
   },
   	beforeCreate: function(user, next){

@@ -178,15 +178,30 @@ var AuthController = {
         }
       }
       if(req.param('wreck')){
+        if(req.param('action')=='register'){
+          user.perfil = Constantes.perfiles.APP;
+          User.update({id:user.id},{perfil:Constantes.perfiles.APP}).then(console.info);
+          //Cliente.create({user:user}).then(console.info)
+        }
         console.log("en wreck user :: ", user)
         return res.json(user);
+        
+      }else{
+        console.log("ACTION >>>>>",req.action)
+        console.log("USER >>>>>",user)
+        if(req.param('action')=='register'){
+          console.info("REGISTER DE PROVEEDOR >>>>>",user)
+          user.perfil = Constantes.perfiles.PROVEEDOR;
+          User.update({id:user.id},{perfil:Constantes.perfiles.PROVEEDOR}).then(console.info);
+          
+        }
       }
       if(!user.status || user.status<0) {
         console.log("en donde no hay estatus o es menor a 0")
         return tryAgain(err,"Tu usuario se encuentra inactivo, revisa tu email para activar tu cuenta.(No olvides revisar el spam)");
       }
-      console.log("USER",user);
 
+      
       req.login(user, function (err) {
         if (err) {
           return tryAgain(err);
@@ -351,6 +366,10 @@ var AuthController = {
       Proveedor.create({userId:user}).then(function(prov){
         user.proveedor = prov;
         user.save();
+        Cliente.create({user:user.id}).then(function(cte){
+          user.cliente = cte;
+          user.save();
+        })
       })
       res.redirect("/login?m=1")
     })

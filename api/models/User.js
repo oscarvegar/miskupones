@@ -12,7 +12,8 @@ var User = {
     proveedor: {
       model: 'Proveedor',
       columnName: 'proveedor_id'
-    }
+    },
+    perfil:'string'
   },
   	beforeCreate: function(user, next){
       var code = new Date().getTime();

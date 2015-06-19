@@ -7,7 +7,12 @@
     <meta name="author" content="GeeksLabs">
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="/img/favicon.png">
+     <% if(typeof metas != 'undefined'){%>
+    <meta property="og:image" itemprop="image primaryImageOfPage" content="<%=metas.image%>" />
+      <meta name="og:title" id="mtt" property="og:title" itemprop="title name" content="<%=metas.title%>" />
+      <meta name="og:description" property="og:description" itemprop="description" content="<%=metas.description%>" />
 
+    <%}%>
     <title>Mis Kupones</title>
 
     <!-- Bootstrap CSS -->    

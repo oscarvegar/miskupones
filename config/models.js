@@ -18,8 +18,8 @@ module.exports.models = {
   *                                                                          *
   ***************************************************************************/
   //connection: 'localDiskDb',
-  // connection: 'kuponesMysqlServer',
-  connection: 'prod_kuponesServer',
+   connection: 'kuponesMysqlServer',
+  //connection: 'prod_kuponesServer',
 
   /***************************************************************************
   *                                                                          *

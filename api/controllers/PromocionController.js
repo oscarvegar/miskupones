@@ -332,11 +332,13 @@ module.exports = {
             res.view(
                 'promocion/detail',
                 {
+                    layout:'liteLayout',
                     metas:{
                         title : data.titulo,
                         image : data.imagenesUrls,
                         description : data.descripcionCorta
-                    }
+                    },
+                    promocion : data
                 }
             )
         }).fail(function(err){

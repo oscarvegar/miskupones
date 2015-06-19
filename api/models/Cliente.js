@@ -18,6 +18,11 @@ module.exports = {
     estado:{
       model:'estado'
     },
+    promocionesLike:{
+      collection:'promocion',
+      via:'clientesLike',
+      dominant:true
+    },
     activo: {
       type:'boolean',
       defaultsTo:1

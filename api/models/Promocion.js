@@ -100,6 +100,10 @@ module.exports = {
 		estadosAsociados: {
 			collection: 'estado',
 			through: 'promocionestadojunction'
+		},
+		clientesLike:{
+			collection:'cliente',
+			via:'promocionesLike'
 		}
 	}
 };

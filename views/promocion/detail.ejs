@@ -1,1 +1,96 @@
-Detalle de kupon
+<div class="container" >
+  <div class="login-form" style="margin-top:1%;background-color:white;">     
+
+    <div >
+      <div class="row text-center">
+
+        <h2 class="lite"><%=promocion.titulo%></h2>
+      </div>
+      <div class="row" style="color:black;">
+        <div class="col-md-offset-1 col-md-10">
+         <img src="<%=promocion.imagenesUrls%>" style="width:100%">
+        </div>
+      </div>
+      <div class="row" style="color:black;">
+        <div class="col-md-offset-1 col-md-10">
+          <b><%=promocion.descripcionLarga%></b>
+        </div>
+      </div>
+      <div class="row">
+        <br>
+        <div class="col-md-offset-1 col-md-10">
+          <table>
+            <tr>
+              <td>
+                <b style="color:red">Precio regular</b>
+              </td>
+              <td>
+                <b style="color:green">Precio con descuento</b>
+              </td>
+              <td>
+                <b class="lite">Precio Kupon</b>
+              </td>
+            </tr>
+            <tr>
+              <td><h3 class="textCancel">$<%=promocion.precioRegular%></h3></td>
+              <td><h3 style="color:green">$<%=promocion.precioDescuento%></h3></td>
+              <td><h3 class="lite">$<%=promocion.precioKupon%></h3></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="row" id="btnAnd" style="display:none">
+        <br>
+        <div class="col-md-12">
+          <button class="btn btn-info btn-lg" style="width:100%" 
+          onclick="window.location='market://details?id=thecouponsapp.coupon'"><b>!Descarga nuestra app <br> y empieza a ahorrar!</b>
+          </button>
+        </div>
+      </div>
+      <div class="row" id="btnHTML" style="display:none">
+        <br>
+        <div class="col-md-12">
+          <button class="btn btn-info btn-lg" style="width:100%" 
+          onclick="window.location='http://play.google.com/store/apps/details?id=thecouponsapp.coupon'"><b>!Descarga nuestra app <br> y empieza a ahorrar!</b>
+          </button>
+        </div>
+      </div>
+      <div class="row" id="btnIOS" style="display:none">
+        <br>
+        <div class="col-md-12">
+          <button class="btn btn-info btn-lg" style="width:100%" 
+          onclick="window.location='https://geo.itunes.apple.com/us/app/clash-of-clans/id529479190?mt=8&uo=6'"><b>!Descarga nuestra app <br> y empieza a ahorrar!</b>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+var isMobile = {
+    Android: function() {
+        return /Android/i.test(navigator.userAgent);
+    },
+    BlackBerry: function() {
+        return /BlackBerry/i.test(navigator.userAgent);
+    },
+    iOS: function() {
+        return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    },
+    Windows: function() {
+        return /IEMobile/i.test(navigator.userAgent);
+    },
+    any: function() {
+        return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Windows());
+    }
+};
+
+if(isMobile.Android()){
+  document.getElementById('btnAnd').style.display = 'inline';
+}else if(isMobile.iOS()){
+  document.getElementById('btnIOS').style.display = 'inline';
+}else{
+  document.getElementById('btnHTML').style.display = 'inline';
+}
+
+</script>

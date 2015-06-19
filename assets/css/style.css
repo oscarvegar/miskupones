@@ -4938,3 +4938,28 @@ span.customSelect.changed {
 .customSelectInner {
     background:url(../img/customSelect-arrow.gif) no-repeat center right;
 }
+
+.cursor{
+    cursor: pointer;
+}
+.error{
+    color: darkred;
+}
+.tenue{
+    font-size: 11px;
+    color: #898989;
+}
+
+.textCancel{
+    text-decoration: line-through;
+    color:red;
+}
+
+.resaltar{
+    font-size: 14px;
+    color: #204d74;
+}
+.icon{
+    width: 30px;
+    height: 30px;
+}

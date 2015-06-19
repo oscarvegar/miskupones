@@ -92,6 +92,10 @@ module.exports = {
 		kupones: {
 			collection: 'Kupon',
 			via: 'promocionId'
+		},
+		clientesLike:{
+			collection:'cliente',
+			via:'promocionesLike'
 		}
 	}
 };

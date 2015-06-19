@@ -300,11 +300,11 @@ module.exports = {
 
     findByLimit: function(request, response ){
         var data = request.allParams.limit;
-        var criteria = null
+        var criteria = null;
         if( data ) {
-            criteria = {where: {activo: true}, limit: data};
+            criteria = {where: {activo: true, eliminado: false}, limit: data};
         } else {
-            criteria = {where: {activo: true}};
+            criteria = {where: {activo: true, eliminado: false}};
         }
         Promocion.find(criteria).sort({"updatedAt":"desc"}).then(function (promociones) {
             return response.json(promociones);

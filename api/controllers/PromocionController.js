@@ -191,7 +191,7 @@ module.exports = {
 
                             return rtrnArry;
                         }).spread(function(promoUpdated, promEdoDel) {
-                            console.log('afterPromoEdosDeleted');
+                            console.log('afterPromEdosDeleted');
                             console.log(promoUpdated);
                         
                             var Promise = require('bluebird');
@@ -227,7 +227,7 @@ module.exports = {
                             var promoEdoQueryAsync = Promise.promisify(PromocionEstado.query);
                             return [promoUpdated[0], promoEdoQueryAsync(' DELETE FROM promocion_estado where promocion_id = ? ', [promoUpdated[0].promocionId])];
                         }).spread(function(promoUpdated, promoEdoDeleted) {
-                            console.log('afterPromoEdosDeleted');
+                            console.log('afterPromEdosDeleted');
                             console.log(promoUpdated);
 
                             var Promise = require('bluebird');

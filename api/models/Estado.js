@@ -8,8 +8,25 @@
 module.exports = {
 
   attributes: {
-    entidad: 'string',
-    nombre:  'string'
-  }
+		clave: 'string',
+		nombre: 'string',
+		abreviatura: 'string',
+		claveCapital: {
+			type: 'string',
+			columnName: 'clave_capital'
+		},
+		nombreCapital: {
+			type: 'string',
+			columnName: 'nombre_capital'
+		},
+		estadoPromociones: {
+			collection: 'PromocionEstado',
+			via: 'estadoId'
+		},
+		promocionesAsociadas: {
+			collection: 'promocion',
+			through: 'promocionestadojunction'
+		}
+	}
 };
 

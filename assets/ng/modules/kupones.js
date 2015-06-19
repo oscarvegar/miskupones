@@ -3,7 +3,7 @@
  */
 'use strict';
 
-var module = angular.module('miskupones.kupones', [ 'ngFileUpload', 'oitozero.ngSweetAlert', 'daterangepicker' ]);	// , 'ngSails' ]);
+var module = angular.module('miskupones.kupones', [ 'ngFileUpload', 'oitozero.ngSweetAlert', 'daterangepicker', 'checklist-model' ]);	// , 'ngSails' ]);
 
 /**
  * Configure the Routes
@@ -359,6 +359,34 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 	$log.info('KuponesCtrl..showContent..' + $scope.showContent);
 	// spinnerService.hide('mySpinner', "Stuff loaded.");
 
+	$scope.findAllEstados = function(cb) {
+		$log.info('findAllEstados');
+
+		$http.get('/estado/getEstados')
+			.success(function(data, status, headers, config) {
+			// this callback will be called asynchronously
+			// when the response is available
+				cb(null, data);
+			}).error(function(error, status, headers, config) {
+			// called asynchronously if an error occurs
+			// or server returns response with an error status.
+				cb(error);
+			});
+	};
+
+	$scope.fillEstados = function() {
+		$log.info('fillEstados');
+
+		var cb = function(error, data) {
+			if(error) {
+				$log.error(error);
+			} else {
+				$scope.estados = data;
+			}
+		}
+
+		$scope.findAllEstados(cb);
+	};
 
 	$scope.createKupon = function() {
 		$scope.action = 'C';
@@ -382,6 +410,28 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 		 */
 	};
 
+	$scope.fillArrayEdos = function(kupon) {
+		$log.info('fillArrayEdos');
+
+		var cb = function(error, edos) {
+			if(error) {
+				$log.error(error);
+			} else {
+				var curKupEdosDb = kupon.promocionEstados;
+				var curKupEdosTmp = new Array();
+				for (var i = 0; i < curKupEdosDb.length; i++) {
+					for (var j = 0; j < edos.length; j++) {
+						if(curKupEdosDb[i].estadoId == edos[j].id) {
+							curKupEdosTmp.push(edos[j]);
+							break;
+						}
+					};
+				};
+				kupon.estadosAsociados = curKupEdosTmp;
+			}
+		}
+		$scope.findAllEstados(cb);
+	};
 
 	$scope.viewKuponById = function(kuponId, cb) {
 		$log.info('viewKuponById');
@@ -405,6 +455,7 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 			} else {
 				$scope.currentKupon = data.kupon;
 				$scope.fillArrayImages(data.kupon);
+				$scope.fillArrayEdos(data.kupon);
 			}
 		});
 	};
@@ -767,6 +818,7 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 								break;
 							}
 						}
+						$scope.fillArrayEdos(tmpKupon);
 					}
 				});
 			}
@@ -899,6 +951,7 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 		switch ($scope.action) {
 			case 'C':
 				$scope.readAllCategorias();
+				$scope.fillEstados();
 				$scope.showContent = true;
 				break;
 			case 'R':
@@ -911,6 +964,7 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 				break;
 			case 'U':
 				$scope.readAllCategorias();
+				$scope.fillEstados();
 				$scope.updateEditKuponView($scope.params.kuponId);
 				$scope.showContent = true;
 				break;

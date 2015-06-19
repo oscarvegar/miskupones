@@ -28,44 +28,6 @@ module.exports = {
             // console.log(allReqParams);
             // console.log(req);
             console.log(dataProm);
-/*
-            reqFile.upload({ dirname: '../../assets/uploadImages'}, function onUploadComplete (err, files) {                
-            // Earlier it was ./assets/uploadImages .. Changed to ../../assets/uploadImages
-            //  Files will be uploaded to ./assets/uploadImages
-            // Access it via localhost:1337/uploadImages/file-name
-
-                console.log(err);
-                if (err) return res.serverError(err);                                   
-                //  IF ERROR Return and send 500 error
-                
-                console.log(files);
-                dataProm.imagenesNames = [files[0].filename];
-                // dataProm.imagenesUrls = [require('util').format('%s/kupon/image/%s', sails.getBaseUrl(), files[0].fd.substr(files[0].fd.lastIndexOf("/")+1)];
-                // dataProm.imagenesUrls = [require('util').format('%s%s', req.baseUrl, files[0].fd.substr(files[0].fd.lastIndexOf("/uploadImages")))];
-                dataProm.imagenesUrls = [require('util').format('%s', files[0].fd.substr(files[0].fd.lastIndexOf("/uploadImages")))];
-                dataProm.imagenesFds = [files[0].fd];
-                dataProm.vigencia = new Date(dataProm.vigenciaTime);
-                delete dataProm.vigenciaTime;
-                console.log(dataProm);
-
-                User.findOne({activationcode: reqUser.activationcode}).populate('proveedor')
-                    .then(function(userDb) {
-                        console.log('afterUserFindOne');
-                        console.log(userDb);
-                        dataProm.proveedorId = userDb.proveedor;
-                        return Promocion.create(dataProm);
-                    }).then(function(promoCreated) {
-                        console.log('afterPromotionCreated');
-                        console.log(promoCreated);
-                        return res.json({status:200, promocion: promoCreated});
-                    }).catch(function(error) {
-                        console.log(error);
-                        return res.json(400, error);
-                    });
-
-                // res.redirect('#/kupones');
-            });
-*/
 
             var onUploadComplete = function(err, files) {               
             // Earlier it was ./assets/uploadImages .. Changed to ../../assets/uploadImages
@@ -82,6 +44,8 @@ module.exports = {
                 // dataProm.imagenesUrls = [require('util').format('%s%s', req.baseUrl, files[0].fd.substr(files[0].fd.lastIndexOf("/uploadImages")))];
                 dataProm.imagenesUrls = [require('util').format('%s%s', dataProm._remoteHost, files[0].fd.substr(files[0].fd.lastIndexOf("/uploadImages")))];
                 dataProm.imagenesFds = [files[0].fd];
+                var edosAsoc = dataProm.estadosAsociados;
+                delete dataProm.estadosAsociados;
                 console.log(dataProm);
 
                 User.findOne({activationcode: reqUser.activationcode}).populate('proveedor')
@@ -93,7 +57,15 @@ module.exports = {
                     }).then(function(promoCreated) {
                         console.log('afterPromotionCreated');
                         console.log(promoCreated);
-                        return res.json({status:200, promocion: promoCreated});
+
+                        var Promise = require('bluebird');
+                        Promise.each(edosAsoc, function(edoAso){
+                            return PromocionEstado.create({promocionId: promoCreated, estadoId: edoAso});
+                        });
+                    }).then(function(promoEdosCreated) {
+                        console.log('afterPromoEdosCreated');
+                        console.log(promoEdosCreated);
+                        return res.json({status:200, promocion: promoEdosCreated});
                     }).catch(function(error) {
                         console.log(error);
                         return res.json(400, error);
@@ -143,14 +115,14 @@ module.exports = {
             var kuponId = req.param('kuponId');
             console.log('KuponController.viewKupon.kuponId :: ' + kuponId);
 
-            Promocion.findOne({promocionId: kuponId}).populate('subCategoriaId')
+            Promocion.findOne({promocionId: kuponId}).populate('subCategoriaId').populate('promocionEstados')
                 .then(function(promocionDb) {
                     console.log('afterPromocionFindOne');
                     console.log(promocionDb);
                     var promoCat = Categoria.findOne({categoriaId: promocionDb.subCategoriaId.categoriaId});
                     return [promocionDb, promoCat];
                 }).spread(function(promocionDb, promoCat) {
-                    console.log('afterSpreadPromocionFindOne');
+                    console.log('afterSpreadCategoriaFindOne');
                     promocionDb.subCategoriaId.categoriaId = promoCat;
                     return res.json({status:200, kupon: promocionDb});
                 }).catch(function(error) {
@@ -202,13 +174,34 @@ module.exports = {
                     dataProm.imagenesUrls = [require('util').format('%s%s', dataProm._remoteHost, files[0].fd.substr(files[0].fd.lastIndexOf("/uploadImages")))];
                     dataProm.imagenesFds = [files[0].fd];
                     delete dataProm.promocionId;
+                    var edosAsoc = dataProm.estadosAsociados;
+                    delete dataProm.estadosAsociados;
                     console.log(dataProm);
 
                     Promocion.update({promocionId: kuponId}, dataProm)
                         .then(function(promoUpdated) {
                             console.log('afterPromotionWithFileUpdated');
+                            console.log(promoUpdated[0]);
+
+                            var Promise = require('bluebird');
+                            var promoEdoQueryAsync = Promise.promisify(PromocionEstado.query);
+                            var rtrnArry = new Array();
+                            rtrnArry.push(promoUpdated[0]);
+                            rtrnArry.push(promoEdoQueryAsync(' DELETE FROM promocion_estado where promocion_id = ? ', [promoUpdated[0].promocionId]));
+
+                            return rtrnArry;
+                        }).spread(function(promoUpdated, promEdoDel) {
+                            console.log('afterPromoEdosDeleted');
                             console.log(promoUpdated);
-                            return res.json({status:200, promocion: promoUpdated});
+                        
+                            var Promise = require('bluebird');
+                            Promise.each(edosAsoc, function(edoAso){
+                                return PromocionEstado.create({promocionId: promoUpdated, estadoId: edoAso});
+                            });
+                        }).then(function(promoEdosCreated) {
+                            console.log('afterPromoEdosCreated');
+                            console.log(promoEdosCreated);
+                            return res.json({status:200, promocion: promoEdosCreated});
                         }).catch(function(error) {
                             console.log(error);
                             return res.json(400, error);
@@ -220,12 +213,31 @@ module.exports = {
                 var dropFictitionalFile = function(err, files) {
                     console.log(err);
                     console.log(files);
+                    var edosAsoc = dataProm.estadosAsociados;
+                    delete dataProm.estadosAsociados;
+                    console.log(dataProm);
+
 
                     Promocion.update({promocionId: kuponId}, dataProm)
                         .then(function(promoUpdated) {
                             console.log('afterPromotionWithOutFileUpdated');
+                            console.log(promoUpdated[0]);
+
+                            var Promise = require('bluebird');
+                            var promoEdoQueryAsync = Promise.promisify(PromocionEstado.query);
+                            return [promoUpdated[0], promoEdoQueryAsync(' DELETE FROM promocion_estado where promocion_id = ? ', [promoUpdated[0].promocionId])];
+                        }).spread(function(promoUpdated, promoEdoDeleted) {
+                            console.log('afterPromoEdosDeleted');
                             console.log(promoUpdated);
-                            return res.json({status:200, promocion: promoUpdated});
+
+                            var Promise = require('bluebird');
+                            Promise.each(edosAsoc, function(edoAso){
+                                return PromocionEstado.create({promocionId: promoUpdated, estadoId: edoAso});
+                            });
+                        }).then(function(promoEdosCreated) {
+                            console.log('afterPromoEdosCreated');
+                            console.log(promoEdosCreated);
+                            return res.json({status:200, promocion: promoEdosCreated});
                         }).catch(function(error) {
                             console.log(error);
                             return res.json(400, error);

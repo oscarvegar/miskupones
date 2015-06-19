@@ -42,6 +42,14 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="form-group ">
+                                <label for="kuponActivo" class="control-label col-lg-2 col-sm-3">Estados asociados <span class="required">*</span></label>
+                                <div class="col-lg-10 col-sm-9">
+                                    <label class="well" ng-repeat="estado in estados">
+                                        <input type="checkbox" checklist-model="currentKupon.estadosAsociados" checklist-value="estado"> {{estado.nombre}}
+                                    </label>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label for="tituloPromocion" class="control-label col-lg-2">Titulo de la promoción <span class="required">*</span></label>
                                 <div class="col-lg-10">

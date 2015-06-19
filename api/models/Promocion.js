@@ -92,6 +92,14 @@ module.exports = {
 		kupones: {
 			collection: 'Kupon',
 			via: 'promocionId'
+		},
+		promocionEstados: {
+			collection: 'PromocionEstado',
+			via: 'promocionId'
+		},
+		estadosAsociados: {
+			collection: 'estado',
+			through: 'promocionestadojunction'
 		}
 	}
 };

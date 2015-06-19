@@ -1,0 +1,56 @@
+<ion-view view-title="Confirmar compra">
+  <div ng-controller="PromoController" >
+    <ion-content>
+      <div class="list card" >
+
+        <div class="item item-body">
+          <img class="full-image" src="{{promoSelected.imagenesUrls[0]}}">
+          <p>
+            <div class="list">
+              <label class="item item-input item-select">
+                <div class="input-label">
+                  Cantidad
+                </div>
+                <select ng-model="cantidad"
+                        ng-change="aplicaCantidad(cantidad);">
+                  <option value="1" selected>1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                </select>
+              </label>
+              <div class="item item-button-right">
+                Precio Untario
+                <span class="item-note">
+                  {{promoSelected.precioKupon | currency}}
+                </span>
+              </div>
+              <div class="item item-button-right">
+                Precio Total
+                <span class="item-note">
+                  {{promoSelected.precioKupon * cantidad | currency}}
+                </span>
+              </div>
+            </div>
+          </p>
+        </div>
+
+
+      </div>
+    </ion-content>
+    <div class="bar bar-footer">
+      <table width="100%" >
+        <tr>
+          <td align="center">
+            <button class="button button-full button-balanced" ng-click="confirmarCompra()"> CONFIRMAR COMPRA </button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</ion-view>

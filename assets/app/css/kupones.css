@@ -1,0 +1,28 @@
+.cursor{
+    cursor: pointer;
+}
+.error{
+    color: darkred;
+}
+.tenue{
+    font-size: 11px;
+    color: #898989;
+}
+
+.textCancel{
+    text-decoration: line-through;
+}
+
+.resaltar{
+    font-size: 14px;
+    color: #204d74;
+}
+
+.icon{
+	width: 30px;
+	height: 30px;
+}
+
+li:hover {
+    color: #4F8EF7;
+}

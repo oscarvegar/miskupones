@@ -104,7 +104,8 @@ module.exports = {
 		clientesLike:{
 			collection:'cliente',
 			via:'promocionesLike'
-		}
+		},
+		fbshare:'integer'
 	}
 };
 

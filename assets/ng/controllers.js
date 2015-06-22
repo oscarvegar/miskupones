@@ -103,11 +103,12 @@ angular.module("miskupones.controllers",["chart.js",'highcharts-ng'])
 
     var d = new Date();
     var anio = d.getFullYear();
-    var mes =  d.getMonth()-1;
+    var mes =  d.getMonth();
     var dia = d.getDate();
     var aniofin = d.getFullYear();
     var mesfin =  d.getMonth()-1;
     var diafin =  d.getDate();
+    var aniofin2 = d.getFullYear()-2;
     
     if(mes == '0'){
       mes = '01';
@@ -169,8 +170,11 @@ angular.module("miskupones.controllers",["chart.js",'highcharts-ng'])
     $scope.mesfin = mesfin;
     $scope.aniofin = aniofin;   
 
-    var fechaInicial = new Date(anio,mes,dia+1);
+    var fechaInicial = new Date(anio,mes-1,dia+1);
     var fechaFinalOrigen = new Date(aniofin,mesfin-1,diafin);
+    var fechaInicio = anio+'-'+mes+'-'+dia;
+    var fechaFin = aniofin+'-'+mesfin+'-'+diafin;
+    var fechaFin2 = aniofin2+'-'+mesfin+'-'+diafin;
     
     console.log("Fechas de Origen");
 
@@ -218,7 +222,7 @@ angular.module("miskupones.controllers",["chart.js",'highcharts-ng'])
                         dataArreglo[idVentaKupon] = idVenta;
 
                          ventas.push({
-                            name: $scope.ventasKupon[i].promocion.promocionId, data:[[Date.UTC($scope.ventasKupon[i].createdAt.substring(0,4),  $scope.ventasKupon[i].createdAt.substring(5,7),   $scope.ventasKupon[i].createdAt.substring(8,10)),$scope.ventasKupon[i].cantidad]]
+                            name: "Kupon#"+$scope.ventasKupon[i].promocion.promocionId, data:[[Date.UTC($scope.ventasKupon[i].createdAt.substring(0,4),  $scope.ventasKupon[i].createdAt.substring(5,7),   $scope.ventasKupon[i].createdAt.substring(8,10)),$scope.ventasKupon[i].cantidad]]
                         });
                          
                           idpromocion = ventas.length-1;
@@ -283,9 +287,28 @@ angular.module("miskupones.controllers",["chart.js",'highcharts-ng'])
 
 
 	//Cupones Compartidos
+  console.log("FECHAS");
+  console.log(fechaInicio);
+  console.log(fechaFin);
+  console.log(fechaFin2);
+  
 
-  $http.get('/getdashboardcompartidos/'+fechaInicial.getTime()+'/'+ fechaFinalOrigen.getTime()).success(function(data) {
+
+  $http.get('/getdashboardcompartidos/'+fechaFin+'/'+ fechaInicio).success(function(data) {
     console.log("Kupones Compartidos");
+
+      $scope.compartidos=data;
+
+      var kuponesCompartidos = [];
+
+      for (var i = 0; i < $scope.compartidos.length; i++) {
+
+           kuponesCompartidos.push({
+              type: 'column', name: "Kupon#"+$scope.compartidos[i].promocion, data:[$scope.compartidos[i].compartidos],pointPlacement: 'on'
+          });
+               
+      }
+
 
 	$('#KuponesCompartidos').highcharts({
 
@@ -327,27 +350,7 @@ angular.module("miskupones.controllers",["chart.js",'highcharts-ng'])
             layout: 'horizontal'
         },
 
-        series: [{
-            type: 'column',
-            name: 'Kupon#1',
-            data: [300],
-            pointPlacement: 'on'
-        }, {
-            type: 'column',
-            name: 'Kupon#2',
-            data: [100],
-            pointPlacement: 'on'
-        },{
-            type: 'column',
-            name: 'Kupon#3',
-            data: [200],
-            pointPlacement: 'on'
-        },{
-            type: 'column',
-            name: 'Kupon#4',
-            data: [50],
-            pointPlacement: 'on'
-        }]
+        series: kuponesCompartidos
 
     });
 
@@ -359,7 +362,7 @@ angular.module("miskupones.controllers",["chart.js",'highcharts-ng'])
 
 
     // Inicia Dashboard por mes
-    $http.get('/getdashboardxmes/'+fechaInicial.getTime()+'/'+ fechaFinalOrigen.getTime()).success(function(data) {
+    $http.get('/getdashboardxmes/'+fechaFin+'/'+ fechaInicio).success(function(data) {
                  $scope.VentasMes=data;
                  console.log("Grafica Ventas x mes ");
                   console.log(data);
@@ -530,7 +533,7 @@ angular.module("miskupones.controllers",["chart.js",'highcharts-ng'])
 
 
       // Inicia Dashboard Anual
-    $http.get('/getdashboardanual/'+fechaInicial.getTime()+'/'+ fechaFinalOrigen.getTime()).success(function(data) {
+    $http.get('/getdashboardanual/'+fechaFin2+'/'+ fechaInicio).success(function(data) {
                  $scope.VentasAnual=data;
                  console.log("Grafica Ventas Anual");
                   console.log(data);
@@ -606,7 +609,7 @@ console.log(arrTotal);
         },
         tooltip: {
             shared: true,
-            valueSuffix: ' units'
+            valueSuffix: ' pesos'
         },
         credits: {
             enabled: false

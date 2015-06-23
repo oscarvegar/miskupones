@@ -188,7 +188,7 @@ module.exports = {
 		var start_date=Number(fecha.fechaInicial);
 		var end_date=Number(fecha.fechaFinal);
 
-		Venta.query('SELECT MONTH(createdAt) as meses, YEAR(createdAt) as anios, SUM(total) as total FROM mis_kupones.venta GROUP BY YEAR(createdAt), MONTH(createdAt)', function(err, data) {
+		Venta.query('SELECT promocion_clientesLike as promocion, COUNT(promocion_clientesLike) as total FROM cliente_promocioneslike__promocion_clienteslike GROUP BY promocion_clientesLike', function(err, data) {
 		    if(err) res.json({ error: err.message }, 400);
 		    //console.log(data);
 		    res.json(data);

@@ -634,6 +634,19 @@ console.log(arrTotal);
       $http.get('/getdashboardlikes/'+fechaInicial.getTime()+'/'+ fechaFinalOrigen.getTime()).success(function(data) {
         console.log("kupones likeados");
 
+
+        $scope.likeados=data;
+
+      var kuponesLike = [];
+
+      for (var i = 0; i < $scope.likeados.length; i++) {
+
+           kuponesLike.push({
+              type: 'column', name: "Promocion#"+$scope.likeados[i].promocion, data:[$scope.likeados[i].total],pointPlacement: 'on'
+          });
+               
+      }
+
       $('#KuponesLikes').highcharts({
 
         chart: {
@@ -674,27 +687,7 @@ console.log(arrTotal);
             layout: 'horizontal'
         },
 
-        series: [{
-            type: 'column',
-            name: 'Kupon#1',
-            data: [300],
-            pointPlacement: 'on'
-        }, {
-            type: 'column',
-            name: 'Kupon#2',
-            data: [100],
-            pointPlacement: 'on'
-        },{
-            type: 'column',
-            name: 'Kupon#3',
-            data: [200],
-            pointPlacement: 'on'
-        },{
-            type: 'column',
-            name: 'Kupon#4',
-            data: [50],
-            pointPlacement: 'on'
-        }]
+        series: kuponesLike
 
     });
 

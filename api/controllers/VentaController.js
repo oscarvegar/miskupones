@@ -10,11 +10,16 @@ module.exports = {
 
     generaVenta: function(request, response ){
         var ventaRequest = request.allParams();
-        console.log("venta.: ", ventaRequest);
+        //console.log("venta.: ", ventaRequest);
         var venta = { user: ventaRequest.user,
                       promocion:ventaRequest.promocionId ,
                       cantidad:ventaRequest.cantidad,
-                      total:ventaRequest.total }
+                      total:ventaRequest.total,
+                      estadoId:eval(ventaRequest.estadoId),
+                      userAgent:request.headers['user-agent']  }
+        console.log("Venta:: ", venta);
+
+
         Promocion.findOne({promocionId:venta.promocion})
        .then(function(promocion) {
             Venta.query("START TRANSACTION");
@@ -29,7 +34,10 @@ module.exports = {
             console.log("Promocion actualizada a " + venta.cantidad + " kupones creados ... ");
             var promises = [];
             for( var i = 0; i < venta.cantidad; i++ ){
-                var kupon = {promocionId: venta.promocion, subCategoriaId: ventaRequest.subcategoriaId};
+                var kupon = {promocionId: venta.promocion,
+                             subCategoriaId: ventaRequest.subcategoriaId,
+                             estadoId:venta.estadoId,
+                             userAgent:venta.userAgent};
                 promises.push( Kupon.create( kupon ) );
             }
             return Q.all(promises).allSettled(promises);
@@ -51,6 +59,7 @@ module.exports = {
             console.log("Error al procesar la venta ::: ", err);
             response.json( 500, err );
         });
+
     }
 
 };

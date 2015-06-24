@@ -156,7 +156,7 @@ module.exports.bootstrap = function(cb) {
   });
 
 	Estado.find().exec( function(err, estados){
-		//console.log("Hay estados? ", estados );
+		console.log("Hay estados? ", estados );
 		if( !estados || estados.length <= 0 ){
 			//No hay estados, registramos en B.D.
 			Estado.create({ clave: '01',

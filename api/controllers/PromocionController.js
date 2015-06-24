@@ -115,7 +115,8 @@ module.exports = {
             var kuponId = req.param('kuponId');
             console.log('KuponController.viewKupon.kuponId :: ' + kuponId);
 
-            Promocion.findOne({promocionId: kuponId}).populate('subCategoriaId').populate('promocionEstados')
+            Promocion.findOne({promocionId: kuponId}).populate('subCategoriaId')
+                .populate('promocionEstados')
                 .then(function(promocionDb) {
                     console.log('afterPromocionFindOne');
                     console.log(promocionDb);
@@ -299,18 +300,31 @@ module.exports = {
      */
 
     findByLimit: function(request, response ){
-        var data = request.allParams.limit;
+        var data = request.allParams().limit;
+        var userId = request.allParams().userId;
+        //console.log("Obteniendo promociones con userId : ", userId);
         var criteria = null;
-        if( data ) {
-            criteria = {where: {activo: true, eliminado: false}, limit: data};
-        } else {
-            criteria = {where: {activo: true, eliminado: false}};
-        }
-        Promocion.find(criteria).sort({"updatedAt":"desc"}).then(function (promociones) {
-            return response.json(promociones);
-        }).catch(function (err) {
+        var estadoId = 0;
+        Cliente.findOne({user:userId}).then(function(cliente) {
+            estadoId = cliente.estado;
+            return PromocionEstado.find({where: {estadoId: estadoId}, select: ['promocionId']});
+        }).then(function(promosId){
+            console.log("Promociones IDs:: ", promosId);
+            var promosIds = [];
+            for( var i = 0; i < promosId.length; i++ ){
+                promosIds.push( promosId[i].promocionId );
+            }
+            return Promocion.find({promocionId:promosIds, activo:true, eliminado:false})
+            .sort({"updatedAt":"desc"}).then(function (promociones) {
+                console.log("promociones cargadas :: ", promociones);
+                return response.json({promociones:promociones, estadoId:estadoId});
+            })
+        }).catch(function(err){
             console.error("Error al buscar promociones por limite :: ", err);
+            return response.json(500, err);
         });
+
+
     },
 
     findById: function(request, response ){

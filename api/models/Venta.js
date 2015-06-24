@@ -19,7 +19,11 @@ module.exports = {
     },
 
     cantidad: 'integer',
-    total: 'float'
+    total: 'float',
+    estadoId:{
+      model:'estado'
+    },
+    userAgent:'string'
   }
 
 };

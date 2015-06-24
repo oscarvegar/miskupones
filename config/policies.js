@@ -53,6 +53,10 @@ module.exports.policies = {
 
   'estado':{
     '*': true
+  },
+
+  'kupon':{
+    '*':true
   }
 
   

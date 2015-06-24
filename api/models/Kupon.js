@@ -25,7 +25,11 @@ module.exports = {
 		subCategoriaId: {
 			model: 'Subcategoria',
 			columnName: 'sub_categoria_id'
-		}
+		},
+		estadoId:{
+			model: 'estado'
+		},
+		userAgent:'string'
 	}
 };
 

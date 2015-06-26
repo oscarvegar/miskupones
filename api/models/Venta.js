@@ -18,6 +18,11 @@ module.exports = {
       required: true
     },
 
+    kupones:{
+      collection:'kupon',
+      via: 'ventaId'
+    },
+
     cantidad: 'integer',
     total: 'float',
     estadoId:{

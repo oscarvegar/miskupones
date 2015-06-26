@@ -58,6 +58,7 @@ module.exports.routes = {
   'get /getdashboardcompartidos/:fechaInicial/:fechaFinal': 'DashboardController.getdashboardcompartidos',
   'get /getdashboardlikes/:fechaInicial/:fechaFinal': 'DashboardController.getdashboardlikes',
   'get /getdashboardso/:fechaInicial/:fechaFinal': 'DashboardController.getdashboardso',
+  'get /dashboardmapa/:fechaInicial/:fechaFinal': 'DashboardController.dashboardmapa',
   'get /v/promocion/:id' : 'PromocionController.viewPromocion',
 
 

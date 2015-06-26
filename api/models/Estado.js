@@ -11,6 +11,7 @@ module.exports = {
 		clave: 'string',
 		nombre: 'string',
 		abreviatura: 'string',
+		color:'string',
 		claveCapital: {
 			type: 'string',
 			columnName: 'clave_capital'

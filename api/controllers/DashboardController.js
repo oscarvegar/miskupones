@@ -6,8 +6,8 @@
  */
 
 module.exports = {
-	mapa:function(req,res){
-		var data={};
+	dashboardmapa:function(req,res){
+		/*var data={};
 		data.labels={
 			"PUE" :'100 ventas',
 			"CHH" :'200 ventas',
@@ -16,9 +16,50 @@ module.exports = {
 		data.colors={
 			"PUE" :"#33CC00",
 			"CHH" :'#339900',
-			"BCS" :"#336600"
+			"BCS" :"#336600",
+			"YUC" :"#336600"
 		};
-		return res.json(data);
+		return res.json(data);*/
+
+		if(req.session.user) {
+
+			console.log("MAPA");
+			var fecha = req.allParams();
+			var fecha_ini=fecha.fechaInicial;
+			var fecha_fin=fecha.fechaFinal;
+			var sessionUser = req.session.user;
+
+			console.log(fecha_ini);
+			console.log(fecha_fin);
+			console.log(sessionUser);
+
+			if(sessionUser.perfil == 'PROVEEDOR'){
+
+				
+
+				Venta.query("SELECT edo.abreviatura as estado, edo.color as color, SUM(vt.total) as total FROM mis_kupones.estado edo, mis_kupones.venta vt WHERE  edo.id = vt.estadoId AND vt.user =  "+sessionUser.id+" AND (vt.createdAt BETWEEN '"+fecha_ini+"' AND '"+fecha_fin+"') GROUP BY vt.estadoId", function(err, data) {
+				    if(err) res.json({ error: err.message }, 400);
+				    res.json(data);
+				});
+
+
+
+				}else{
+
+
+				Venta.query("SELECT edo.abreviatura as estado, edo.color as color, SUM(vt.total) as total FROM mis_kupones.estado edo, mis_kupones.venta vt WHERE  edo.id = vt.estadoId  AND (vt.createdAt BETWEEN '"+fecha_ini+"' AND '"+fecha_fin+"') GROUP BY vt.estadoId", function(err, data) {
+				    if(err) res.json({ error: err.message }, 400);
+				    res.json(data);
+				});
+
+
+			}
+
+			} else {
+            return res.redirect('/login');
+        }
+
+
 	},
 
 
@@ -198,16 +239,39 @@ module.exports = {
 	},
 
 	getdashboardso:function(req,res){
-		var fecha = req.allParams();
-		var start_date=Number(fecha.fechaInicial);
-		var end_date=Number(fecha.fechaFinal);
+		if(req.session.user) {
 
-		Venta.query('SELECT MONTH(createdAt) as meses, YEAR(createdAt) as anios, SUM(total) as total FROM mis_kupones.venta GROUP BY YEAR(createdAt), MONTH(createdAt)', function(err, data) {
-		    if(err) res.json({ error: err.message }, 400);
-		    //console.log(data);
-		    res.json(data);
-		});
+			var fecha = req.allParams();
+			var fecha_ini=fecha.fechaInicial;
+			var fecha_fin=fecha.fechaFinal;
+			var sessionUser = req.session.user;
 	
+
+
+			if(sessionUser.perfil == 'PROVEEDOR'){
+	
+
+				Venta.query("SELECT MONTH(createdAt) as meses, SUM(userAgent LIKE '%Android%') as Android, SUM(userAgent LIKE '%iPhone%') as iPhone, SUM(userAgent LIKE '%Windows%') as Windows, SUM(userAgent LIKE '%BlackBerry%') as BlackBerry FROM venta WHERE (createdAt BETWEEN '"+fecha_ini+"' AND '"+fecha_fin+"') AND user = "+sessionUser.id+" GROUP BY MONTH(createdAt)", function(err, data) {
+				    if(err) res.json({ error: err.message }, 400);
+				    res.json(data);
+				});
+	
+
+			}else{
+
+				Venta.query("SELECT MONTH(createdAt) as meses, SUM(userAgent LIKE '%Android%') as Android, SUM(userAgent LIKE '%iPhone%') as iPhone, SUM(userAgent LIKE '%Windows%') as Windows, SUM(userAgent LIKE '%BlackBerry%') as BlackBerry FROM venta WHERE (createdAt BETWEEN '"+fecha_ini+"' AND '"+fecha_fin+"') GROUP BY MONTH(createdAt)", function(err, data) {
+				    if(err) res.json({ error: err.message }, 400);
+				    res.json(data);
+				});
+			}
+	     
+         
+
+        } else {
+            return res.redirect('/login');
+        }
+	
+
 				
 	}
 

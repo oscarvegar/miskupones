@@ -31,15 +31,12 @@ module.exports = {
 
 			console.log(fecha_ini);
 			console.log(fecha_fin);
-			console.log(sessionUser.perfil);
-			console.log(sessionUser.id);
+			console.log(sessionUser.proveedor);
 
 			if(sessionUser.perfil == 'PROVEEDOR'){
 
-				Venta.query("SELECT edo.abreviatura as estado, edo.color as color, SUM(vt.total) as total FROM estado edo, venta vt WHERE  edo.id = vt.estadoId AND vt.user =  "+sessionUser.id+" GROUP BY vt.estadoId", function(err, data) {
-
-				//Venta.query("SELECT edo.abreviatura as estado, edo.color as color, SUM(vt.total) as total FROM estado edo, venta vt WHERE  edo.id = vt.estadoId AND vt.user =  "+sessionUser.id+" AND (vt.createdAt BETWEEN '"+fecha_ini+"' AND '"+fecha_fin+"') GROUP BY vt.estadoId", function(err, data) {
-				    if(err) res.json({ error: err.message }, 400);
+				Venta.query("SELECT edo.abreviatura as estado, edo.color as color, SUM(vt.total) as total  FROM estado edo, venta vt, promocion pr WHERE  edo.id = vt.estadoId  AND vt.promocion = pr.promocion_id AND pr.proveedor_id =  "+sessionUser.proveedor+" AND (vt.createdAt BETWEEN '"+fecha_ini+"' AND '"+fecha_fin+"') GROUP BY vt.estadoId" , function(err, data) {
+        		    if(err) res.json({ error: err.message }, 400);
 				    console.log("Datos Mapa Proveedor>>>>>");
 				    console.log(data);
 				    res.json(data);
@@ -50,7 +47,7 @@ module.exports = {
 				}else{
 
 
-				Venta.query("SELECT edo.abreviatura as estado, edo.color as color, SUM(vt.total) as total FROM estado edo, venta vt WHERE  edo.id = vt.estadoId  AND (vt.createdAt BETWEEN '"+fecha_ini+"' AND '"+fecha_fin+"') GROUP BY vt.estadoId", function(err, data) {
+				Venta.query("SELECT edo.abreviatura as estado, edo.color as color, SUM(vt.total) as total  FROM estado edo, venta vt, promocion pr WHERE  edo.id = vt.estadoId  AND (vt.createdAt BETWEEN '"+fecha_ini+"' AND '"+fecha_fin+"') GROUP BY vt.estadoId" , function(err, data) {
 				    if(err) res.json({ error: err.message }, 400);
 				    console.log("Datos Mapa Admin>>>>>>>");
 				    console.log(data);
@@ -84,14 +81,14 @@ module.exports = {
 			console.log(start_date);
 			console.log(end_date);
 			console.log(sessionUser.perfil);
-			console.log(sessionUser.id);
+			console.log(sessionUser.proveedor);
 
 			if(sessionUser.perfil == 'PROVEEDOR'){
 
 
-				Venta.find().where({createdAt: { '>=': new Date(end_date),'<=' : new Date(start_date)},user:sessionUser.id}).populate('promocion').populate('user').sort('promocion ASC').exec(function(err, data){
+				Venta.find().where({createdAt: { '>=': new Date(end_date),'<=' : new Date(start_date)}}).populate('promocion').populate('user',{ proveedor: sessionUser.proveedor}).sort('promocion ASC').exec(function(err, data){
 					console.log("Datos Ventas x kupon Proveedor>>>>>");
-					console.log(data);
+					//console.log(data);
 					res.json(data);
 
 					})		
@@ -100,7 +97,7 @@ module.exports = {
 
 				Venta.find().where({createdAt: { '>=': new Date(end_date),'<=' : new Date(start_date)}}).populate('promocion').populate('user').sort('promocion ASC').exec(function(err, data){
 					console.log("Datos Ventas x kupon Admin>>>>>");
-					console.log(data);
+					//console.log(data);
 					res.json(data);
 
 					})	
@@ -139,7 +136,7 @@ Venta.query("SELECT MONTH(createdAt) as meses, SUM(total) as total FROM venta WH
 				//Venta.query("SELECT MONTH(createdAt) as meses, SUM(total) as total FROM venta WHERE user = "+sessionUser.id+" AND (createdAt BETWEEN '"+fecha_ini+"' AND '"+fecha_fin+"')  GROUP BY YEAR(createdAt), MONTH(createdAt)", function(err, data) {
 			    if(err) res.json({ error: err.message }, 400);
 			      console.log("Dashboard por mes Proveedor>>>>>>>");
-				    console.log(data);
+				 //   console.log(data);
 			    res.json(data);
 				});
 
@@ -149,7 +146,7 @@ Venta.query("SELECT MONTH(createdAt) as meses, SUM(total) as total FROM venta WH
 				Venta.query("SELECT MONTH(createdAt) as meses, SUM(total) as total FROM venta WHERE (createdAt BETWEEN '"+fecha_ini+"' AND '"+fecha_fin+"') GROUP BY YEAR(createdAt), MONTH(createdAt)", function(err, data) {
 			    if(err) res.json({ error: err.message }, 400);
 			      console.log("Dashboard por mes  Admin>>>>>>>");
-				    console.log(data);
+				 //   console.log(data);
 			    res.json(data);
 				});
 

@@ -104,7 +104,7 @@ $scope.$evalAsync(function() {
     var d = new Date();
     var anio = d.getFullYear();
     var mes =  d.getMonth();
-    var dia = d.getDate();
+    var dia = d.getDate()+1;
     var aniofin = d.getFullYear();
     var mesfin =  d.getMonth()-1;
     var diafin =  d.getDate();
@@ -170,7 +170,7 @@ $scope.$evalAsync(function() {
     $scope.mesfin = mesfin;
     $scope.aniofin = aniofin;   
 
-    var fechaInicial = new Date(anio,mes-1,dia+1);
+    var fechaInicial = new Date(anio,mes-1,dia);
     var fechaFinalOrigen = new Date(aniofin,mesfin-1,diafin);
     var fechaInicio = anio+'-'+mes+'-'+dia;
     var fechaFin = aniofin+'-'+mesfin+'-'+diafin;
@@ -180,10 +180,10 @@ $scope.$evalAsync(function() {
     $scope.fechaFin = fechaFin;
     $scope.fechaFin2 = fechaFin2;
     
-    /*console.log("Fechas de Origen");
+    console.log("Fechas de Origen");
 
     console.log(fechaInicial);
-    console.log(fechaFinalOrigen);*/
+    console.log(fechaFinalOrigen);
     
 
 
@@ -290,10 +290,10 @@ $scope.$evalAsync(function() {
 
 
 	//Cupones Compartidos
-  /*console.log("FECHAS");
+  console.log("FECHAS");
   console.log(fechaInicio);
   console.log(fechaFin);
-  console.log(fechaFin2);*/
+  console.log(fechaFin2);
 
 
     $http.get('/dashboardmapa/'+fechaFin+'/'+ fechaInicio)

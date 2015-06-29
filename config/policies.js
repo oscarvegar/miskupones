@@ -57,6 +57,10 @@ module.exports.policies = {
 
   'kupon':{
     '*':true
+  },
+
+  'categoria':{
+    '*':true
   }
 
   

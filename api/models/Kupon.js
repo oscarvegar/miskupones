@@ -18,6 +18,7 @@ module.exports = {
 			autoIncrement: true,
 			columnName: 'kupon_id'
 		},
+		qr:'string',
 		promocionId: {
 			model: 'Promocion',
 			columnName: 'promocion_id'
@@ -29,7 +30,17 @@ module.exports = {
 		estadoId:{
 			model: 'estado'
 		},
+		ventaId:{
+			model: 'venta'
+		},
 		userAgent:'string'
+	},
+
+	afterCreate: function(kupon, cb) {
+		var qr = kupon.kuponId + "" + kupon.createdAt.getTime();
+		Kupon.update({kuponId: kupon.kuponId},{qr: qr }).exec(function(err, model){
+			cb();
+		});
 	}
 };
 

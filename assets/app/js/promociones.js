@@ -2,9 +2,14 @@
  * Created by oscar on 02/04/15.
  */
 var myApp = angular.module("PromoModule",['ionic','ngCordova']);
-myApp.controller( "PromoController", function($timeout,$scope, $http, $rootScope, $kuponServices, $db, $ionicLoading,$cordovaSocialSharing){
+myApp.controller( "PromoController",
+    function($timeout,$scope, $http, $rootScope, $kuponServices, $db, $ionicLoading,$cordovaSocialSharing,$ionicPopup, $timeout, $ionicPopover){
 
-
+    $ionicPopover.fromTemplateUrl('templates/popover.html', {
+        scope: $scope,
+    }).then(function(popover) {
+        $scope.popover = popover;
+    });
 
     $scope.editar = false;
 
@@ -15,6 +20,7 @@ myApp.controller( "PromoController", function($timeout,$scope, $http, $rootScope
     getCliente = function(){
         $db.query( DOC_USER ).then( function( result ){
             $rootScope.user = result.user;
+            console.log(" id a buscar en " + CLIENTE_WS + " ::::  ", result.user.id)
             $http.post(CLIENTE_WS, {id:result.user.id}).then(function( resultClient ){
                 console.log( "client :: ", resultClient.data );
                 $rootScope.cliente = resultClient.data;
@@ -24,6 +30,10 @@ myApp.controller( "PromoController", function($timeout,$scope, $http, $rootScope
                 }else{
                     $rootScope.estadoSelected = 9;
                 }
+            },function(err){
+                console.error("Error ::::: ", err);
+            }).catch(function(err){
+                console.error("Error al extraer el cliente :: ", err);
             });
         });
     };
@@ -105,7 +115,8 @@ myApp.controller( "PromoController", function($timeout,$scope, $http, $rootScope
     }
 
     $scope.actualizarLista = function(){
-      $kuponServices.initApp().then(function(resultPromo) {
+
+      $kuponServices.initApp($rootScope.user.id).then(function(resultPromo) {
           console.log("actualizando promociones :: ", resultPromo);
           $rootScope.promociones = resultPromo.data;
           $scope.$broadcast('scroll.refreshComplete');
@@ -123,8 +134,16 @@ myApp.controller( "PromoController", function($timeout,$scope, $http, $rootScope
     }
 
     $scope.comprar = function() {
-    window.location.href = "#/app/compra";
-    $rootScope.cantidad = 1;
+        $rootScope.disponibles = [];
+        if($scope.promoSelected.cantidadKupones <= 10) {
+            for (var i = 0; i < $scope.promoSelected.cantidadKupones; i++) {
+                $rootScope.disponibles.push(i + 1);
+            }
+        }else{
+            $rootScope.disponibles = [1,2,3,4,5,6,7,8,9,10];
+        }
+        window.location.href = "#/app/compra";
+        $rootScope.cantidad = 1;
     }
 
     $scope.aplicaCantidad = function(cantidad){
@@ -133,33 +152,51 @@ myApp.controller( "PromoController", function($timeout,$scope, $http, $rootScope
     }
 
     $scope.confirmarCompra = function() {
-    //alert("cantidad a comprar :: ", $rootScope.cantidad );
-    $ionicLoading.show({
-      template: "Procesando tu compra ..."
-    });
-    console.log("Promocion seleccionada :: ", $rootScope.promoSelected )
-    var user = JSON.parse(localStorage["user"]);
-    console.log("user logged : ", user);
-    var request = { promocionId: $rootScope.promoSelected.promocionId,
-                    subcategoriaId: $rootScope.promoSelected.subCategoriaId,
-                    user: user.id,
-                    cantidad: eval($rootScope.cantidad),
-                    total: ($rootScope.promoSelected.precioKupon *  $rootScope.cantidad)};
-    $http.post( VENTA_WS, request ).then(function(result){
-      alert( "Tu compra se ha realizado correctamente, " +
-      "podrás ver tu kupon en el apartado de Mis Kupones. Gracias por usar MisKupones." );
-      $kuponServices.actualizarCantidadPromo( eval($rootScope.cantidad), $rootScope.indexPromoSelected )
-     .then(function(resultUpd){
-        window.location.href = "inicio.html";
-        $ionicLoading.hide();
-      },function(error){
-        $ionicLoading.hide();
-        alert("Error al actualiar cantidad: " + JSON.stringify(error) );
-      });
-    },function(error){
-      $ionicLoading.hide();
-      alert("Error al generar la venta: " + JSON.stringify(error) );
-    });
+        //alert("cantidad a comprar :: ", $rootScope.cantidad );
+
+        $ionicLoading.show({
+          template: "Procesando tu compra ..."
+        });
+        console.log("Promocion seleccionada :: ", $rootScope.promoSelected )
+        var user = JSON.parse(localStorage["user"]);
+        var estadoId = localStorage[ LOCAL_ESTADO_SELECTED ];
+        console.log("user logged : ", user);
+        console.log("estado ID : ", estadoId);
+        var request = { promocionId: $rootScope.promoSelected.promocionId,
+                        subcategoriaId: $rootScope.promoSelected.subCategoriaId,
+                        user: user.id,
+                        estadoId: estadoId,
+                        cantidad: eval($rootScope.cantidad),
+                        total: ($rootScope.promoSelected.precioKupon *  $rootScope.cantidad)};
+
+        $http.post( VENTA_WS, request ).then(function(result){
+           $kuponServices.actualizarCantidadPromo( eval($rootScope.cantidad), $rootScope.indexPromoSelected )
+          .then(function(resultUpd){
+                $ionicLoading.hide();
+                var myPopup = $ionicPopup.show({
+                   template: '<b><center>Tu compra se ha realizado correctamente, podrás ver tu kupon en el apartado de Mis Kupones. Gracias por usar MisKupones</center></b>',
+                   title: 'Compra Finalizada',
+                   scope: $scope,
+                   buttons: [
+                       { text: 'Aceptar' }
+                   ]
+                });
+                myPopup.then(function(res) {
+                   console.log('Tapped!', res);
+                   window.location.href = "inicio.html";
+                });
+                $timeout(function() {
+                   myPopup.close(); //close the popup after 3 seconds for some reason
+                    window.location.href = "inicio.html";
+                }, 3000);
+          },function(error){
+                $ionicLoading.hide();
+                alert("Error al actualiar cantidad: " + JSON.stringify(error) );
+          });
+        },function(error){
+          $ionicLoading.hide();
+          alert("Error al generar la venta: " + JSON.stringify(error) );
+        });
     }
 
 
@@ -192,7 +229,59 @@ myApp.controller( "PromoController", function($timeout,$scope, $http, $rootScope
     }
       
   }
-    
 
+
+
+  var BUSQUEDA_POR_ESTADO = 1
+  // Para busqueda de kupones
+  $scope.prepararBusqueda = function( tipo ){
+      if( tipo === BUSQUEDA_POR_ESTADO ){
+          // An elaborate, custom popup
+          var myPopup = $ionicPopup.show({
+              template: '<select ng-model="estadoSelected" ng-change="setEstado(estadoSelected)" ' +
+                        'ng-options="estado.id as estado.nombre for estado in estados"> ' +
+                        '</select>',
+              title: 'Busqueda de kupones por estado',
+              subTitle: 'Seleccione un estado',
+              scope: $scope,
+              buttons: [
+                  { text: 'Cancel' },
+                  {
+                      text: '<b>Buscar</b>',
+                      type: 'button-positive',
+                      onTap: function(e) {
+                          //console.log("Estado selected: ", $scope.estadoSelected);
+                          localStorage[ LOCAL_ESTADO_SELECTED ] = $scope.estadoSelected;
+                          return $scope.estadoSelected;
+                      }
+                  }
+              ]
+          });
+          myPopup.then(function(res) {
+            $ionicLoading.show({
+              template: "Buscando tus kupones ..."
+            });
+            $kuponServices.getPromosPorEstado( res ).then(function(resultPromo) {
+                console.log("actualizando promociones :: ", resultPromo);
+                $rootScope.promociones = resultPromo.data;
+                $scope.$broadcast('scroll.refreshComplete');
+                if(!$scope.$$phase) {
+                    $scope.$apply()
+                }
+                $ionicLoading.hide();
+            },function(error){
+                $ionicLoading.hide();
+                $scope.$broadcast('scroll.refreshComplete');
+                if(!$scope.$$phase) {
+                    $scope.$apply()
+                }
+                alert("Error al cargar promociones: " + JSON.stringify(error) );
+            });;
+          });
+      }else{
+
+      }
+      $scope.popover.hide();
+  }
 
 });

@@ -327,6 +327,28 @@ module.exports = {
 
     },
 
+    findByEstado: function(request, response ){
+        var estadoId = request.allParams().estadoId;
+        console.log("Obteniendo promociones con estadoId : ", estadoId);
+
+        PromocionEstado.find({where: {estadoId: estadoId}, select: ['promocionId']})
+       .then(function(promosId){
+            console.log("Promociones IDs:: ", promosId);
+            var promosIds = [];
+            for( var i = 0; i < promosId.length; i++ ){
+                promosIds.push( promosId[i].promocionId );
+            }
+            return Promocion.find({promocionId:promosIds, activo:true, eliminado:false})
+                .sort({"updatedAt":"desc"}).then(function (promociones) {
+                    console.log("promociones cargadas :: ", promociones);
+                    return response.json({promociones:promociones, estadoId:estadoId});
+                })
+        }).catch(function(err){
+            console.error("Error al buscar promociones por limite :: ", err);
+            return response.json(500, err);
+        });
+    },
+
     findById: function(request, response ){
         var data = request.allParams().id;
         console.log("data.: ", data);

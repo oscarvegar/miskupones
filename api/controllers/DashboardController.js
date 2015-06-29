@@ -32,12 +32,13 @@ module.exports = {
 			console.log(fecha_ini);
 			console.log(fecha_fin);
 			console.log(sessionUser.perfil);
+			console.log(sessionUser.id);
 
 			if(sessionUser.perfil == 'PROVEEDOR'){
 
-				
+				Venta.query("SELECT edo.abreviatura as estado, edo.color as color, SUM(vt.total) as total FROM estado edo, venta vt WHERE  edo.id = vt.estadoId AND vt.user =  "+sessionUser.id+" GROUP BY vt.estadoId", function(err, data) {
 
-				Venta.query("SELECT edo.abreviatura as estado, edo.color as color, SUM(vt.total) as total FROM estado edo, venta vt WHERE  edo.id = vt.estadoId AND vt.user =  "+sessionUser.id+" AND (vt.createdAt BETWEEN '"+fecha_ini+"' AND '"+fecha_fin+"') GROUP BY vt.estadoId", function(err, data) {
+				//Venta.query("SELECT edo.abreviatura as estado, edo.color as color, SUM(vt.total) as total FROM estado edo, venta vt WHERE  edo.id = vt.estadoId AND vt.user =  "+sessionUser.id+" AND (vt.createdAt BETWEEN '"+fecha_ini+"' AND '"+fecha_fin+"') GROUP BY vt.estadoId", function(err, data) {
 				    if(err) res.json({ error: err.message }, 400);
 				    console.log("Datos Mapa Proveedor>>>>>");
 				    console.log(data);
@@ -83,6 +84,7 @@ module.exports = {
 			console.log(start_date);
 			console.log(end_date);
 			console.log(sessionUser.perfil);
+			console.log(sessionUser.id);
 
 			if(sessionUser.perfil == 'PROVEEDOR'){
 
@@ -126,12 +128,15 @@ module.exports = {
 			console.log(fecha_ini);
 			console.log(fecha_fin);
 			console.log(sessionUser.perfil);
+			console.log(sessionUser.id);
 
 			
 
 			if(sessionUser.perfil == 'PROVEEDOR'){
 
-				Venta.query("SELECT MONTH(createdAt) as meses, SUM(total) as total FROM venta WHERE user = "+sessionUser.id+" AND (createdAt BETWEEN '"+fecha_ini+"' AND '"+fecha_fin+"')  GROUP BY YEAR(createdAt), MONTH(createdAt)", function(err, data) {
+
+Venta.query("SELECT MONTH(createdAt) as meses, SUM(total) as total FROM venta WHERE user = "+sessionUser.id+"  GROUP BY YEAR(createdAt), MONTH(createdAt)", function(err, data) {
+				//Venta.query("SELECT MONTH(createdAt) as meses, SUM(total) as total FROM venta WHERE user = "+sessionUser.id+" AND (createdAt BETWEEN '"+fecha_ini+"' AND '"+fecha_fin+"')  GROUP BY YEAR(createdAt), MONTH(createdAt)", function(err, data) {
 			    if(err) res.json({ error: err.message }, 400);
 			      console.log("Dashboard por mes Proveedor>>>>>>>");
 				    console.log(data);

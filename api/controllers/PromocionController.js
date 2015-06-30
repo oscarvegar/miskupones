@@ -330,7 +330,6 @@ module.exports = {
     findByEstado: function(request, response ){
         var estadoId = request.allParams().estadoId;
         console.log("Obteniendo promociones con estadoId : ", estadoId);
-
         PromocionEstado.find({where: {estadoId: estadoId}, select: ['promocionId']})
        .then(function(promosId){
             console.log("Promociones IDs:: ", promosId);
@@ -347,6 +346,29 @@ module.exports = {
             console.error("Error al buscar promociones por limite :: ", err);
             return response.json(500, err);
         });
+    },
+
+    findByEstadoAndCategoria: function(request, response ){
+        var estadoId = request.allParams().estadoId;
+        var subcategoriaId = request.allParams().subcategoriaId;
+        console.log("Obteniendo promociones con estadoId : " +  estadoId +
+                    " y subcategoriaID : " + subcategoriaId);
+        PromocionEstado.find({where: {estadoId: estadoId}, select: ['promocionId']})
+            .then(function(promosId){
+                console.log("Promociones IDs:: ", promosId);
+                var promosIds = [];
+                for( var i = 0; i < promosId.length; i++ ){
+                    promosIds.push( promosId[i].promocionId );
+                }
+                return Promocion.find({promocionId:promosIds, subCategoriaId:subcategoriaId,
+                    activo:true, eliminado:false}).sort({"updatedAt":"desc"}).then(function (promociones) {
+                        console.log("promociones cargadas :: ", promociones);
+                        return response.json({promociones:promociones, estadoId:estadoId});
+                    })
+            }).catch(function(err){
+                console.error("Error al buscar promociones por limite :: ", err);
+                return response.json(500, err);
+            });
     },
 
     findById: function(request, response ){

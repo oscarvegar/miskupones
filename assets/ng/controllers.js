@@ -187,7 +187,7 @@ $scope.$evalAsync(function() {
     
 
 
-    $http.get('/getdashboard/'+fechaInicial.getTime()+'/'+ fechaFinalOrigen.getTime()).success(function(data) {
+    $http.get('/getdashboard/'+fechaFin+'/'+ fechaInicio).success(function(data) {
                 console.log("Grafica Ventas");
 
                 $scope.ventasKupon=data;
@@ -209,14 +209,14 @@ $scope.$evalAsync(function() {
 
                 for (var i = 0; i < $scope.ventasKupon.length; i++) {
 
-                    idVenta = $scope.ventasKupon[i].promocion.promocionId;
-                    idVentaKupon = $scope.ventasKupon[i].promocion.promocionId;
+                    idVenta = $scope.ventasKupon[i].promocion;
+                    idVentaKupon = $scope.ventasKupon[i].promocion;
                 
                    if(dataArreglo[idVenta]) {
                         var arrFecha = [];
 
-                        tmpStrDate = Date.UTC($scope.ventasKupon[i].createdAt.substring(0,4),  $scope.ventasKupon[i].createdAt.substring(5,7),   $scope.ventasKupon[i].createdAt.substring(8,10));
-                        arrFecha.push(tmpStrDate,$scope.ventasKupon[i].cantidad);  
+                        tmpStrDate = Date.UTC($scope.ventasKupon[i].fecha.substring(0,4),  $scope.ventasKupon[i].fecha.substring(5,7)-1,   $scope.ventasKupon[i].fecha.substring(8,10));
+                        arrFecha.push(tmpStrDate,$scope.ventasKupon[i].total);  
 
                         ventas[idpromocion].data.push(arrFecha);     
 
@@ -226,7 +226,7 @@ $scope.$evalAsync(function() {
                         dataArreglo[idVentaKupon] = idVenta;
 
                          ventas.push({
-                            name: "Kupon#"+$scope.ventasKupon[i].promocion.promocionId, data:[[Date.UTC($scope.ventasKupon[i].createdAt.substring(0,4),  $scope.ventasKupon[i].createdAt.substring(5,7),   $scope.ventasKupon[i].createdAt.substring(8,10)),$scope.ventasKupon[i].cantidad]]
+                            name: "Kupon#"+$scope.ventasKupon[i].promocion, data:[[Date.UTC($scope.ventasKupon[i].fecha.substring(0,4),  $scope.ventasKupon[i].fecha.substring(5,7)-1,   $scope.ventasKupon[i].fecha.substring(8,10)),$scope.ventasKupon[i].total]]
                         });
                          
                           idpromocion = ventas.length-1;

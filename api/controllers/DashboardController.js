@@ -73,20 +73,25 @@ module.exports = {
 		if(req.session.user) {
 
 			var fecha = req.allParams();
-			var start_date=Number(fecha.fechaInicial);
-			var end_date=Number(fecha.fechaFinal);
+			//var start_date=Number(fecha.fechaInicial);
+			//var end_date=Number(fecha.fechaFinal);
 			var sessionUser = req.session.user;
 
+			var fecha_ini=fecha.fechaInicial;
+			var fecha_fin=fecha.fechaFinal;
+
 			console.log("Dashboard Ventas");
-			console.log(start_date);
-			console.log(end_date);
+			console.log(fecha_ini);
+			console.log(fecha_fin);
 			console.log(sessionUser.perfil);
 			console.log(sessionUser.proveedor);
 
 			if(sessionUser.perfil == 'PROVEEDOR'){
 
 
-				Venta.find().where({createdAt: { '>=': new Date(end_date),'<=' : new Date(start_date)}}).populate('promocion').populate('user',{ proveedor: sessionUser.proveedor}).sort('promocion ASC').exec(function(err, data){
+				//Venta.find().where({createdAt: { '>=': new Date(end_date),'<=' : new Date(start_date)}}).populate('promocion').populate('user',{ proveedor: sessionUser.proveedor}).sort('promocion ASC').exec(function(err, data){
+				
+				Venta.query("SELECT sum(vt.cantidad) as total,vt.createdAt as fecha, vt.promocion as promocion FROM promocion pr, venta vt  WHERE vt.promocion = pr.promocion_id AND pr.proveedor_id =  "+sessionUser.proveedor+" AND (vt.createdAt BETWEEN '"+fecha_ini+"' AND '"+fecha_fin+"')  GROUP BY vt.promocion, vt.createdAt ORDER BY vt.promocion ASC", function(err, data) {
 					console.log("Datos Ventas x kupon Proveedor>>>>>");
 					//console.log(data);
 					res.json(data);
@@ -95,7 +100,7 @@ module.exports = {
 
 			}else{
 
-				Venta.find().where({createdAt: { '>=': new Date(end_date),'<=' : new Date(start_date)}}).populate('promocion').populate('user').sort('promocion ASC').exec(function(err, data){
+				Venta.query("SELECT sum(vt.cantidad) as total,vt.createdAt as fecha, vt.promocion as promocion FROM promocion pr, venta vt  WHERE vt.promocion = pr.promocion_id  AND (vt.createdAt BETWEEN '"+fecha_ini+"' AND '"+fecha_fin+"')  GROUP BY vt.promocion, vt.createdAt ORDER BY vt.promocion ASC", function(err, data) {
 					console.log("Datos Ventas x kupon Admin>>>>>");
 					//console.log(data);
 					res.json(data);

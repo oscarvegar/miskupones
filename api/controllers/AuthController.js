@@ -363,7 +363,7 @@ var AuthController = {
     .then(function(user){
       if(!user) return res.view(404);
       user.status=1;
-      Proveedor.create({userId:user}).then(function(prov){
+      Proveedor.create({userId:user,username:user.username,email:user.email}).then(function(prov){
         user.proveedor = prov;
         user.save();
         Cliente.create({user:user.id}).then(function(cte){
@@ -378,7 +378,7 @@ var AuthController = {
 
   getperfil:function(req,res){    
     var user= req.session.user.username;
-    User.findOne({username:user}).then(function(user,err){
+    Proveedor.findOne({username:user}).then(function(user,err){
       if(!user) return res.json(400,err);
       req.session.resetuser = user;
       res.json(user);
@@ -390,7 +390,7 @@ var AuthController = {
 
 console.log("parametros aactualizar");
  var data = req.allParams();
-      User.update({username:req.allParams().username},data).then(function(user){
+      Proveedor.update({username:req.allParams().username},data).then(function(user){
           res.json(user);
       }).fail(function(err){
           console.log(err);

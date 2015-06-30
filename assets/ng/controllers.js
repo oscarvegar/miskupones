@@ -188,10 +188,11 @@ $scope.$evalAsync(function() {
 
 
     $http.get('/getdashboard/'+fechaInicial.getTime()+'/'+ fechaFinalOrigen.getTime()).success(function(data) {
-                $scope.genero=data;
                 console.log("Grafica Ventas");
 
                 $scope.ventasKupon=data;
+
+                console.log($scope.ventasKupon);
 
                 var fechaMinima = fechaFinalOrigen;    
                 var fechaFinal = fechaInicial;

@@ -132,8 +132,8 @@ module.exports = {
 			if(sessionUser.perfil == 'PROVEEDOR'){
 
 
-Venta.query("SELECT MONTH(createdAt) as meses, SUM(total) as total FROM venta WHERE user = "+sessionUser.id+"  GROUP BY YEAR(createdAt), MONTH(createdAt)", function(err, data) {
-				//Venta.query("SELECT MONTH(createdAt) as meses, SUM(total) as total FROM venta WHERE user = "+sessionUser.id+" AND (createdAt BETWEEN '"+fecha_ini+"' AND '"+fecha_fin+"')  GROUP BY YEAR(createdAt), MONTH(createdAt)", function(err, data) {
+
+                Venta.query("SELECT MONTH(vt.createdAt) as meses, SUM(vt.total) as total FROM venta vt, promocion pr WHERE vt.promocion = pr.promocion_id AND pr.proveedor_id =  "+sessionUser.proveedor+" AND (vt.createdAt BETWEEN '"+fecha_ini+"' AND '"+fecha_fin+"') GROUP BY YEAR(vt.createdAt), MONTH(vt.createdAt)", function(err, data) {
 			    if(err) res.json({ error: err.message }, 400);
 			      console.log("Dashboard por mes Proveedor>>>>>>>");
 				 //   console.log(data);
@@ -177,7 +177,7 @@ Venta.query("SELECT MONTH(createdAt) as meses, SUM(total) as total FROM venta WH
 			if(sessionUser.perfil == 'PROVEEDOR'){
 		
 
-				Venta.query("SELECT MONTH(createdAt) as meses, YEAR(createdAt) as anios, SUM(total) as total FROM venta  WHERE user = "+sessionUser.id+"  AND (createdAt BETWEEN '"+fecha_ini+"' AND '"+fecha_fin+"') GROUP BY YEAR(createdAt), MONTH(createdAt)", function(err, data) {
+				Venta.query("SELECT MONTH(vt.createdAt) as meses, YEAR(vt.createdAt) as anios, SUM(vt.total) as total FROM venta vt, promocion pr WHERE vt.promocion = pr.promocion_id AND pr.proveedor_id =   "+sessionUser.proveedor+" AND (vt.createdAt BETWEEN '"+fecha_ini+"' AND '"+fecha_fin+"') GROUP BY YEAR(vt.createdAt), MONTH(vt.createdAt)", function(err, data) {
 				    if(err) res.json({ error: err.message }, 400);
 				    //console.log(data);
 				    res.json(data);
@@ -218,7 +218,7 @@ Venta.query("SELECT MONTH(createdAt) as meses, SUM(total) as total FROM venta WH
 
 			if(sessionUser.perfil == 'PROVEEDOR'){
 
-				Venta.query("SELECT vt.promocion as promocion, SUM(pr.fbshare) as compartidos  FROM promocion pr, venta vt WHERE vt.promocion = pr.promocion_id AND vt.user =  "+sessionUser.id+" AND (vt.createdAt BETWEEN '"+fecha_ini+"' AND '"+fecha_fin+"') GROUP BY pr.promocion_id", function(err, data) {
+				Venta.query("SELECT vt.promocion as promocion, SUM(pr.fbshare) as compartidos FROM promocion pr, venta vt WHERE vt.promocion = pr.promocion_id AND pr.proveedor_id =   "+sessionUser.proveedor+" AND (vt.createdAt BETWEEN '"+fecha_ini+"' AND '"+fecha_fin+"') GROUP BY pr.promocion_id", function(err, data) {
 					    if(err) res.json({ error: err.message }, 400);
 					    res.json(data);
 						});
@@ -272,7 +272,7 @@ Venta.query("SELECT MONTH(createdAt) as meses, SUM(total) as total FROM venta WH
 			if(sessionUser.perfil == 'PROVEEDOR'){
 	
 
-				Venta.query("SELECT MONTH(createdAt) as meses, SUM(userAgent LIKE '%Android%') as Android, SUM(userAgent LIKE '%iPhone%') as iPhone, SUM(userAgent LIKE '%Windows%') as Windows, SUM(userAgent LIKE '%BlackBerry%') as BlackBerry FROM venta WHERE (createdAt BETWEEN '"+fecha_ini+"' AND '"+fecha_fin+"') AND user = "+sessionUser.id+" GROUP BY MONTH(createdAt)", function(err, data) {
+				Venta.query("SELECT MONTH(vt.createdAt) as meses, SUM(vt.userAgent LIKE '%Android%') as Android, SUM(vt.userAgent LIKE '%iPhone%') as iPhone, SUM(vt.userAgent LIKE '%Windows%') as Windows, SUM(vt.userAgent LIKE '%BlackBerry%') as BlackBerry FROM promocion pr, venta vt  WHERE vt.promocion = pr.promocion_id AND pr.proveedor_id =   "+sessionUser.proveedor+" AND (vt.createdAt BETWEEN '"+fecha_ini+"' AND '"+fecha_fin+"') GROUP BY MONTH(vt.createdAt)", function(err, data) {
 				    if(err) res.json({ error: err.message }, 400);
 				    res.json(data);
 				});

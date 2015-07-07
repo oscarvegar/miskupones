@@ -254,13 +254,36 @@
       <aside>
           <div id="sidebar"  class="nav-collapse ">
               <!-- sidebar menu start-->
-              <ul class="sidebar-menu">                
+              <ul class="sidebar-menu">
+
                   <li class="active">
                       <a class="" href="/#/">
                           <i class="fa fa-tachometer"></i>
                           <span>Dashboard</span>
                       </a>
                   </li>
+
+                  <li class="active">
+                      <a class="" href="/#/promociones">
+                          <i class="fa fa-tags"></i>
+                          <span>Promociones</span>
+                      </a>
+                  </li>
+
+                  <li class="active">
+                      <a class="" href="/#/miscompras">
+                          <i class="fa fa-heart-o"></i>
+                          <span>Mis Compras</span>
+                      </a>
+                  </li>
+
+                  <li class="active">
+                      <a class="" href="/#/perfil">
+                          <i class="fa fa-user"></i>
+                          <span>Mi Perfil</span>
+                      </a>
+                  </li>
+
                   <!--* * * USUARIOS ESTO SOLO LO VE EL ADMIN * * * -->
                   <% if(req.session.user.perfil == Constantes.perfiles.ADMIN){ %>
                   <li >

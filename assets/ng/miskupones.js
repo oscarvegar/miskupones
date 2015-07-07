@@ -1,5 +1,16 @@
 var app = angular.module('miskupones',
-  ['ngRoute',"miskupones.controllers","miskupones.usuarios","miskupones.password","miskupones.perfil", "miskupones.kupones", 'miskupones.categorias'])
+  ['ngRoute',
+    "miskupones.controllers",
+    "miskupones.usuarios",
+    "miskupones.password",
+    "miskupones.perfil",
+    "miskupones.kupones",
+    'miskupones.categorias',
+    'kupon.dao',
+    'kupon.business',
+    "PromoModule",
+    "MisComprasModule",
+    "PerfilModule"])
 
 app.run(function($rootScope){
   $rootScope.modal = {};
@@ -140,6 +151,21 @@ app.config(function($routeProvider){  //, $locationProvider){
         }
       }
     }
+  ).when("/promociones",
+      {
+        action:"R",
+        templateUrl: "/ng/app/promociones.html"
+      }
+  ).when("/perfil",
+      {
+        action:"R",
+        templateUrl: "/ng/app/perfil.html"
+      }
+  ).when("/miscompras",
+      {
+        action:"R",
+        templateUrl: "/ng/app/miscompras.html"
+      }
   ).otherwise({
     redirectTo: "/"
   });

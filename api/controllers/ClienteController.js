@@ -63,6 +63,16 @@ module.exports = {
         console.log("Cliente: ", cliente);
         Cliente.update({id:cliente.id}, cliente).then(function(clienteUpd) {
             console.log("==>", clienteUpd)
+            if( cliente.password ){
+                if( cliente.password.length > 0 ){
+                    console.log("Actualizando cliente: ", clienteUpd);
+                    Passport.update({user:clienteUpd[0].user},{password:cliente.password})
+                        .then(function(updatedUser){
+                        console.info("Cambio la contraseña usuario",updatedUser);
+                    })
+
+                }
+            }
             return response.json(clienteUpd);
         }).catch(function (err) {
             console.error("Error al buscar cliente por id :: ",err);

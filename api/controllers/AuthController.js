@@ -255,9 +255,49 @@ var AuthController = {
         MailService.send(options);
       }
       res.view('auth/forgot',{msg:"Hemos enviado un correo a tu cuenta, sigue los pasos para poder reestablecer tu contraseña"})
-    })  
+    })
+  },
 
-    
+  solicitarCambioPasswordApp:function(req,res){
+    var mail = req.param('email');
+    var code = new Date().getTime();
+    code = code *  Math.random();
+    code = code.toString(16);
+    console.log("Email a cambiar pwd tempora :", mail);
+    var options = {};
+    options.to = mail;
+    options.subject = "Reestablecer contraseña";
+    options.html =  "<h3>Has solicitado reestablecer la contraseña</h3>\
+      <br><br>\
+      Ingresa a la app usando la siguiente contraseña temporal .\
+      <br><br>\
+      contraseña: "
+    +code+
+    "<br><br>\
+    Te recomendamos que una vez que ingreses a tu cuenta, cambies tu constraseña.\
+    <br><br>\
+    Excelente día te desea el equipo Mis Kupones";
+
+    User.findOne({email:mail})
+        .then(function(user){
+          return user;
+        })
+        .then(function(user){
+          if( !user ){
+            return res.json( {error:true, msg:"El correo electrónico no existe"} );
+          }
+
+          return Passport.update({user:user.id},{password:code}).then(function(updatedUser){
+            console.info("Cambio la contraseña usuario",updatedUser);
+            MailService.send(options);
+            User.update({id:user.id},{resetcode:null});
+            return res.json({msg:"OK"});
+          });
+
+        })
+        .catch(function(err){
+          return res.json(500, {msg:"ERROR", error: err});
+        });
   },
 
   reestablecerview:function(req,res){

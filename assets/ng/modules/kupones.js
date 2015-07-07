@@ -681,7 +681,7 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 			});
 			var upload = Upload.upload({
 				url: '/createKupon',
-				method: 'POST',
+				method: 'POST',user
 				headers: {
 					'my-header' : 'my-header-value'
 				},

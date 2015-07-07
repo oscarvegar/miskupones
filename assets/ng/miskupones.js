@@ -1,5 +1,5 @@
 var app = angular.module('miskupones',
-  ['ngRoute',"miskupones.controllers","miskupones.usuarios","miskupones.password","miskupones.perfil", "miskupones.kupones", 'miskupones.categorias'])
+  ['ngRoute',"miskupones.controllers","miskupones.usuarios","miskupones.password","miskupones.perfil", "miskupones.kupones", 'miskupones.categorias','miskupones.promociones'])
 
 app.run(function($rootScope){
   $rootScope.modal = {};
@@ -140,7 +140,35 @@ app.config(function($routeProvider){  //, $locationProvider){
         }
       }
     }
-  ).otherwise({
+  ).when("/promociones",
+    {
+      action:"R",
+      templateUrl: "/ng/modules/promociones-view.html",
+      controller:'PromocionesCtrl',
+      resolve: {
+        // I will cause a 1 second delay
+        delay: function($q, $timeout) {
+          var delay = $q.defer();
+          $timeout(delay.resolve, 1000);
+          return delay.promise;
+        }
+      }
+    }
+  )/*.when("/misKupones",
+    {
+      action:"R",
+      templateUrl: "/ng/modules/misKupones-view.html",
+      controller:'misKuponesCtrl',
+      resolve: {
+        // I will cause a 1 second delay
+        delay: function($q, $timeout) {
+          var delay = $q.defer();
+          $timeout(delay.resolve, 1000);
+          return delay.promise;
+        }
+      }
+    }
+  )*/.otherwise({
     redirectTo: "/"
   });
 

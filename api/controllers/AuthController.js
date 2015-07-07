@@ -200,7 +200,6 @@ var AuthController = {
         console.log("en donde no hay estatus o es menor a 0")
         return tryAgain(err,"Tu usuario se encuentra inactivo, revisa tu email para activar tu cuenta.(No olvides revisar el spam)");
       }
-
       
       req.login(user, function (err) {
         if (err) {
@@ -212,7 +211,12 @@ var AuthController = {
         req.session.user = user;
         // Upon successful login, send the user to the homepage were req.user
         // will be available.
-        res.redirect('/');
+        // console.log("login seccess", user);
+        if( user.perfil === "APP" ) {
+          res.redirect('/#/promociones');
+        } else {
+          res.redirect('/');
+        }
       });
     });
   },

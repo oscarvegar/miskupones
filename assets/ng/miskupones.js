@@ -217,16 +217,7 @@ console.log("Clientes Kupones");
         .success(function(result,status){
            console.log(status);
             localStorage["user"] = JSON.stringify(result);
-              $scope.mensaje = "Usuario válido, cargando datos del sistema ..."
-              $kuponServices.registraUsuario( result ).then( function(resultUser){
-                $kuponServices.initApp(result.id).then(function(resultPromo){
-                  console.log("promociones creadas :: ", resultPromo);
-                  $rootScope.promociones = resultPromo.data;
-                  window.location.href="/#/promociones";
-                },function(error){
-                  alert("Error al cargar promociones: " + JSON.stringify(error) );
-                });
-              });
+            window.location.href="/#/promociones";
         }).error(function(err){
           $scope.errorLogin = "El usuario y/o contraseña son incorrectos";
     

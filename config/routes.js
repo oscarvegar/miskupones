@@ -62,8 +62,6 @@ module.exports.routes = {
   'get /v/promocion/:id' : 'PromocionController.viewPromocion',
 
 
-
-
   '/': {
     controller: 'MainController',
     action:'root'
@@ -79,7 +77,9 @@ module.exports.routes = {
       controller: 'ChartController',
       action: 'show'
    },
-
+   '/loginKupones': {
+        view: 'loginKupones'
+    },
 
 
   /***************************************************************************

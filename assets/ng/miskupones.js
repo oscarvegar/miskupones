@@ -19,7 +19,7 @@ app.run(function($rootScope){
 
 app.config(function($routeProvider){  //, $locationProvider){
   $routeProvider
-  .when("/",
+   .when("/",
     {
       templateUrl: "/home",
       controller: "CuponesCtrl"
@@ -175,13 +175,129 @@ app.config(function($routeProvider){  //, $locationProvider){
   // $locationProvider.html5Mode(true);
 })
 
-app.run(function($rootScope, $location, $kuponServices){
+app.run(function($rootScope, $location,$kuponServices){
   $rootScope.go = function(location){
     $rootScope.showSpinner = false;
     $location.url("/graphicsview")
   }
   $kuponServices.loadEstados();
 
+
+ 
+
 })
+
+app.controller('LoginKuponesController', ["$timeout", "$scope", "$http", "$rootScope", "$kuponServices",function($timeout, $scope, $http, $rootScope, $kuponServices){
+
+console.log("Clientes Kupones");
+
+  $scope.isLogin = true;
+
+
+  $scope.switch = function(){
+    console.log("Cambio Regisgter");
+
+    $scope.estados = $kuponServices.getEstados();
+    console.log("Estados");
+    console.log( $scope.estados);
+
+    $scope.user = null;
+    $scope.isLogin = !$scope.isLogin;
+
+
+  }
+
+  $scope.login = function(){
+    $scope.mensaje = ' Verificando usuario ...';
+    console.log($scope.user);
+
+     $http.post(LOGIN_WS, $scope.user)
+        .success(function(result,status){
+           console.log(status);
+            localStorage["user"] = JSON.stringify(result);
+              $scope.mensaje = "Usuario válido, cargando datos del sistema ..."
+              $kuponServices.registraUsuario( result ).then( function(resultUser){
+                $kuponServices.initApp(result.id).then(function(resultPromo){
+                  console.log("promociones creadas :: ", resultPromo);
+                  $rootScope.promociones = resultPromo.data;
+                  window.location.href="/#/promociones";
+                },function(error){
+                  alert("Error al cargar promociones: " + JSON.stringify(error) );
+                });
+              });
+        }).error(function(err){
+          $scope.errorLogin = "El usuario y/o contraseña son incorrectos";
+    
+    
+    console.log("Error"+$scope.errorLogin );
+
+    });
+
+
+
+    
+  }
+
+
+    $scope.registrar = function(){ 
+    console.log("Usuario que se va a registrar :: ", $scope.user);
+     console.log($scope.user);
+    console.log("Estado seleccionado :: ", $rootScope.estadoSelected);
+    $scope.user.status = 1;
+    $scope.user.wreck = '(#$%)';
+    $http.post( REGISTRO_WS, $scope.user ).success(function(result) {
+      localStorage["user"] = JSON.stringify(result);
+      $http.post( CLIENTE_CREATE_WS, { user: result.id, correo: $scope.user.email, estado: $rootScope.estadoSelected })
+          .then(function(resultNuevoCliente){
+            console.log("Cliente registrado:: ", resultNuevoCliente);
+           // window.location.href = '/#/promociones';
+            //alert("Cliente nuevo");
+          }).
+          catch(function(err){
+            console.error("err ", err);
+            alert("Error en registro de cliente :: " + JSON.stringify(err) );
+          });
+
+          $kuponServices.registraUsuario( result ).then( function(resultUser){
+              $kuponServices.initApp(result.id).then(function(resultPromo) {
+                console.log("promociones creadas :: ", resultPromo);
+                $rootScope.promociones = resultPromo.data;
+                window.location="/#/promociones";
+              },function(error){
+                alert("Error al cargar promociones: " + JSON.stringify(error) );
+              });
+            },function(error){
+              alert("Error al registrar usuario: " + JSON.stringify(error) );
+            });
+
+    }).error(function(error) {
+      $scope.errorRegistro = "Error al registrar: El usuario y/o correo electrónico ya existen.";
+
+ 
+      //alert("Error al intentar registrar: " + JSON.stringify(error));
+     // console.error("Error al registrar nuevo usuario: ", error);
+
+      $rootScope.modal.title = "Exito";
+          $rootScope.modal.msg = "El usuario y/o correo electrónico ya existen.";
+          $('#myModal').modal('show');
+           $scope.user = {};
+            $scope.rpassword = "";
+
+
+    });
+  }
+
+   $scope.setEstado = function(id){
+    $rootScope.estadoSelected = id;
+  }
+
+
+
+  
+
+
+
+        
+    }]);
 
 

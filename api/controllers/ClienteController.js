@@ -34,6 +34,38 @@ module.exports = {
         });
     },
 
+    findInSession : function(request, response ){
+        var userId = null;
+        if(request.session.user) {
+          //  console.log("Obtenermos el usuario de sesion");
+            var reqUser = request.session.user;
+          //  console.log("Usuario en sesion: ", reqUser);
+            userId = reqUser.id;
+        }
+        console.log("data.: ID CLiente en findInSession ... ", userId);
+        Cliente.findOne({user:userId, activo:1}).populate('promocionesLike',{select:"promocionId"}).then(function(cliente) {
+            console.log("==>", cliente);
+            var promosCount = cliente.promocionesLike.length;
+            var promosIdLike = [];
+            for(var i = 0; i < promosCount; i++){
+                //console.log("Promos: ",  cliente.promocionesLike[i].promocionId ) ;
+                promosIdLike.push( cliente.promocionesLike[i].promocionId );
+            }
+            var micliente = { user: cliente.user,
+                estado: cliente.estado,
+                nombre: cliente.nombre,
+                apellidos: cliente.apellidos,
+                telefono: cliente.telefono,
+                correo: cliente.correo,
+                id: cliente.id,
+                promosIdsLike: promosIdLike};
+            console.log("Promos like cliente en retorno: ", micliente );
+            return response.json(micliente);
+        }).catch(function (err) {
+            console.error("Error al buscar cliente por id :: ",err);
+        });
+    },
+
    defineMeGusta : function( request, response ){
         var cliente = request.allParams();
        console.log("Info de cliente y promocion a quitar de megusta:: ", cliente);

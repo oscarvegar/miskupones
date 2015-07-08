@@ -213,6 +213,7 @@ var AuthController = {
         // will be available.
         // console.log("login seccess", user);
         if( user.perfil === "APP" ) {
+          console.log("logged user app redirect promociones");
           res.redirect('/#/promociones');
         } else {
           res.redirect('/');

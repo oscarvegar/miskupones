@@ -3,6 +3,20 @@ angular.module('kupon.business', [])
 
     var promociones = null;
     var estados = null;
+    var categorias = null;
+    var subcategorias = null;
+    var cliente = null;
+
+    this.loadCliente = function(){
+        return $http.post( CLIENTE_INSESSION_WS).then(function(result){
+            console.log("Se cargo el cliente :::::: ", result.data);
+            cliente = result.data;
+        });
+    }
+
+    this.getCliente = function(){
+        return cliente;
+    }
 
     this.getPromociones = function(){
         return promociones;
@@ -23,27 +37,10 @@ angular.module('kupon.business', [])
 	}
 
     this.getPromosPorEstado = function( estadoId ){
-        /*
         return $http.post(GET_PROMOS_ESTADO_WS, {estadoId:estadoId}).then(function(result) {
             console.log("PROMOS POR ESTADO BD >>> ", result.data );
-            return $db.query( DOC_PROMOS ).then(function(doc) {
-                return $db.db.put({_id: DOC_PROMOS, _rev: doc._rev, promociones: result.data.promociones })
-                    .then(function(resultUpd){
-                        resultUpd.data = result.data.promociones;
-                        return resultUpd;
-                    });
-            }, function(err) {
-                if(err.status ===  404 ){
-                    // El documento no existe, lo creamos
-                    console.log("El documento no existe, lo creamos");
-                    return $db.insert({_id:DOC_PROMOS,promociones:result.data.promociones});
-                }else{
-                    throw err;
-                }
-            });
-
+            return result.data;
         });
-        */
     }
 
     this.getPromosPorTitulo = function( criterio, promociones ) {
@@ -97,8 +94,9 @@ angular.module('kupon.business', [])
     }
 
     this.loadEstados = function(){
-        $http.get(ESTADOS_ALL_WS).then(function(resultWS){
+        return $http.get(ESTADOS_ALL_WS).then(function(resultWS){
             estados = resultWS.data;
+            return estados;
         });
     }
 
@@ -107,16 +105,23 @@ angular.module('kupon.business', [])
     }
 
 
+    this.loadCategorias = function(){
+        $http.post(CATEGORIAS_WS).then(function(result){
+            console.log(" Categorias encontradas xxx:: ", result.data);
+            categorias = result.data.categorias;
+            subcategorias = result.data.subcategorias;
+        }).catch(function(err){
+            console.error("Error al cargar las categorias:: ", err)
+            throw err;
+        });
+    }
+
     this.getCategorias = function(){
-        return $http.post(CATEGORIAS_WS)
-        .then(function(result){
-                //console.log(" Categorias encontradas:: ", result.data);
-                return result.data;
-            })
-        .catch(function(err){
-                console.error("Error al cargar las categorias:: ", err)
-                return err;
-            });
+        return categorias;
+    }
+
+    this.getSubCategorias = function(){
+        return subcategorias;
     }
 
 })

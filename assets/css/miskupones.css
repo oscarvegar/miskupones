@@ -200,3 +200,11 @@ label.welle {
 .cursor {
     cursor: pointer;
 }
+
+.align-right{
+    position:absolute;
+    right:15px;
+    margin: -10px;
+
+}
+

@@ -1,0 +1,103 @@
+<style>
+  span.active {
+    color: #4F8EF7;
+  }
+  .activeAzul {
+    color: #4F8EF7;
+  }
+  li.cursor:hover {
+    color: #4F8EF7;
+  }
+</style>
+<section id="main-content">
+  <section class="wrapper" id="">
+    <div class="row">
+      <div class="col-lg-12">
+        <h3 class="page-header"><i class="fa fa-star"></i> {{promoSelected.titulo}}</h3>
+        <ol class="breadcrumb">
+          <li><i class="fa fa-home"></i><a href="/#/">Inicio</a></li>
+          <li><i class="fa fa-tags"></i><a href="/#/promociones">Promociones</a></li>
+          <li><i class="fa fa-star"></i>{{promoSelected.titulo}}</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Aqui va el cuerpo de la pagina -->
+
+    <div class="container">
+      <div class="well">
+        <div class="media">
+          <a class="pull-left" href="#">
+            <img class="media-object" src="{{promoSelected.imagenesUrls[0]}}">
+          </a>
+          <div class="media-body">
+            <h4 class="media-heading">{{promoSelected.titulo}}</h4><br/>
+
+            <table style="width: 100%;margin: 0px;">
+              <tr>
+                <td>
+                  De: <span class="tenue textCancel">{{promoSelected.precioRegular | currency}}</span>
+                  A: <span class="resaltar">{{promoSelected.precioDescuento | currency}}</span>
+                </td>
+                <td align="right">
+                  <b>Disponibles:</b> {{cantidadDisponible}}
+                </td>
+              </tr>
+            </table>
+            <h4> Descripción </h4>
+            <p>{{promoSelected.descripcionLarga}}</p>
+
+            <h4>Restricciones</h4>
+            <p ng-show="promoSelected.restricciones.length > 0">
+              {{promoSelected.restricciones}}
+            </p>
+            <p ng-show="promoSelected.restricciones.length <= 0">
+              Sin Restricciones
+            </p>
+
+            <ul class="list-inline list-unstyled">
+              <li><span><i class="glyphicon glyphicon-calendar"></i> Válido hasta {{promoSelected.finVigencia | date:"MM/dd/yyyy"}}  </span></li>
+              <li>|</li>
+                Costo Kupon: <b>{{promoSelected.precioKupon | currency}}</b></span>
+              <li>|</li>
+              <li class="cursor active" ng-click="meGusta(promoSelected);">
+                <span class="glyphicon glyphicon-thumbs-up" ng-class="{active: megusta}"></span>
+                <span ng-class="{activeAzul: megusta}">Me gusta</span>
+              </li>
+              <li>|</li>
+              <li class="cursor">
+                <span><i class="fa fa-facebook-square"></i></span> Compartir
+              </li>
+            </ul>
+
+            <h4>Si lo quiero</h4>
+
+            <table style="width: 100%" ng-show="cantidadDisponible > 0">
+              <tr>
+                <td><b>Costo Unitario:</b></td>
+                <td>{{promoSelected.precioKupon | currency}}</td>
+                <td><b>Cantidad:</b></td>
+                <td align="center">
+                  <select class="form-control m-bot15" ng-model="cantidad" ng-change="aplicaCantidad(cantidad);">
+                    <option ng-repeat="disponible in disponibles" ng-value="disponible" >{{disponible}}</option>
+                  </select>
+                </td>
+                <td><b>TOTAL:</b></td>
+                <td>{{promoSelected.precioKupon * cantidad | currency}}</td>
+                <td>
+                  <button class="btn btn-success">COMPRAR</button>
+                </td>
+              </tr>
+            </table>
+
+            <p ng-show="cantidadDisponible <= 0">
+              Lo sentimos, se han agotado estos kupones
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</section>

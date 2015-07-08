@@ -10,6 +10,7 @@ var app = angular.module('miskupones',
     'kupon.dao',
     'kupon.business',
     "PromoModule",
+    "DetalleModule",
     "MisComprasModule",
     "PerfilModule"])
 
@@ -154,18 +155,17 @@ app.config(function($routeProvider){  //, $locationProvider){
     }
   ).when("/promociones",
       {
-        action:"R",
-        templateUrl: "/ng/app/promociones.html"
-      }
-  ).when("/perfil",
-      {
-        action:"R",
-        templateUrl: "/ng/app/perfil.html"
+        templateUrl: "/ng/app/promociones.html",
+        controller:'PromoController'
       }
   ).when("/miscompras",
       {
-        action:"R",
         templateUrl: "/ng/app/miscompras.html"
+      }
+  ).when("/detalle",
+      {
+        templateUrl: "/ng/app/detalle.html",
+        controller:'DetalleController'
       }
   ).otherwise({
     redirectTo: "/"
@@ -181,6 +181,8 @@ app.run(function($rootScope, $location,$kuponServices){
     $location.url("/graphicsview")
   }
   $kuponServices.loadEstados();
+  $kuponServices.loadCategorias();
+  $kuponServices.loadCliente();
 
 
  

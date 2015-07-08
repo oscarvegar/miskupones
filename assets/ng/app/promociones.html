@@ -32,7 +32,7 @@
   }
 </style>
 
-<section ng-controller="PromoController" id="main-content">
+<section id="main-content">
   <section class="wrapper" id="">
     <div class="row">
       <div class="col-lg-12">
@@ -59,7 +59,8 @@
             </button>
             <ul class="dropdown-menu dropdown-menu-right" >
               <li><a class="cursor" data-toggle="modal" data-target="#myModal" >Búsqueda por Estado</a></li>
-              <li><a class="cursor" data-toggle="modal" data-target="#myModalCateogia" >Búsqueda por Categoria</a></li>
+              <li><a class="cursor" data-toggle="modal" data-target="#myModalCateogia" ng-click="loadCategorias()" >
+                Búsqueda por Categoria</a></li>
             </ul>
           </div><!-- /btn-group -->
         </div><!-- /input-group -->
@@ -67,15 +68,19 @@
     </div><!-- /.row -->
 
     <br/>
+    <div ng-show="promociones.length == 0" class="alert alert-warning" role="alert">No hay promociones disponibles</div>
     <section id="pinBoot">
 
-      <article class="white-panel" ng-repeat="promocion in promociones">
+      <article class="white-panel" ng-repeat="promocion in promociones"
+              ng-click="getPromocion(promocion, $index)">
         <img src="{{promocion.imagenesUrls[0]}}" alt="">
-        <h4><a href="#">{{promocion.titulo}}</a></h4>
+        <h4><a>{{promocion.titulo}}</a></h4>
         <p>{{promocion.descripcionCorta }}</p>
         <b>De:</b> <span style="font-size: 12px;text-decoration: line-through">{{promocion.precioRegular | currency}} </span> <b>a</b>
-        <span style="color: #204d74">{{promocion.precioDescuento | currency}}</span><br/>
+        <span style="color: #204d74">{{promocion.precioDescuento | currency}}</span>
+        <br/>
         <b>Kupon: </b><span style="color: #204d74"> {{promocion.precioKupon | currency}} </span>
+        <button class="btn btn-success align-right" style="">Lo quiero</button>
       </article>
 
     </section>
@@ -92,14 +97,15 @@
         <div class="modal-body">
           SELECCIONA UN ESTADO:
           <p>
-            <select ng-model="estadoSelected" ng-change="setEstado(estadoSelected)"
+            <select class="form-control m-bot15" ng-model="estadoSelected"
+                    ng-change="setEstado(estadoSelected)"
                     ng-options="estado.id as estado.nombre for estado in estados">
             </select>
           </p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary">Buscar</button>
+          <button type="button" class="btn btn-primary" ng-click="buscarPromosPorEstado()">Buscar</button>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -113,16 +119,21 @@
           <h4 class="modal-title">Busqueda de promociones por Categoria</h4>
         </div>
         <div class="modal-body">
-          SELECCIONA UN CATEGORIA:
+
           <p>
-            <select ng-model="estadoSelected" ng-change="setEstado(estadoSelected)"
-                    ng-options="estado.id as estado.nombre for estado in estados">
+            SELECCIONA UN CATEGORIA:
+            <select class="form-control m-bot15" ng-model="categoriaSelected" ng-change="setCategoria(categoriaSelected)"
+                    ng-options="categoria.categoriaId as categoria.descripcion for categoria in categorias">
+            </select>
+            SELECCIONA UN SUBCATEGORIA:
+            <select class="form-control m-bot15" ng-model="subCategoriaSelected" ng-change="setSubCategoria(subCategoriaSelected)"
+                    ng-options="subcategoria.subCategoriaId as subcategoria.descripcion for subcategoria in subcategorias">
             </select>
           </p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary">Buscar</button>
+          <button type="button" class="btn btn-primary" ng-click="buscarPromosPorCategoria()">Buscar</button>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

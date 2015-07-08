@@ -14,6 +14,7 @@ var GET_PROMOS_ESTADO_WS = CONTEXT_PATH_WS + "Promocion/findByEstado/";
 var GET_PROMOS_ESTADO_CATEGO_WS = CONTEXT_PATH_WS + "Promocion/findByEstadoAndCategoria/";
 var VENTA_WS = CONTEXT_PATH_WS + "Venta/generaVenta/";
 var CLIENTE_WS = CONTEXT_PATH_WS + "Cliente/findById/";
+var CLIENTE_INSESSION_WS = CONTEXT_PATH_WS + "Cliente/findInSession/";
 var CLIENTE_CREATE_WS = CONTEXT_PATH_WS + "Cliente/create/";
 var CLIENTE_UPDATE_WS = CONTEXT_PATH_WS + "Cliente/update/";
 var CLIENTE_DEF_MEGUSTA_WS = CONTEXT_PATH_WS + "Cliente/defineMeGusta/";

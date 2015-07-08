@@ -302,7 +302,17 @@ module.exports = {
     findByLimit: function(request, response ){
         var data = request.allParams().limit;
         var userId = request.allParams().userId;
-        //console.log("Obteniendo promociones con userId : ", userId);
+
+        if( !userId ){
+            if(request.session.user) {
+                console.log("Obtenermos el usuario de sesion");
+                var reqUser = request.session.user;
+                console.log("Usuario en sesion: ", reqUser);
+                userId = reqUser.id;
+            }
+        }
+
+        console.log("Obteniendo promociones con userId : ", userId);
         var criteria = null;
         var estadoId = 0;
         Cliente.findOne({user:userId}).then(function(cliente) {

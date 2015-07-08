@@ -186,3 +186,17 @@ label.welle {
  *
  * Checklist-Model - END
  */
+
+.placeholder-icon {
+    color: #aaa; }
+.placeholder-icon:first-child {
+    padding-right: 6px; }
+.placeholder-icon:last-child {
+    padding-left: 6px; }
+ .icon {
+    display: inline-block;
+    padding: 4px 0 0 0px;
+    vertical-align: middle; }
+.cursor {
+    cursor: pointer;
+}

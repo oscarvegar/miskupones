@@ -1,32 +1,29 @@
 angular.module('kupon.business', [])
-.service('$kuponServices', function( $q, $http, $db){
+.service('$kuponServices', function( $q, $http){
 
-	this.initApp = function( userId ) {
-        return $http.post(GET_PROMOS_WS, {userId:userId}).then(function(result) {
-            console.log("Data >>> ", result.data );
+    var promociones = null;
+    var estados = null;
+
+    this.getPromociones = function(){
+        return promociones;
+    }
+
+    this.setPromociones = function( promos ){
+        promociones = promos;
+    }
+
+	this.initApp = function( ) {
+        console.log("PROMOS: ", GET_PROMOS_WS);
+        return $http.post(GET_PROMOS_WS).then(function(result) {
+            //console.log("Data >>> ", result.data );
             localStorage[ LOCAL_ESTADO_SELECTED ] = result.data.estadoId;
-            return $db.query( DOC_PROMOS ).then(function(doc) {
-                // El documento existe, lo borramos primero
-                console.log("El documento existe con estas promociones :: ", doc);
-                console.log("El documento existe, lo actualizamos");
-                return $db.db.put({_id: DOC_PROMOS, _rev: doc._rev, promociones: result.data.promociones })
-                    .then(function(resultUpd){
-                        resultUpd.data = result.data.promociones;
-                        return resultUpd;
-                    });
-            }, function(err) {
-                if(err.status ===  404 ){
-                    // El documento no existe, lo creamos
-                    console.log("El documento no existe, lo creamos");
-                    return $db.insert({_id:DOC_PROMOS,promociones:result.data.promociones});
-                }else{
-                    throw err;
-                }
-            });
+            promociones = result.data;
+            return result.data;
         });
 	}
 
     this.getPromosPorEstado = function( estadoId ){
+        /*
         return $http.post(GET_PROMOS_ESTADO_WS, {estadoId:estadoId}).then(function(result) {
             console.log("PROMOS POR ESTADO BD >>> ", result.data );
             return $db.query( DOC_PROMOS ).then(function(doc) {
@@ -46,26 +43,22 @@ angular.module('kupon.business', [])
             });
 
         });
+        */
     }
 
-    this.getPromosPorTitulo = function( criterio ) {
-        return $db.query( DOC_PROMOS ).then(function(doc) {
-            if( criterio === "*" ){
-                console.log("Regresando todas las promociones");
-                return doc.promociones;
+    this.getPromosPorTitulo = function( criterio, promociones ) {
+        if( criterio === "*" ){
+            console.log("Regresando todas las promociones");
+            return promociones;
+        }
+        var promocionesEncontradas = [];
+        for(var i = 0; i < promociones.length; i++){
+            if( promociones[i].titulo.toUpperCase().indexOf( criterio.toUpperCase() ) >= 0 ) {
+                promocionesEncontradas.push( promociones[i] );
             }
-            var promociones = doc.promociones;
-            var promocionesEncontradas = [];
-            for(var i = 0; i < promociones.length; i++){
-                if( promociones[i].titulo.toUpperCase().indexOf( criterio.toUpperCase() ) >= 0 ) {
-                    promocionesEncontradas.push( promociones[i] );
-                }
-            }
-            console.log("Regresando todas las promociones encontradas");
-            return promocionesEncontradas;
-        }, function(err) {
-            return err;
-        });
+        }
+        console.log("Regresando todas las promociones encontradas");
+        return promocionesEncontradas;
     }
 
     this.registraUsuario = function( user ) {
@@ -103,21 +96,16 @@ angular.module('kupon.business', [])
         });
     }
 
-    this.getPromociones = function(){
-        return $db.query( DOC_PROMOS );
+    this.loadEstados = function(){
+        $http.get(ESTADOS_ALL_WS).then(function(resultWS){
+            estados = resultWS.data;
+        });
     }
 
     this.getEstados = function(){
-        return $db.query( DOC_ESTADOS ).then( function(result) {
-            return result.estados;
-        }).catch(function(err){
-            console.log("El documento n existe, lo consultamos del web service")
-            return $http.get(ESTADOS_ALL_WS).then(function(resultWS){
-                console.log("Result from WS :: ", resultWS);
-                return $db.insert({_id:DOC_ESTADOS,estados:resultWS.data});
-            });
-        });
+        return estados;
     }
+
 
     this.getCategorias = function(){
         return $http.post(CATEGORIAS_WS)

@@ -2,11 +2,8 @@
  * Created by oscar on 31/05/15.
  */
 
-//  Produccion
-//var CONTEXT_PATH_WS = "http://miskupones.com/";
-
 //  Desarrollo
-var CONTEXT_PATH_WS = "http://localhost:1337/";
+var CONTEXT_PATH_WS = "";
 
 // GENERAL
 var REGISTRO_WS = CONTEXT_PATH_WS + "auth/local/register/";

@@ -1,3 +1,37 @@
+<style>
+  #pinBoot {
+    position: relative;
+    max-width: 100%;
+    width: 100%;
+  }
+  #pinBoot img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+  .white-panel {
+    position: absolute;
+    background: white;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+  }
+
+  .white-panel h1 {
+    font-size: 1em;
+  }
+  .white-panel h1 a {
+    color: #A92733;
+  }
+  .white-panel:hover {
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+    margin-top: -5px;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+  }
+</style>
+
 <section ng-controller="PromoController" id="main-content">
   <section class="wrapper" id="">
     <div class="row">
@@ -12,6 +46,86 @@
 
     <!-- Aqui va el cuerpo de la pagina -->
 
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="input-group">
+          <div class="input-group-addon"><i class="glyphicon glyphicon-search"></i></div>
+          <input type="text" class="form-control" placeholder="Search ..."
+                 ng-model="criteria" ng-change="buscarPorNombre()">
+          <div class="input-group-btn">
+            <button type="button" class="btn btn-default dropdown-toggle"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Opciones de Búsqueda <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" >
+              <li><a class="cursor" data-toggle="modal" data-target="#myModal" >Búsqueda por Estado</a></li>
+              <li><a class="cursor" data-toggle="modal" data-target="#myModalCateogia" >Búsqueda por Categoria</a></li>
+            </ul>
+          </div><!-- /btn-group -->
+        </div><!-- /input-group -->
+      </div><!-- /.col-lg-6 -->
+    </div><!-- /.row -->
+
+    <br/>
+    <section id="pinBoot">
+
+      <article class="white-panel" ng-repeat="promocion in promociones">
+        <img src="{{promocion.imagenesUrls[0]}}" alt="">
+        <h4><a href="#">{{promocion.titulo}}</a></h4>
+        <p>{{promocion.descripcionCorta }}</p>
+        <b>De:</b> <span style="font-size: 12px;text-decoration: line-through">{{promocion.precioRegular | currency}} </span> <b>a</b>
+        <span style="color: #204d74">{{promocion.precioDescuento | currency}}</span><br/>
+        <b>Kupon: </b><span style="color: #204d74"> {{promocion.precioKupon | currency}} </span>
+      </article>
+
+    </section>
 
   </section>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Busqueda de promociones por Estado</h4>
+        </div>
+        <div class="modal-body">
+          SELECCIONA UN ESTADO:
+          <p>
+            <select ng-model="estadoSelected" ng-change="setEstado(estadoSelected)"
+                    ng-options="estado.id as estado.nombre for estado in estados">
+            </select>
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary">Buscar</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <div class="modal fade" id="myModalCateogia" tabindex="-1" role="dialog" aria-labelledby="myModalCateogiaLabel">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Busqueda de promociones por Categoria</h4>
+        </div>
+        <div class="modal-body">
+          SELECCIONA UN CATEGORIA:
+          <p>
+            <select ng-model="estadoSelected" ng-change="setEstado(estadoSelected)"
+                    ng-options="estado.id as estado.nombre for estado in estados">
+            </select>
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary">Buscar</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
 </section>

@@ -5,6 +5,40 @@ var myApp = angular.module("PromoModule",[]);
 myApp.controller( "PromoController",
     function($timeout, $scope, $http, $rootScope, $kuponServices){
 
+
+
+        $scope.load = function(){
+            if( $kuponServices.getPromociones() == null ) {
+                $kuponServices.initApp().then(function (resultPromo) {
+                    $kuponServices.setPromociones( resultPromo.promociones );
+                    $rootScope.promociones = $kuponServices.getPromociones();
+                    console.log("CARGA INICIAL ==> Mis Promociones:: ", $rootScope.promociones);
+                }, function (error) {
+                    alert("Error al cargar promociones: " + JSON.stringify(error));
+                });
+            }else {
+                $rootScope.promociones = $kuponServices.getPromociones();
+                console.log("Mis Promociones:: ", $rootScope.promociones);
+            }
+
+            // Dibujando GRID Pinterest
+            $timeout(function () {
+                $('#pinBoot').pinterest_grid({
+                    no_columns: 4,
+                    padding_x: 10,
+                    padding_y: 10,
+                    margin_bottom: 50,
+                    single_column_breakpoint: 700
+                });
+            }, 1, false);
+
+            // Obteniendo los estados
+            $scope.estados = $kuponServices.getEstados();
+
+        };
+
+        $scope.load();
+
         $scope.meGusta = function( promoSelected ){
             // se va a quitar la promocion del cliente
             var request = {id:$rootScope.cliente.id, promocionId:promoSelected.promocionId, megusta:$rootScope.megusta};
@@ -54,25 +88,14 @@ myApp.controller( "PromoController",
 
         $scope.buscarPorNombre = function(){
           if ( $scope.criteria.length >= 3 ) {
-              $kuponServices.getPromosPorTitulo( $scope.criteria ).then(function(resultPromo) {
-                  console.log("actualizando promociones :: ", resultPromo);
-                  $rootScope.promociones = resultPromo;
-                  if(!$scope.$$phase) {
-                      $scope.$apply()
-                  }
-              },function(error){
-                  alert("Error al cargar promociones: " + JSON.stringify(error) );
-              });
+              var resultPromo = $kuponServices.getPromosPorTitulo( $scope.criteria, $rootScope.promociones )
+              console.log("actualizando promociones :: ", resultPromo);
+              $rootScope.promociones = resultPromo;
+              if(!$scope.$$phase) {
+                  $scope.$apply()
+              }
           } else if( $scope.criteria === "" ) {
-              $kuponServices.getPromosPorTitulo( "*" ).then(function(resultPromo) {
-                  $rootScope.promociones = resultPromo;
-                  console.log("actualizando promociones :: ", $rootScope.promociones );
-                  if(!$scope.$$phase) {
-                      $scope.$apply()
-                  }
-              },function(error){
-                  alert("Error al cargar promociones: " + JSON.stringify(error) );
-              });
+              $rootScope.promociones = $kuponServices.getPromociones();
           }
         }
 

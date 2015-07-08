@@ -175,11 +175,13 @@ app.config(function($routeProvider){  //, $locationProvider){
   // $locationProvider.html5Mode(true);
 })
 
-app.run(function($rootScope,$location){
+app.run(function($rootScope, $location, $kuponServices){
   $rootScope.go = function(location){
     $rootScope.showSpinner = false;
     $location.url("/graphicsview")
   }
+  $kuponServices.loadEstados();
+
 })
 
 

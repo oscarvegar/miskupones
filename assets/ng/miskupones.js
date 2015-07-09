@@ -7,6 +7,7 @@ var app = angular.module('miskupones',
     "miskupones.perfil",
     "miskupones.kupones",
     'miskupones.categorias',
+    'miskupones.perfilKupones',
     'kupon.dao',
     'kupon.business',
     "PromoModule",
@@ -57,6 +58,11 @@ app.config(function($routeProvider){  //, $locationProvider){
     {
       templateUrl: "/ng/modules/miperfil.html",
       controller:'PerfilCtrl'
+    }
+  ).when("/miPerfilKupones",
+    {
+      templateUrl: "/ng/app/miperfilKupones.html",
+      controller:'PerfilKuponesCtrl'
     }
   ).when("/changePassword",
     {

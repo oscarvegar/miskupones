@@ -232,14 +232,25 @@
                         </a>
                         <ul class="dropdown-menu extended logout">
                             <div class="log-arrow-up"></div>
+
+                             <% if(req.session.user.perfil == Constantes.perfiles.ADMIN || req.session.user.perfil == Constantes.perfiles.PROVEEDOR ){ %>
                             <li class="eborder-top">
                                 <a href="/#/miPerfil"><i class="icon_profile"></i> Mi Perfil</a>
+                            </li>
+                            <%}%>
+                             <li class="eborder-top">
+                                <a href="/#/miPerfilKupones"><i class="icon_profile"></i> Mi Perfil</a>
                             </li>
                             <li >
                                 <a href="/#/changePassword"><i class="icon_profile"></i> Cambiar Contraseña</a>
                             </li>
+                             <% if(req.session.user.perfil == Constantes.perfiles.ADMIN || req.session.user.perfil == Constantes.perfiles.PROVEEDOR ){ %>
                             <li>
                                 <a href="/logout"><i class="icon_key_alt"></i> Cerrar Sesión</a>
+                            </li>
+                             <%}%>
+                             <li>
+                                <a href="/logoutKupones"><i class="icon_key_alt"></i> Cerrar Sesión</a>
                             </li>
                         </ul>
                     </li>

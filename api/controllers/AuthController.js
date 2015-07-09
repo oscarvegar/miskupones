@@ -81,6 +81,15 @@ var AuthController = {
     res.redirect('/');
   },
 
+  logoutKupones: function (req, res) {
+    req.logout();
+    
+    // mark the user as logged out for auth purposes
+    req.session.authenticated = false;
+    req.session.user = false;
+    res.redirect('/loginKupones');
+  },
+
   /**
    * Render the registration page
    *

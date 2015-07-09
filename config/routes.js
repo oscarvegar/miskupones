@@ -34,6 +34,7 @@ module.exports.routes = {
 
   '/login': 'AuthController.login',
   'get /logout': 'AuthController.logout',
+  'get /logoutKupones': 'AuthController.logoutKupones', 
   'get /register': 'AuthController.register',
   'get /forgot': 'AuthController.forgot',
   'get /resetview/:id' : 'AuthController.reestablecerview',

@@ -1,0 +1,76 @@
+<!-- Button trigger modal -->
+
+<section id="main-content" >
+  <section class="wrapper" id="">            
+    <!--overview start-->
+    <div class="row">
+      <div class="col-lg-12">
+        <h3 class="page-header"><i class="fa fa-users"></i> Editar mi Perfil</h3>
+        <ol class="breadcrumb">
+          <li><i class="fa fa-home"></i><a href="/#/">Home</a></li>
+          <li><i class="fa fa-laptop"></i>Editar Perfil</li>                
+        </ol>
+      </div>
+    </div>
+
+    <div class="row">
+		<div class="col-lg-12">
+		  <section class="panel">
+		      <header class="panel-heading">
+		         Editar Mi Perfil
+		      </header>
+		      <div class="panel-body">
+		          <div class="form">
+		              <form class="form-validate form-horizontal " ng-submit="actualizarCliente()">
+
+		              	  <div class="form-group ">
+		                      <label  class="control-label col-lg-2">Usuario<span>*</span></label>
+		                      <div class="col-lg-10">
+		                          <input class=" form-control" ng-model="user.username" ng-disabled="block" type="text" />
+		                      </div>
+		                  </div>
+		                  
+		                  <div class="form-group ">
+		                      <label  class="control-label col-lg-2">Nombre'(s)<span class="required">*</span></label>
+		                      <div class="col-lg-10">
+		                          <input class=" form-control" ng-model="cliente.nombre" type="text" />
+		                      </div>
+		                  </div>
+		                  <div class="form-group ">
+		                      <label class="control-label col-lg-2">Apellidos<span class="required">*</span></label>
+		                      <div class="col-lg-10">
+		                          <input class=" form-control" ng-model="cliente.apellidos" type="text" />
+		                      </div>
+		                  </div>
+		                   <div class="form-group ">
+		                      <label  class="control-label col-lg-2">Estado <span class="required">*</span></label>
+		                      <div class="col-lg-10">
+								  <select ng-model="estadoSelected" ng-change="setEstado(estadoSelected)"
+					                    ng-options="estado.id as estado.nombre for estado in estados">
+					            </select>                           
+		                      </div>
+		                  </div>
+		                   <div class="form-group ">
+		                      <label class="control-label col-lg-2">Email <span>*</span></label>
+		                      <div class="col-lg-10">
+		                          <input class="form-control" ng-model="cliente.correo" type="email" />
+		                      </div>
+		                  </div>
+		                  <div class="form-group ">
+		                      <label class="control-label col-lg-2">Telefono<span class="required">*</span></label>
+		                      <div class="col-lg-10">
+		                          <input class=" form-control" ng-model="cliente.telefono" type="tel" />
+		                      </div>
+		                  </div>
+		                  <div class="form-group">
+		                      <div class="col-lg-offset-2 col-lg-10">
+		                          <button class="btn btn-primary" type="submit">Guardar</button>
+		                      </div>
+		                  </div>
+		              </form>
+		          </div>
+		      </div>
+		  </section>
+		</div>    
+	</div>
+</section>

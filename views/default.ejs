@@ -238,9 +238,11 @@
                                 <a href="/#/miPerfil"><i class="icon_profile"></i> Mi Perfil</a>
                             </li>
                             <%}%>
+                            <% if(req.session.user.perfil == Constantes.perfiles.APP){ %>
                              <li class="eborder-top">
                                 <a href="/#/miPerfilKupones"><i class="icon_profile"></i> Mi Perfil</a>
                             </li>
+                            <%}%>
                             <li >
                                 <a href="/#/changePassword"><i class="icon_profile"></i> Cambiar Contraseña</a>
                             </li>
@@ -249,9 +251,11 @@
                                 <a href="/logout"><i class="icon_key_alt"></i> Cerrar Sesión</a>
                             </li>
                              <%}%>
+                             <% if(req.session.user.perfil == Constantes.perfiles.APP){ %>
                              <li>
                                 <a href="/logoutKupones"><i class="icon_key_alt"></i> Cerrar Sesión</a>
                             </li>
+                             <%}%>
                         </ul>
                     </li>
                     <!-- user login dropdown end -->

@@ -78,7 +78,7 @@ var AuthController = {
     // mark the user as logged out for auth purposes
     req.session.authenticated = false;
     req.session.user = false;
-    res.redirect('/');
+    res.redirect('/login');
   },
 
   logoutKupones: function (req, res) {
@@ -87,7 +87,7 @@ var AuthController = {
     // mark the user as logged out for auth purposes
     req.session.authenticated = false;
     req.session.user = false;
-    res.redirect('/loginKupones');
+    res.redirect('/userapp');
   },
 
   /**

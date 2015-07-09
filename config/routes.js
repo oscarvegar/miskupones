@@ -78,7 +78,7 @@ module.exports.routes = {
       controller: 'ChartController',
       action: 'show'
    },
-   '/loginKupones': {
+   '/userapp': {
         view: 'loginKupones'
     },
 

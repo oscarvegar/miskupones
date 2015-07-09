@@ -13,7 +13,7 @@ module.exports = {
 		if(req.session.user)
 			return res.view('default');
 		else
-			res.redirect('/login')
+			res.redirect('/userapp')
 	}
 };
 

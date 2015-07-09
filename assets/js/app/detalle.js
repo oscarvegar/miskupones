@@ -74,52 +74,22 @@ myApp.controller( "DetalleController",
         }
 
         $scope.confirmarCompra = function() {
-            //alert("cantidad a comprar :: ", $rootScope.cantidad );
-            /*
-            $ionicLoading.show({
-              template: "Procesando tu compra ..."
-            });
-            console.log("Promocion seleccionada :: ", $rootScope.promoSelected )
+            console.log("Promocion seleccionada :: ", $scope.promoSelected )
             var user = JSON.parse(localStorage["user"]);
             var estadoId = localStorage[ LOCAL_ESTADO_SELECTED ];
             console.log("user logged : ", user);
             console.log("estado ID : ", estadoId);
-            var request = { promocionId: $rootScope.promoSelected.promocionId,
-                            subcategoriaId: $rootScope.promoSelected.subCategoriaId,
+            var request = { promocionId: $scope.promoSelected.promocionId,
+                            subcategoriaId: $scope.promoSelected.subCategoriaId,
                             user: user.id,
                             estadoId: estadoId,
-                            cantidad: eval($rootScope.cantidad),
-                            total: ($rootScope.promoSelected.precioKupon *  $rootScope.cantidad)};
-
+                            cantidad: eval($scope.cantidad),
+                            total: ($scope.promoSelected.precioKupon *  $scope.cantidad)};
             $http.post( VENTA_WS, request ).then(function(result){
-               $kuponServices.actualizarCantidadPromo( eval($rootScope.cantidad), $rootScope.indexPromoSelected )
-              .then(function(resultUpd){
-                    $ionicLoading.hide();
-                    var myPopup = $ionicPopup.show({
-                       template: '<b><center>Tu compra se ha realizado correctamente, podrás ver tu kupon en el apartado de Mis Kupones. Gracias por usar MisKupones</center></b>',
-                       title: 'Compra Finalizada',
-                       scope: $scope,
-                       buttons: [
-                           { text: 'Aceptar' }
-                       ]
-                    });
-                    myPopup.then(function(res) {
-                       console.log('Tapped!', res);
-                       window.location.href = "inicio.html";
-                    });
-                    $timeout(function() {
-                       myPopup.close(); //close the popup after 3 seconds for some reason
-                        window.location.href = "inicio.html";
-                    }, 3000);
-              },function(error){
-                    $ionicLoading.hide();
-                    alert("Error al actualiar cantidad: " + JSON.stringify(error) );
-              });
+                $('#modalCompra').modal({backdrop:false})
             },function(error){
-              $ionicLoading.hide();
               alert("Error al generar la venta: " + JSON.stringify(error) );
             });
-            */
         }
 
         $scope.shareViaFacebook = function(promo) {

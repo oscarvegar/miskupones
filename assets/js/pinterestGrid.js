@@ -24,6 +24,7 @@
     }
 
     Plugin.prototype.init = function () {
+        console.log("en init de pinterest");
         var self = this,
             resize_finish;
 
@@ -31,7 +32,7 @@
             clearTimeout(resize_finish);
             resize_finish = setTimeout( function () {
                 self.make_layout_change(self);
-            }, 11);
+            }, 100);
         });
 
         self.make_layout_change(self);
@@ -42,6 +43,7 @@
     };
 
     Plugin.prototype.calculate = function (single_column_mode) {
+        console.log("en calculate de pinterest");
         var self = this,
             tallest = 0,
             row = 0,
@@ -133,12 +135,14 @@
     };
 
     $.fn[pluginName] = function (options) {
+        /*
         return this.each(function () {
             if (!$.data(this, 'plugin_' + pluginName)) {
                 $.data(this, 'plugin_' + pluginName,
                     new Plugin(this, options));
             }
-        });
+        });*/
+        return new Plugin(this, options);
     }
 
 })(jQuery, window, document);

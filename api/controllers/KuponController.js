@@ -9,7 +9,15 @@ module.exports = {
 
     misKupones:function(request, response){
         var userId = request.allParams().userId;
+        if( !userId ){
+            if(request.session.user) {
+                var reqUser = request.session.user;
+                userId = reqUser.id;
+            }
+        }
+
         console.log("User ID de Kupones:: ", userId);
+
         Venta.find( {user: userId}).populate('promocion')
             .populate('estadoId').populate("kupones")
         .then(function(result){

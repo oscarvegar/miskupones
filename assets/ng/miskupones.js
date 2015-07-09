@@ -13,12 +13,25 @@ var app = angular.module('miskupones',
     "PromoModule",
     "DetalleModule",
     "MisComprasModule",
-    "PerfilModule"])
+    "PerfilModule",
+      'ngFlowGrid',
+    "ngResource"])
 
 app.run(function($rootScope){
   $rootScope.modal = {};
 })
+/*app.directive("pinterest",function($timeout){
+  return {
+    restrict: 'A',
+    link: function(scope, element, attrs){
+      console.log("Se ejecuta directive");
+      $timeout(function() {
+        $(element).pinterest_grid(scope.$eval(attrs.pinterest));
+      },2);
 
+      //element[0].preventDefault();
+    }}
+});*/
 app.config(function($routeProvider){  //, $locationProvider){
   $routeProvider
    .when("/",

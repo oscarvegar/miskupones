@@ -77,7 +77,7 @@ module.exports = {
             // res.redirect('#/kupones/create');
             // return res.view('default');
         } else {
-            return res.redirect('/login');
+            return res.redirect('/provlogin');
         }
     },
     readAllKupons: function(req, res) {
@@ -107,7 +107,7 @@ module.exports = {
             // res.redirect('/');
             // return res.view('default');
         } else {
-            return res.redirect('/login');
+            return res.redirect('/provlogin');
         }
     },
     viewKupon: function(req, res) {
@@ -134,7 +134,7 @@ module.exports = {
             // res.redirect('/');
             // return res.view('default');
         } else {
-            return res.redirect('/login');
+            return res.redirect('/provlogin');
         }
     },
     updateKupon: function(req, res) {
@@ -250,7 +250,7 @@ module.exports = {
             // res.redirect('/');
             // return res.view('default');
         } else {
-            return res.redirect('/login');
+            return res.redirect('/provlogin');
         }
     },
     deleteKupon: function(req, res) {
@@ -273,7 +273,7 @@ module.exports = {
             // res.redirect('/');
             // return res.view('default');
         } else {
-            return res.redirect('/login');
+            return res.redirect('/provlogin');
         }
     },
 

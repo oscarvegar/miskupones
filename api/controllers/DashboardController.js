@@ -58,7 +58,7 @@ module.exports = {
 			}
 
 			} else {
-            return res.redirect('/login');
+            return res.redirect('/provlogin');
         }
 
 
@@ -109,7 +109,7 @@ module.exports = {
 			}
 
 		} else {
-            return res.redirect('/login');
+            return res.redirect('/provlogin');
         }
 	},
 
@@ -160,7 +160,7 @@ module.exports = {
 
 
 	    } else {
-            return res.redirect('/login');
+            return res.redirect('/provlogin');
         }
 	
 				
@@ -202,7 +202,7 @@ module.exports = {
 
 
 		} else {
-            return res.redirect('/login');
+            return res.redirect('/provlogin');
         }
 				
 	},
@@ -241,7 +241,7 @@ module.exports = {
          
 
         } else {
-            return res.redirect('/login');
+            return res.redirect('/provlogin');
         }
 	
 	
@@ -294,7 +294,7 @@ module.exports = {
          
 
         } else {
-            return res.redirect('/login');
+            return res.redirect('/provlogin');
         }
 	
 

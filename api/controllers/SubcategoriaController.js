@@ -18,7 +18,7 @@ module.exports = {
 					return res.json(error);
 				});
 		} else {
-			res.redirect('/login');
+			res.redirect('/provlogin');
 		}
 	}
 };

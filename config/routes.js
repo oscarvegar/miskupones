@@ -32,7 +32,7 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/login': 'AuthController.login',
+  '/provlogin': 'AuthController.login',
   'get /logout': 'AuthController.logout',
   'get /logoutKupones': 'AuthController.logoutKupones', 
   'get /register': 'AuthController.register',

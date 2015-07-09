@@ -78,7 +78,7 @@ var AuthController = {
     // mark the user as logged out for auth purposes
     req.session.authenticated = false;
     req.session.user = false;
-    res.redirect('/login');
+    res.redirect('/provlogin');
   },
 
   logoutKupones: function (req, res) {
@@ -165,14 +165,14 @@ var AuthController = {
             console.log("error registro ... ");
             res.json(403,{code:-1, error:err});
           }else{
-            res.redirect('/login');
+            res.redirect('/provlogin');
           }
           break;
         case 'disconnect':
           res.redirect('back');
           break;  
         default:
-          res.redirect('/login');
+          res.redirect('/provlogin');
       }
     }
     console.log(req.allParams())
@@ -334,7 +334,7 @@ var AuthController = {
     Passport.update({user:user.id},{password:pass}).then(function(updatedUser){
       console.info("Cambio la contraseña usuario",updatedUser);
       User.update({id:user.id},{resetcode:null})
-      return res.redirect("/login");
+      return res.redirect("/provlogin");
     })
   },
 
@@ -425,7 +425,7 @@ var AuthController = {
           user.save();
         })
       })
-      res.redirect("/login?m=1")
+      res.redirect("/provlogin?m=1")
     })
 
   },

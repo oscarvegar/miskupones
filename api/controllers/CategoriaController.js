@@ -16,7 +16,7 @@ module.exports = {
 					return res.serverError(error);
 				});
 		} else {
-			return res.redirect('/login');
+			return res.redirect('/provlogin');
 		}
 	},
 	viewCategoria: function(req, res) {

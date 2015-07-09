@@ -225,10 +225,15 @@ console.log("Clientes Kupones");
             localStorage["user"] = JSON.stringify(result);
             window.location.href="/#/promociones";
         }).error(function(err){
-          $scope.errorLogin = "El usuario y/o contraseña son incorrectos";
+          $scope.errorLogin = "El usuario y/o contraseña son incorrectos";   
+          console.log("Error"+$scope.errorLogin );
+              
+          $rootScope.modal.title = "Error";
+          $rootScope.modal.msg = "El usuario y/o contraseña son incorrectos.";
+          $('#myModal').modal('show');
+          $scope.user = {};
     
-    
-    console.log("Error"+$scope.errorLogin );
+
 
     });
 

@@ -267,15 +267,22 @@ console.log("Clientes Kupones");
       $http.post( CLIENTE_CREATE_WS, { user: result.id, correo: $scope.user.email, estado: $rootScope.estadoSelected })
           .then(function(resultNuevoCliente){
             console.log("Cliente registrado:: ", resultNuevoCliente);
-           // window.location.href = '/#/promociones';
+            //window.location = '/#/promociones';
             //alert("Cliente nuevo");
+
+            $rootScope.modal.title = "Exito";
+            $rootScope.modal.msg = "Tu usuario se registro exitosamente.";
+            $('#myModalRegister').modal('show');
+            $scope.user = {};
+            $scope.rpassword = "";
+
           }).
           catch(function(err){
             console.error("err ", err);
             alert("Error en registro de cliente :: " + JSON.stringify(err) );
           });
 
-          $kuponServices.registraUsuario( result ).then( function(resultUser){
+         /* $kuponServices.registraUsuario( result ).then( function(resultUser){
               $kuponServices.initApp(result.id).then(function(resultPromo) {
                 console.log("promociones creadas :: ", resultPromo);
                 $rootScope.promociones = resultPromo.data;
@@ -285,7 +292,7 @@ console.log("Clientes Kupones");
               });
             },function(error){
               alert("Error al registrar usuario: " + JSON.stringify(error) );
-            });
+            });*/
 
     }).error(function(error) {
       $scope.errorRegistro = "Error al registrar: El usuario y/o correo electrónico ya existen.";

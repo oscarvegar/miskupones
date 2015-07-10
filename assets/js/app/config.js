@@ -36,9 +36,15 @@ var DOC_ESTADOS = "estados";
 var LOCAL_ESTADO_SELECTED = "estadoSelected";
 
 // PAYPAL Settings
-var payPalProductionId = '';  // Integrar el key en produccion
-var payPalSandboxId = 'APP-80W284485P519543T';
-var payPalShopName = 'KUPONES SHOP';
-var payPalMerchantPrivacyPolicyURL = "https://www.paypal.com/ua/webapps/mpp/ua/privacy-full";
-var payPalMerchantUserAgreementURL = "https://www.paypal.com/us/webapps/mpp/ua/useragreement-full";
-var payPalEnv = "PayPalEnvironmentSandbox";
+
+var CORREO_BUSINESS = "manvergara-facilitator@hotmail.com";
+
+var CANCEL_URL = "http://miskupones.com/#/detalle/?cancel=true";
+var RETURN_URL = "http://miskupones.com/#/miscompras";
+var NOTIFY_URL = "http://miskupones.com/notify/payment";
+
+
+
+
+
+

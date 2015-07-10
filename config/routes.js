@@ -61,7 +61,7 @@ module.exports.routes = {
   'get /getdashboardso/:fechaInicial/:fechaFinal': 'DashboardController.getdashboardso',
   'get /dashboardmapa/:fechaInicial/:fechaFinal': 'DashboardController.dashboardmapa',
   'get /v/promocion/:id' : 'PromocionController.viewPromocion',
-
+  'post /notify/payment' : 'VentaController.notify',
 
   '/': {
     controller: 'MainController',

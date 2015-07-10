@@ -40,7 +40,7 @@ var LOCAL_ESTADO_SELECTED = "estadoSelected";
 var CORREO_BUSINESS = "manvergara-facilitator@hotmail.com";
 
 var CANCEL_URL = "http://miskupones.com/#/detalle/?cancel=true";
-var RETURN_URL = "http://miskupones.com/#/detalle/?return=true";
+var RETURN_URL = "http://miskupones.com/#/miscompras";
 var NOTIFY_URL = "http://miskupones.com/notify/payment";
 
 

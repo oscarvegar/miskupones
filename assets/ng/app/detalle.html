@@ -89,7 +89,26 @@
                 <td><b>TOTAL:</b></td>
                 <td>{{promoSelected.precioKupon * cantidad | currency}}</td>
                 <td>
-                  <button class="btn btn-success" ng-click="confirmarCompra()">COMPRAR</button>
+
+                  <form id="formPaypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+                    <input type="hidden" name="cmd" value="_xclick">
+                    <input type="hidden" name="upload" value="1">
+                    <input type="hidden" id="business" name="business" value="">
+
+                    <input type="hidden" name="country" value="MX">
+                    <input type="hidden" name="currency_code" value="MXN">
+
+                    <input type="hidden" id="cancel_return" name="cancel_return" value="">
+                    <input type="hidden" id="return" name="return" value="">
+                    <input type="hidden" id="notify_url" name="notify_url" value="">
+                    <input type="hidden" id="custom" name="custom" value="">
+
+                    <input type="hidden" name="item_name" value="{{promoSelected.titulo}}">
+                    <input type="hidden" name="quantity" value="{{cantidad}}">
+                    <input type="hidden" name="amount" value="{{promoSelected.precioKupon * cantidad}}">
+
+                    <button type="button" class="btn btn-success" ng-click="procederCompra()">COMPRAR</button>
+                  </form>
                 </td>
               </tr>
             </table>

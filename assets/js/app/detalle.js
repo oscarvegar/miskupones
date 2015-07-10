@@ -63,17 +63,6 @@ myApp.controller( "DetalleController",
         }
 
         $scope.procederCompra = function() {
-            $rootScope.productsCart = [];
-            var prodInCart = {  title: 'product name',
-                description: 'product description',
-                quantity: 1,
-                price: 230,
-                images: null,
-                id: 1};
-            $rootScope.productsCart.push( prodInCart );
-        }
-
-        $scope.confirmarCompra = function() {
             console.log("Promocion seleccionada :: ", $scope.promoSelected )
             var user = JSON.parse(localStorage["user"]);
             var estadoId = localStorage[ LOCAL_ESTADO_SELECTED ];
@@ -85,6 +74,17 @@ myApp.controller( "DetalleController",
                             estadoId: estadoId,
                             cantidad: eval($scope.cantidad),
                             total: ($scope.promoSelected.precioKupon *  $scope.cantidad)};
+            localStorage["venta"] = JSON.stringify( request );
+            $("#custom").val( JSON.stringify( request ) );
+            $("#business").val( CORREO_BUSINESS );
+            $("#cancel_return").val( CANCEL_URL );
+            $("#return").val( RETURN_URL );
+            $("#notify_url").val( NOTIFY_URL );
+            $("#formPaypal").submit();
+        }
+
+        $scope.confirmarCompra = function() {
+
             $http.post( VENTA_WS, request ).then(function(result){
                 $('#modalCompra').modal({backdrop:false})
             },function(error){

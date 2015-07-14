@@ -219,9 +219,6 @@ console.log("Clientes Kupones");
     console.log("Cambio Regisgter");
 
     $scope.estados = $kuponServices.getEstados();
-    console.log("Estados");
-    console.log( $scope.estados);
-
     $scope.user = null;
     $scope.isLogin = !$scope.isLogin;
 
@@ -231,7 +228,6 @@ console.log("Clientes Kupones");
   $scope.login = function(){
     $scope.mensaje = ' Verificando usuario ...';
     console.log($scope.user);
-
      $http.post(LOGIN_WS, $scope.user)
         .success(function(result,status){
            console.log(status);
@@ -245,61 +241,39 @@ console.log("Clientes Kupones");
           $rootScope.modal.msg = "El usuario y/o contraseña son incorrectos.";
           $('#myModal').modal('show');
           $scope.user = {};
-    
-
-
     });
-
-
-
-    
   }
 
 
-    $scope.registrar = function(){ 
+  $scope.registrar = function(){
     console.log("Usuario que se va a registrar :: ", $scope.user);
-     console.log($scope.user);
+    console.log($scope.user);
     console.log("Estado seleccionado :: ", $rootScope.estadoSelected);
     $scope.user.status = 1;
     $scope.user.wreck = '(#$%)';
+    $scope.loading = true;
     $http.post( REGISTRO_WS, $scope.user ).success(function(result) {
       localStorage["user"] = JSON.stringify(result);
       $http.post( CLIENTE_CREATE_WS, { user: result.id, correo: $scope.user.email, estado: $rootScope.estadoSelected })
           .then(function(resultNuevoCliente){
+            $scope.loading = false;
+            $rootScope.estadoSelected = "";
             console.log("Cliente registrado:: ", resultNuevoCliente);
-            //window.location = '/#/promociones';
-            //alert("Cliente nuevo");
-
             $rootScope.modal.title = "Exito";
-            $rootScope.modal.msg = "Tu usuario se registro exitosamente.";
+            $rootScope.modal.msg = "Tu usuario se registro correctamente pero se encuentra inactivo, revisa tu email para activar tu cuenta. (No olvides revisar el spam).";
             $('#myModalRegister').modal('show');
             $scope.user = {};
             $scope.rpassword = "";
-
+            $scope.form.$setPristine(true);
           }).
           catch(function(err){
+            $scope.loading = false;
             console.error("err ", err);
             alert("Error en registro de cliente :: " + JSON.stringify(err) );
           });
 
-         /* $kuponServices.registraUsuario( result ).then( function(resultUser){
-              $kuponServices.initApp(result.id).then(function(resultPromo) {
-                console.log("promociones creadas :: ", resultPromo);
-                $rootScope.promociones = resultPromo.data;
-                window.location="/#/promociones";
-              },function(error){
-                alert("Error al cargar promociones: " + JSON.stringify(error) );
-              });
-            },function(error){
-              alert("Error al registrar usuario: " + JSON.stringify(error) );
-            });*/
-
     }).error(function(error) {
       $scope.errorRegistro = "Error al registrar: El usuario y/o correo electrónico ya existen.";
-
- 
-      //alert("Error al intentar registrar: " + JSON.stringify(error));
-     // console.error("Error al registrar nuevo usuario: ", error);
 
       $rootScope.modal.title = "Exito";
           $rootScope.modal.msg = "El usuario y/o correo electrónico ya existen.";

@@ -67,8 +67,7 @@
               <li>|</li>
               <li class="cursor">
                 <span><i class="fa fa-facebook-square"></i></span>
-                <a href="http://www.facebook.com/sharer.php?u=http://miskupones.com/v/promocion/{{promoSelected.promocionId}}&media={{promoSelected.imagenesUrls[0]}}&description={{promoSelected.titulo}}"
-                        style="color:#797979">
+                <a class="cursor" ng-click="shareViaFacebook(promoSelected);" style="color:#797979">
                   Compartir
                 </a>
               </li>
@@ -148,3 +147,12 @@
 
   </section>
 </section>
+
+<script>
+  function fbShare(url, winWidth, winHeight) {
+    var winTop = (screen.height / 2) - (winHeight / 2);
+    var winLeft = (screen.width / 2) - (winWidth / 2);
+    console.log("URL:: ", url);
+    window.open(url, 'sharer', 'top=' + winTop + ',left=' + winLeft + ',toolbar=0,status=0,width=' + winWidth + ',height=' + winHeight);
+  }
+</script>

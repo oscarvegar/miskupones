@@ -63,7 +63,10 @@
   <body  >
   <!-- container section start -->
   <div class="container" ng-controller="LoginKuponesController">
-    <div id="loginbox" style="margin-top:10px;" ng-show="isLogin" >
+    <div class="spinner" ng-show="loading">
+        <img ng-show="loading" src="/img/loading-orange-t2.gif" style="width: 50px; position: absolute; left: 50%; top: 50%; display: block;" />
+    </div>
+    <div id="loginbox" ng-show="isLogin" >
         <!-- <section id="containerK" class="" ng-controller="LoginKuponesController">-->
             
       <div class="container">
@@ -75,6 +78,12 @@
                 <h2>Iniciar Sesión</h2>
               </div>
               <p class="login-img"><i class="icon_lock_alt"></i></p>
+              <% if(typeof msg != 'undefined'){ %>
+                <%=msg%>
+              <% } %>
+              <% if(req.param("m") === "1"){ %>
+                Tu cuenta se ha activado ya puedes iniciar sesión.
+              <% } %>
 
               <!--div class="row text-center">
                 <hr class="col-md-3"><span class="col-md-3">O bien</span><hr class="col-md-3">
@@ -92,15 +101,13 @@
                   <input type="password" name="password" required minlength=8 class="form-control"
                          placeholder="Password" ng-model="user.password" title="Por favor llena este campo. Mínimo 8 caractéres.">
               </div>
-              <label class="checkbox">
-                  <input type="checkbox" value="remember-me"> Remember me
+              <label class="checkbox" >
+                  <span style="display: none"><input type="checkbox" value="remember-me"> Remember me</span>
                   <span class="pull-right"> <a href="/forgot"> Olvidé mi contraseña</a></span>
               </label>
               <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
               <button class="btn btn-info btn-lg btn-block" type="button"
                        ng-click="switch()">Registrate</button>
-             
-
           </div>
         </form>
 

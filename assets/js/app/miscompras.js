@@ -34,14 +34,23 @@ myApp.controller( "MisComprasController",
         $scope.descargarPDF = function(){
             console.log("Descargando PDF");
             var doc = new jsPDF();
-            doc.setFontSize(30);
-            doc.text(30, 15, "MIS KUPONES - CODIGOS QR");
-            doc.setFontSize(20);
+            doc.setFontSize(25);
             var splitTitle = doc.splitTextToSize($rootScope.kuponSelected.promocion.titulo, 180);
-            doc.text(15, 30, splitTitle);
+            doc.text(15, 15, splitTitle);
 
             doc.setFontSize(15);
-            var width = 100, height = 90, x = 15, y = 60, yText = 55, countQR = 0;
+            doc.text(15, 29, "-DESCRIPCION-");
+
+            doc.setFontSize(10);
+            var splitDescripcion = doc.splitTextToSize($rootScope.kuponSelected.promocion.descripcionLarga, 180);
+            doc.text(15, 35, splitDescripcion);
+
+            doc.text(15, 50, "Costo Kupon: $" + $rootScope.kuponSelected.promocion.precioKupon);
+            doc.text(15, 55, "Precio Normal Sin Kupon: $" +  $rootScope.kuponSelected.promocion.precioRegular);
+            doc.text(15, 60, "Precio Con Kupon: $" + $rootScope.kuponSelected.promocion.precioDescuento);
+
+            doc.setFontSize(15);
+            var width = 100, height = 90, x = 15, y = 80, yText = 70, countQR = 0;
             for(var i = 0; i < $rootScope.kuponSelected.miskupones.length; i++){
                 doc.text(15, yText, "Kupon " + (i + 1) );
                 var kuponqr =  $rootScope.kuponSelected.miskupones[i];

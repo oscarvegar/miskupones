@@ -279,7 +279,7 @@
                   </li>
 
                   <%}%>
-
+                  <% if(req.session.user.perfil == Constantes.perfiles.APP){ %>
                   <li class="active">
                       <a class="" href="/#/promociones">
                           <i class="fa fa-tags"></i>
@@ -293,7 +293,7 @@
                           <span>Mis Compras</span>
                       </a>
                   </li>
-
+                  <% } %>
                   <!--* * * USUARIOS ESTO SOLO LO VE EL ADMIN * * * -->
                   <% if(req.session.user.perfil == Constantes.perfiles.ADMIN){ %>
                   <li >

@@ -93,8 +93,15 @@ myApp.controller( "DetalleController",
         }
 
         $scope.shareViaFacebook = function(promo) {
-
-
+            var winWidth = 520;
+            var winHeight = 350;
+            var winTop = (screen.height / 2) - (winHeight / 2);
+            var winLeft = (screen.width / 2) - (winWidth / 2);
+            var url = 'http://www.facebook.com/sharer.php?u=http://miskupones.com/v/promocion/' +
+                promo.promocionId + '&media=' + promo.imagenesUrls[0] + '&description= ' +
+                promo.titulo ;
+            console.log("URL ::: ", url);
+            window.open(url, 'sharer', 'top=' + winTop + ',left=' + winLeft + ',toolbar=0,status=0,width=' + winWidth + ',height=' + winHeight);
         }
 
 });

@@ -308,7 +308,7 @@ module.run(['$location', '$rootScope', function($location, $rootScope) {
  */
 module.controller('KuponesCtrl', function($scope, $location, $http, $route, $routeParams, $rootScope, $log, $timeout, Upload, $window, SweetAlert) {	// , spinnerService, $sails) {
 	$scope.params = $routeParams;
-	
+    $scope.selectedAll = true;
 	$scope.action = $route.current.action;
 	$scope.showContent = false;
 	
@@ -382,6 +382,7 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 				$log.error(error);
 			} else {
 				$scope.estados = data;
+				 $scope.currentKupon.estadosAsociados = angular.copy($scope.estados);
 			}
 		}
 
@@ -789,6 +790,7 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 	};
 
 	$scope.updateEditKuponView = function(kuponId) {
+		$scope.selectedAll = false;
 		$scope.viewKuponById(kuponId, function(error, data) {
 			if(error) {
 				$log.error(error);
@@ -824,6 +826,20 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 			}
 		});
 	};
+
+
+    $scope.checkAll = function () {
+
+    	 if ($scope.selectedAll) {
+            $scope.selectedAll = true;
+             $scope.currentKupon.estadosAsociados = angular.copy($scope.estados);
+        } else {
+            $scope.selectedAll = false;
+             $scope.currentKupon.estadosAsociados = [];
+        }
+       
+    };
+
 
 	$scope.updateKupon = function() {
 		// a

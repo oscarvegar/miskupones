@@ -2,7 +2,7 @@
 <section ng-controller="KuponesCtrl" id="main-content" ng-if="((action == 'C' || action == 'U') && showContent)">
     <section class="wrapper">
         <div class="spinner" ng-show="loading">
-            <img ng-show="loading" src="/img/loading-orange-t2.gif" style="width: 50px; position: absolute; left: 50%; top: 50%; display: block;" />
+            <img ng-show="loading" src="/img/loader-larger.gif" style="width: 300px; position: absolute; left: 50%; top: 50%; display: block;" />
         </div>
         <!-- <spinner id="mySpinner" show-spinner="false" ></spinner> -->
         <div class="row">
@@ -45,6 +45,9 @@
                             <div class="form-group ">
                                 <label for="kuponActivo" class="control-label col-lg-2 col-sm-3">Estados asociados <span class="required">*</span></label>
                                 <div class="col-lg-10 col-sm-9">
+                                    <label class="well">
+                                            <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()" /> Selecciona Todos
+                                    </label>
                                     <label class="well" ng-repeat="estado in estados">
                                         <input type="checkbox" checklist-model="currentKupon.estadosAsociados" checklist-value="estado"> {{estado.nombre}}
                                     </label>

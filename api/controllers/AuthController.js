@@ -197,9 +197,7 @@ var AuthController = {
           User.update({id:user.id},{perfil:Constantes.perfiles.APP}).then(console.info);
           //Cliente.create({user:user}).then(console.info)
         }
-        if(wreck_web)
         return res.json(user);
-        
       }else{
         console.log("ACTION >>>>>",req.action)
         console.log("USER >>>>>",user)

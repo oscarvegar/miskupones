@@ -1,0 +1,155 @@
+<div ng-app="starter" >
+    <!-- container section start -->
+    <div class="container" ng-controller="LoginController">
+
+        <div id="loginbox" ng-show="isLogin" >
+            <div class="container">
+                <form class="login-form" role="form"  ng-submit="login()">
+                    <div class="login-wrap">
+              
+               <div class="row text-center">
+                <h2>Iniciar Sesión</h2>
+              </div>
+              <p class="login-img"><i class="icon_lock_alt"></i></p>
+              <% if(typeof msg != 'undefined'){ %>
+                <%=msg%>
+              <% } %>
+              <% if(req.param("m") === "1"){ %>
+                Tu cuenta se ha activado ya puedes iniciar sesión.
+              <% } %>
+
+              <!--div class="row text-center">
+                <hr class="col-md-3"><span class="col-md-3">O bien</span><hr class="col-md-3">
+                
+                
+              </div-->
+              <div class="input-group">
+                <span class="input-group-addon"><i class="icon_profile"></i></span>
+                <input type="text" name="identifier" required class="form-control" placeholder="Username"  ng-model="user.identifier" autofocus title="Por favor llena este campo."
+
+      Ver más en: http://www.iteramos.com/pregunta/11912/forma-html5-requiere-atributo-set-mensaje-de-validacion-personalizada>
+              </div>
+              <div class="input-group">
+                  <span class="input-group-addon"><i class="icon_key_alt"></i></span>
+                  <input type="password" name="password" required minlength=8 class="form-control"
+                         placeholder="Password" ng-model="user.password" title="Por favor llena este campo. Mínimo 8 caractéres.">
+              </div>
+              <label class="checkbox" >
+                  <span style="display: none"><input type="checkbox" value="remember-me"> Remember me</span>
+                  <span class="pull-right"> <a href="/forgot"> Olvidé mi contraseña</a></span>
+              </label>
+              <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+              <button class="btn btn-info btn-lg btn-block" type="button"
+                       ng-click="switch()">Registrate</button>
+          </div>
+        </form>
+
+
+      </div>
+
+    </div>
+
+
+
+
+
+
+     <!-- </section>-->
+        <!-- container section end -->
+
+      <div id="signupbox" ng-hide="isLogin" style="margin-top:50px;">
+        <div class="container" id="signupbox" >
+          <form class="login-form" name="form" role="form" ng-submit="registrar()">        
+            <div class="login-wrap">
+              <div class="row text-center">
+                <h2>Registro</h2>
+                <br>
+              </div>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="icon_profile"></i></span>
+                <input type="text"  name="username" placeholder="Username" required class="form-control" ng-model="user.username" autofocus autocomplete="off" >
+              </div>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="icon_mail"></i></span>
+                <input type="email" name="email"  placeholder="Email" required class="form-control"   ng-model="user.email" autofocus autocomplete="off" >
+              </div>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="icon_globe-2"></i></span>
+                  <select class="form-control m-bot15" ng-model="estadoSelected" ng-change="setEstado(estadoSelected)"
+                    ng-options="estado.id as estado.nombre for estado in estados">
+                    <option value="" selected="selected">--Selecciona tu Estado--</option>
+                  </select>
+              </div>
+
+              <div class="input-group">
+                 <span class="input-group-addon"><i class="icon_key_alt"></i></span>               
+                  <input type="password" class="form-control" name="password" ng-model="user.password"
+                         placeholder="Escribe tu contraseña" ng-required="true" ng-minlength="8">          
+              </div>
+
+              <div style="position: relative;top: -15px" class="error" ng-show="form.password.$dirty && form.password.$invalid">
+                <span ng-show="form.password.$error.required">
+                  <span ></span>  La contraseña es obligatoria
+                </span>
+                <span ng-show="form.password.$error.minlength">
+                  <span ></span>  La contraseña debe tener al menos 8 caracteres
+                </span>
+              </div>
+
+
+              <div class="input-group">
+                 <span class="input-group-addon"><i class="icon_key_alt"></i></span>              
+                  <input type="password" class="form-control" name="rpasswd" ng-model="rpassword"
+                         placeholder="Confirma tu contraseña" ng-match="user.password">          
+              </div>
+              <div style="position: relative;top: -15px" class="error" ng-show="form.rpasswd.$dirty && form.rpasswd.$invalid">
+                <span ng-show="form.rpasswd.$error.match">
+                  <span class="glyphicon glyphicon-info-sign "></span>  Las contraseñas no coinciden
+                </span>
+              </div>
+
+              <button class="btn btn-primary btn-lg btn-block" type="submit">Crear Cuenta</button>
+              <button class="btn btn-info btn-lg btn-block"  ng-click="isLogin = false;isLogin = true; " >Regresar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+
+      <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">{{modal.title}}</h4>
+            </div>
+            <div class="modal-body">
+              <p>{{modal.msg}}</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+
+
+     <div class="modal fade" id="myModalRegister">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">{{modal.title}}</h4>
+          </div>
+          <div class="modal-body">
+            <p>{{modal.msg}}</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal"   ng-click="isLogin = false;isLogin = true; ">Aceptar</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    </div>
+</div>

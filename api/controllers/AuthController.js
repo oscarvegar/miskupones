@@ -31,9 +31,7 @@ var AuthController = {
    * @param {Object} res
    */
   login: function (req, res) {
-
     console.log("in login controller param m :: ", req.param("m"));
-
     var strategies = sails.config.passport
       , providers  = {};
 
@@ -56,6 +54,35 @@ var AuthController = {
     // Render the `auth/login.ext` view
     res.view({
       layout:'liteLayout',
+      providers : providers,
+      errors    : req.flash('error'),
+      msg       : msg
+    });
+  },
+
+  loginUserapp: function (req, res) {
+    var strategies = sails.config.passport
+        , providers  = {};
+
+    // Get a list of available providers for use in your templates.
+    Object.keys(strategies).forEach(function (key) {
+      if (key === 'local') {
+        return;
+      }
+
+      providers[key] = {
+        name: strategies[key].name
+        , slug: key
+        , icon: strategies[key].icon
+      };
+    });
+    var msg="";
+
+    if(req.param('m'))
+      msg = "Tu cuenta se ha activado ya puedes iniciar sesión."
+    // Render the `auth/login.ext` view
+    res.view({
+      layout:'liteAppLayout',
       providers : providers,
       errors    : req.flash('error'),
       msg       : msg
@@ -391,6 +418,10 @@ var AuthController = {
       }
      
       console.log("USER",user);
+
+      if( user.perfil !== "APP" ){
+        return res.json(403, {msg:"El usuario no existe"})
+      }
 
       req.login(user, function (err) {
         if (err) {

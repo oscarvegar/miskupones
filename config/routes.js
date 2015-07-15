@@ -33,6 +33,8 @@ module.exports.routes = {
   ***************************************************************************/
 
   '/provlogin': 'AuthController.login',
+  '/userapp': 'AuthController.loginUserapp',
+
   'get /logout': 'AuthController.logout',
   'get /logoutKupones': 'AuthController.logoutKupones', 
   'get /register': 'AuthController.register',
@@ -78,9 +80,6 @@ module.exports.routes = {
       controller: 'ChartController',
       action: 'show'
    },
-   '/userapp': {
-        view: 'loginKupones'
-    },
 
 
   /***************************************************************************

@@ -9,6 +9,7 @@ angular.module('starter', ['validation.match', 'kupon.dao', 'kupon.business'])
 .run(function($rootScope, $location, $kuponServices){
   $kuponServices.loadEstados();
   $rootScope.modal = {};
+  $rootScope.loading = false;
 })
 
 .controller( "LoginController", function( $scope, $rootScope, $http, $kuponServices, $timeout){
@@ -21,17 +22,18 @@ angular.module('starter', ['validation.match', 'kupon.dao', 'kupon.business'])
   }
 
   $scope.login = function(){
-    $scope.mensaje = ' Verificando usuario ...';
+    var btnLogin = $("#loginBtn").button('loading')
     console.log($scope.user);
     $http.post(LOGIN_WS, $scope.user)
         .success(function(result,status){
           console.log(status);
           localStorage["user"] = JSON.stringify(result);
+          btnLogin.button('reset');
           window.location.href="/#/promociones";
         }).error(function(err){
+          btnLogin.button('reset');
           $scope.errorLogin = "El usuario y/o contraseña son incorrectos";
           console.log("Error"+$scope.errorLogin );
-
           $rootScope.modal.title = "Error";
           $rootScope.modal.msg = "El usuario y/o contraseña son incorrectos.";
           $('#myModal').modal('show');
@@ -41,6 +43,7 @@ angular.module('starter', ['validation.match', 'kupon.dao', 'kupon.business'])
 
 
   $scope.registrar = function(){
+    var regBtn = $("#regBtn").button('loading')
     console.log("Usuario que se va a registrar :: ", $scope.user);
     console.log($scope.user);
     console.log("Estado seleccionado :: ", $rootScope.estadoSelected);
@@ -51,7 +54,7 @@ angular.module('starter', ['validation.match', 'kupon.dao', 'kupon.business'])
       localStorage["user"] = JSON.stringify(result);
       $http.post( CLIENTE_CREATE_WS, { user: result.id, correo: $scope.user.email, estado: $rootScope.estadoSelected })
           .then(function(resultNuevoCliente){
-            $scope.loading = false;
+            regBtn.button('reset');
             $rootScope.estadoSelected = "";
             console.log("Cliente registrado:: ", resultNuevoCliente);
             $rootScope.modal.title = "Exito";
@@ -62,7 +65,7 @@ angular.module('starter', ['validation.match', 'kupon.dao', 'kupon.business'])
             $scope.form.$setPristine(true);
           }).
           catch(function(err){
-            $scope.loading = false;
+            regBtn.button('reset');
             console.error("err ", err);
             alert("Error en registro de cliente :: " + JSON.stringify(err) );
           });

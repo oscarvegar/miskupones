@@ -308,12 +308,12 @@ module.run(['$location', '$rootScope', function($location, $rootScope) {
  */
 module.controller('KuponesCtrl', function($scope, $location, $http, $route, $routeParams, $rootScope, $log, $timeout, Upload, $window, SweetAlert) {	// , spinnerService, $sails) {
 	$scope.params = $routeParams;
-    $scope.selectedAll = true;
 	$scope.action = $route.current.action;
 	$scope.showContent = false;
 	
 	$scope.kupones = new Array();
 	$scope.currentKupon = {};
+	$scope.currentKupon.activo = true;
 
 	var dMin = moment().subtract(1, 'days').hours(0).minutes(0).seconds(0);
 	$scope.minDate = dMin;
@@ -382,7 +382,6 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 				$log.error(error);
 			} else {
 				$scope.estados = data;
-				 $scope.currentKupon.estadosAsociados = angular.copy($scope.estados);
 			}
 		}
 
@@ -790,7 +789,6 @@ module.controller('KuponesCtrl', function($scope, $location, $http, $route, $rou
 	};
 
 	$scope.updateEditKuponView = function(kuponId) {
-		$scope.selectedAll = false;
 		$scope.viewKuponById(kuponId, function(error, data) {
 			if(error) {
 				$log.error(error);
